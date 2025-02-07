@@ -4,7 +4,7 @@ description = "Lightweight hardware test framework"
 readme = "README.md"
 license = {file = "LICENSE"}
 dynamic = ["version"]
-dependencies = ["quart-authlib"]
+dependencies = ["quart", "tofupilot"]
 requires-python = ">=3.11"
 classifiers = ["Private :: Do Not Upload"]
 
