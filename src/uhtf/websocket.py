@@ -21,7 +21,9 @@ from quart import websocket
 
 #from state_machines import TestStateMachine
 
-UDI_REGEX = r"(01)(?P<item>\d{14})(11)(?P<date>\d{6})(21)(?P<serial_number>\d{5})"
+UDI_REGEX = r"(01)(?P<item_number>\d{14})" \
+          + r"(11)(?P<manufacture_date>\d{6})" \
+          + r"(21)(?P<serial_number>\d{5})"
 
 
 def udi_extract(label: str) -> dict:
