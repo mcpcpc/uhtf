@@ -21,7 +21,7 @@
               <h5 class="card-title m-0" style="display: flex; align-items: center">Profile Details</h5>
             </div>
             <div class="card-body">
-              <form class="row g-3 needs-validation" id="update" action="{{ url_for('.update') }}" method="post" novalidate>
+              <form class="row g-3 needs-validation" id="update" action="{{ url_for('index') }}" method="post" novalidate>
                 <div class="col-12">
                   <label for="udi" class="form-label fw-semibold text-muted">UDI Barcode</label>
                   <input name="udi" type="text" class="form-control form-control-lg" id="udi" required>
