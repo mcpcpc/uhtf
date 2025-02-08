@@ -17,8 +17,8 @@
         <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
           <div class="accordion" id="accordionTestList">
             {% for test in tests %}
-            <div class="accordion-item border-0">
-              <h2 class="accordion-header border-0">
+            <div class="accordion-item">
+              <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#{{ test.procedure_id }}" aria-expanded="true" aria-controls="{{ test.procedure_id }}">
                   {{ test.procedure_name }}
                 </button>
