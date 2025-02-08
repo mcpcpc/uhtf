@@ -59,7 +59,7 @@ def init_websocket(app: Quart) -> Quart:
     async def ws():
         async def _receive() -> None:
             while True:
-                message = dumps({"for": "bar"})
+                message = dumps({"foo": "bar"})
                 await broker.publish(message)
                 await sleep(30)  # 30 second delay
 
