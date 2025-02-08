@@ -22,7 +22,9 @@ from quart import websocket
 #from state_machines import TestStateMachine
 
 
-def parse(label: str) -> dict:
+def udi_extract(label: str) -> dict:
+    """Extract parts from UDI label."""
+
     regex = r"(01)(?P<item>\d{14})(11)(?P<date>\d{6})(21)(?P<serial_number>\d{5})"
     match = search(regex, label)
     if match:
@@ -67,7 +69,7 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                udi = parse(message)
+                udi = udi_extract(message)
                 response = dumps(udi)
                 await broker.publish(response)
                 await sleep(5)  # 5 second delay
