@@ -4,13 +4,12 @@
         <div class="toolbar mb-5">
           <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-              <h1 class="mb-1 fw-bold fs-4">Scan Barcode</h1>
+              <h1 class="mb-1 fw-bold fs-4">Test</h1>
               <ul class="breadcrumb fw-semibold fs-base my-1">
                 <li class="breadcrumb-item text-muted">
                   <a href="{{ url_for('index') }}" class="text-muted text-hover-primary" style="text-decoration: none">Home</a>
                 </li>
-                <li class="breadcrumb-item text-muted">Test</li>
-                <li class="breadcrumb-item text-emphasis">Scan</li>
+                <li class="breadcrumb-item text-emphasis">Test</li>
               </ul>
             </div>
           </div>
@@ -40,6 +39,20 @@
           </div>
           <div class="card bg-body shadow-sm border-0 mt-3">
             <div class="card-body">
+              <h5 class="card-title">Summary</div>
+              <div class="accordion" id="summary">
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#summaryDetails" aria-expanded="true" aria-controls="summaryDetails">
+                      Details
+                    </button>
+                  </h2>
+                  <div id="summaryDetails" class="accordion-collapse collapse show" data-bs-parent="#summary">
+                    <div class="accordion-body">
+                    </div>
+                  </div>
+                </div>
+              </div> 
             </div>
           </div>
         </div>
