@@ -63,7 +63,7 @@
             </div>
           </div>
         </div>
-        <script>
+        <script type="text/javascript">
           (() => {
             'use strict'
             const forms = document.querySelectorAll('.needs-validation')
@@ -78,4 +78,10 @@
             })
           })()
         </script>
+        <script type="text/javascript">
+          const ws = new WebSocket(`ws://${location.host}/ws`);
+          ws.addEventListener('message', function (event) {
+            const data = JSON.parse(event.data);
+          });
+        </script> 
 {% endblock %}
