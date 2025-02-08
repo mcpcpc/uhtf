@@ -15,7 +15,7 @@ from quart import Quart
 from quart import render_template
 
 from .database import init_database
-from .test import test
+from .websocket import init_websocket
 
 __version__ = "0.0.1"
 
@@ -42,8 +42,10 @@ def create_app(test_config: dict = None) -> Quart:
   
     @app.get("/")
     async def index():
-        return await render_template("test.html")
+        """Index endpoint."""
+
+        return await render_template("index.html")
 
     init_database(app)
-    app.register_blueprint(test)
+    init_websocket(app)
     return app
