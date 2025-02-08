@@ -28,7 +28,7 @@
                   </button>
                 </div>
                 <div class="card-body">
-                  <form class="row g-3 needs-validation" id="run" action="{{ url_for('index') }}" method="post" novalidate>
+                  <form class="row g-3 needs-validation" id="run" onsubmit="return send(event)" method="post" novalidate>
                     <div class="col-12">
                       <label for="udi" class="form-label fw-semibold text-muted">UUT Barcode</label>
                       <input name="udi" type="text" class="form-control" id="udi" required>
@@ -83,5 +83,13 @@
           ws.addEventListener('message', function (event) {
             const data = JSON.parse(event.data);
           });
+          function send(event) {
+            const message = (new FormData(event.target)).get("udi");
+            if (message) {
+              ws.send(message);
+            }
+            event.target.reset();
+            return false;
+          }
         </script> 
 {% endblock %}
