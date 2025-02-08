@@ -15,37 +15,41 @@
           </div>
         </div>
         <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
-          <div class="card bg-body shadow-sm border-0">
-            <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center" style="border-bottom: 1px solid var(--bs-tertiary-bg)">
-              <h5 class="card-title m-0">User Input</h5>
-              <button type="submit" form="run" class="btn btn-sm btn-primary icon-link">
-                Evaluate
-                <svg class="bi theme-icon-active">
-                  <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#play-fill">
-                </svg>
-              </button>
-            </div>
-            <div class="card-body">
-              <form class="row g-3 needs-validation" id="run" action="{{ url_for('index') }}" method="post" novalidate>
-                <div class="col-12">
-                  <label for="udi" class="form-label fw-semibold text-muted">Barcode</label>
-                  <input name="udi" type="text" class="form-control form-control-lg" id="udi" required>
-                  <div class="invalid-feedback">
-                     A valid barcode is required.
-                  </div>
+          <div class="row g-3">
+            <div class="col-xl-3">
+              <div class="card bg-body shadow-sm border-0">
+                <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center" style="border-bottom: 1px solid var(--bs-tertiary-bg)">
+                  <h5 class="card-title m-0">User Input</h5>
+                  <button type="submit" form="run" class="btn btn-sm btn-primary icon-link">
+                    Evaluate
+                    <svg class="bi theme-icon-active">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#play-fill">
+                    </svg>
+                  </button>
                 </div>
-              </form>
-            </div>
-          </div>
-          <div class="card bg-body shadow-sm border-0 mt-3">
-            <div class="card-body p-3">
-              <div class="d-flex justify-content-between align-items-center mb-2">
-                <span>Evaluation Summary</span>
-                <span class="badge text-bg-info">Not Evaluated</span>  
+                <div class="card-body">
+                  <form class="row g-3 needs-validation" id="run" action="{{ url_for('index') }}" method="post" novalidate>
+                    <div class="col-12">
+                      <label for="udi" class="form-label fw-semibold text-muted">Barcode</label>
+                      <input name="udi" type="text" class="form-control form-control-lg" id="udi" required>
+                      <div class="invalid-feedback">A valid barcode is required.</div>
+                    </div>
+                  </form>
+                </div>
               </div>
-              <div class="progress mb-3" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
-              </div> 
+            </div>
+            <div class="col-xl-9">
+              <div class="card bg-body shadow-sm border-0">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <span>Evaluation Summary</span>
+                    <span class="badge text-bg-info">Not Evaluated</span>  
+                  </div>
+                  <div class="progress" role="progressbar" aria-label="Animated striped example" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 75%"></div>
+                  </div> 
+                </div>
+              </div>
             </div>
           </div>
         </div>
