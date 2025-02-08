@@ -21,15 +21,16 @@ from quart import websocket
 
 #from state_machines import TestStateMachine
 
+UDI_REGEX = r"(01)(?P<item>\d{14})(11)(?P<date>\d{6})(21)(?P<serial_number>\d{5})"
+
 
 def udi_extract(label: str) -> dict:
     """Extract parts from UDI label."""
 
-    regex = r"(01)(?P<item>\d{14})(11)(?P<date>\d{6})(21)(?P<serial_number>\d{5})"
-    match = search(regex, label)
-    if match:
-        return match.groupdict()
-    return None
+    match = search(UDI_REGEX, label)
+    if not match:
+        return None
+    return match.groupdict()
 
 
 class Broker:
