@@ -13,6 +13,7 @@ from asyncio import sleep
 from asyncio import Queue
 from collections.abc import AsyncGenerator
 from json import dumps
+#from json import loads
 from re import search
 
 from quart import Quart
@@ -21,7 +22,7 @@ from quart import websocket
 #from state_machines import TestStateMachine
 
 
-def udi_parse(label: str) -> dict:
+def parse(label: str) -> dict:
     regex = r"(01)(?P<item>\d{14})(11)(?P<date>\d{6})(21)(?P<serial_number>\d{5})"
     match = search(regex, label)
     if match:
@@ -65,8 +66,11 @@ def init_websocket(app: Quart) -> Quart:
 
         async def _receive() -> None:
             while True:
-                message = dumps({"state": "foobar"})
-                await broker.publish(message)
+                message = await websocket.receive()
+                print(message)
+                response = parse(message)
+                response = dumps({"state": "foobar"})
+                await broker.publish(response)
                 await sleep(5)  # 5 second delay
 
         try:
