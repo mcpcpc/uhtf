@@ -42,7 +42,7 @@ class Broker:
             self.connections.remove(connection)
 
 
-def create_websocket(app: Quart) -> Quart:
+def init_websocket(app: Quart) -> Quart:
     """Websocket instantiator."""
 
     broker = Broker()
