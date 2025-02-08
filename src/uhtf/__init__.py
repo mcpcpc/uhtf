@@ -21,7 +21,9 @@ __version__ = "0.0.1"
 
 
 def create_app(test_config: dict = None) -> Quart:
-    """Application instantiator."""
+    """
+    Application instantiator.
+    """
 
     app = Quart(__name__, instance_relative_config=True)
     app.config.from_mapping(
@@ -42,8 +44,6 @@ def create_app(test_config: dict = None) -> Quart:
   
     @app.get("/")
     async def index():
-        """Index endpoint."""
-
         return await render_template("index.html")
 
     init_database(app)

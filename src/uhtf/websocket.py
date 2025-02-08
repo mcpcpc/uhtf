@@ -19,19 +19,25 @@ from quart import websocket
 
 
 class Broker:
-    """Websocket broker."""
+    """
+    Websocket broker.
+    """
  
     def __init__(self) -> None:
         self.connections = set()
 
     async def publish(self, message: str) -> None:
-        """Publish message to websocket."""
+        """
+        Publish message to websocket.
+        """
  
         for connection in self.connections:
             await connection.put(message)
 
     async def subscribe(self) -> AsyncGenerator[str, None]:
-        """Subscribe to websocket."""
+        """
+        Subscribe to websocket.
+        """
  
         connection = Queue()
         self.connections.add(connection)
@@ -43,14 +49,14 @@ class Broker:
 
 
 def init_websocket(app: Quart) -> Quart:
-    """Websocket instantiator."""
+    """
+    Websocket instantiator.
+    """
 
     broker = Broker()
 
     @app.websocket("/ws") 
     async def ws():
-        """Websocket endpoint."""
-
         async def _receive() -> None:
             while True:
                 message = dumps(data)
