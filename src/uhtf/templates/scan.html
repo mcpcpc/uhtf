@@ -1,0 +1,51 @@
+{% extends 'base.htm' %}
+{% block title %}Home{% endblock %}
+{% block container %}
+        <div class="toolbar mb-5">
+          <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
+            <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+              <h1 class="mb-1 fw-bold fs-4">Scan Barcode</h1>
+              <ul class="breadcrumb fw-semibold fs-base my-1">
+                <li class="breadcrumb-item text-muted">
+                  <a href="{{ url_for('index') }}" class="text-muted text-hover-primary" style="text-decoration: none">Home</a>
+                </li>
+                <li class="breadcrumb-item text-muted">Test</li>
+                <li class="breadcrumb-item text-emphasis">Scan</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
+          <div class="card bg-body shadow-sm border-0">
+            <div class="card-header bg-body p-3" style="border-bottom: 1px solid var(--bs-tertiary-bg)">
+              <h5 class="card-title m-0" style="display: flex; align-items: center">Profile Details</h5>
+            </div>
+            <div class="card-body">
+              <form class="row g-3 needs-validation" id="update" action="{{ url_for('.update') }}" method="post" novalidate>
+                <div class="col-12">
+                  <label for="udi" class="form-label fw-semibold text-muted">UDI Barcode</label>
+                  <input name="udi" type="text" class="form-control form-control-lg" id="udi" required>
+                  <div class="invalid-feedback">
+                     A valid barcode is required.
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>  
+        </div>
+        <script>
+          (() => {
+            'use strict'
+            const forms = document.querySelectorAll('.needs-validation')
+            Array.from(forms).forEach(form => {
+              form.addEventListener('submit', event => {
+                if (!form.checkValidity()) {
+                  event.preventDefault()
+                  event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+              }, false)
+            })
+          })()
+        </script>
+{% endblock %}

@@ -42,7 +42,7 @@ def create_app(test_config: dict = None) -> Quart:
   
     @app.get("/")
     async def index():
-        return await render_template("index.html")
+        return await render_template("scan.html")
 
     init_database(app)
     app.register_blueprint(test)
