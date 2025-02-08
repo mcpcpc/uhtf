@@ -22,7 +22,6 @@ test = Blueprint("test", __name__)
 @test.get("/test")
 async def read():
     tests = get_db().execute("SELECT * FROM test").fetchall()
-    print(tests)
     return await render_template("index.html", tests=tests)
 
 
