@@ -14,6 +14,7 @@ from os.path import join
 from quart import Quart
 from quart import render_template
 
+from .database import init_database
 from .test import test
 
 __version__ = "0.0.1"
@@ -43,5 +44,6 @@ def create_app(test_config: dict = None) -> Quart:
     async def index():
         return await render_template("index.html")
 
+    init_database(app)
     app.register_blueprint(test)
     return app
