@@ -14,22 +14,16 @@ from os.path import join
 from quart import Quart
 from quart import render_template
 
-from .database import init_database
 from .websocket import init_websocket
 
 __version__ = "0.0.1"
 
 
 def create_app(test_config: dict = None) -> Quart:
-    """
-    Application instantiator.
-    """
+    """Application instantiator."""
 
     app = Quart(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY="dev",
-        DATABASE=join(app.instance_path, "uhtf.db"),
-    )
+    app.config.from_mapping(SECRET_KEY="dev")
     if test_config is None:
         app.config.from_pyfile(
             "config.py",
@@ -46,6 +40,5 @@ def create_app(test_config: dict = None) -> Quart:
     async def index():
         return await render_template("index.html")
 
-    init_database(app)
     init_websocket(app)
     return app
