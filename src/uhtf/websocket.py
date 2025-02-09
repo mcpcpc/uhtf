@@ -18,18 +18,25 @@ from re import search
 from quart import Quart
 from quart import websocket
 
+from database import get_db
+
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
           + r"(21)(?P<serial_number>\d{5})"
 
 
-def udi_extract(label: str) -> dict | None:
-    """Extract parts from UDI label."""
-
+def lookup(label: str) -> dict | None:
     match = search(GS1_REGEX, label)
     if not match:
         return None
-    return match.groupdict()
+    udi = match.groupdict()
+    row = get_db().execute(
+        """
+        SELECT * FROM part WHERE global_trade_item_number = ?
+        """,
+        (udi["global_trade_item_number"],),
+    ).fetchone()
+    return dict(row)
 
 
 class Broker:
@@ -68,8 +75,8 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                udi = udi_extract(message)
-                if isinstance(udi, dict):
+                part = lookup(message)
+                if isinstance(part, dict):
                     resp = dict(
                         outcome="Pass",
                         console="",
@@ -80,7 +87,6 @@ def init_websocket(app: Quart) -> Quart:
                         console="Invalid UDI string.",
                     )
                 await broker.publish(dumps(resp))
-                #await sleep(5)  # 5 second delay
 
         try:
             task = ensure_future(_receive())
@@ -91,3 +97,4 @@ def init_websocket(app: Quart) -> Quart:
             await task
 
     return app
+
