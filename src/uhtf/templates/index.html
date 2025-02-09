@@ -100,10 +100,24 @@
             document.getElementById("serial_number").textContent = data["serial_number"];
             document.getElementById("part_number").textContent = data["part_number"];
             document.getElementById("part_description").textContent = data["part_description"];
-            document.getElementById("setup_outcome").textContent = data["setup_outcome"];
-            document.getElementById("teardown_outcome").textContent = data["teardown_outcome"];
+            //document.getElementById("setup_outcome").textContent = data["setup_outcome"];
+            //document.getElementById("teardown_outcome").textContent = data["teardown_outcome"];
+            setter("setup_outcome", data["setup_outcome"]);
+            setter("teardown_outcome", data["teardown_outcome"]);
             document.getElementById("console").textContent = data["console"];
+            
           });
+          
+          function setter(name, value) {
+            document.getElementById(name).textContent = value;
+            if (value === "PASS") {
+              document.getElementById(name).className = "text-bg-success";
+            } else if (value === "FAIL") {
+              document.getElementById(name).className = "text-bg-success";
+            } else {
+              document.getElementById(name).className = "text-bg-info";
+            }
+          }
           
           function send(event) {
             const message = (new FormData(event.target)).get("udi");
