@@ -64,6 +64,7 @@
           
           ws.addEventListener('message', function (event) {
             const data = JSON.parse(event.data);
+            console.log(data)
             document.getElementById("outcome").textContent = data["outcome"];
           });
           
