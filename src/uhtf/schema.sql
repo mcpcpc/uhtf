@@ -11,4 +11,3 @@ CREATE TABLE part (
     part_number TEXT UNIQUE NOT NULL,
     part_description TEXT UNIQUE NOT NULL
 );
-
