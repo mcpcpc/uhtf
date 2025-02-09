@@ -17,8 +17,11 @@ from json import dumps
 from re import search
 
 from quart import Quart
+from quart import url_for
 from quart import websocket
 
+from .test import setup
+from .test import teardown
 from .database import get_db
 
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
@@ -111,12 +114,22 @@ def init_websocket(app: Quart) -> Quart:
                 if isinstance(part, dict):
                     response.part_number = part["part_number"]
                     response.part_description = part["part_description"]
-                    response.setup_outcome = "Running"
+                    response.setup_outcome = "RUNNING"
                     await broker.publish(dumps(response.__dict__))
                 else:
                     response.console = "Configuration does not exist."
                     await broker.publish(dumps(response.__dict__))
                     continue
+                phase_setup = await setup()
+                response.setup_outcome = phase_setup[0]["outcome"].value
+                if phase_setup[0]["outcome"].value == "FAIL":
+                    await broker.publish(dumps(response.__dict__))
+                    continue
+                else:
+                    response.measure_preamp_current_outcome = "RUNNING"
+                    await broker.publish(dumps(response.__dict__))
+
+
         try:
             task = ensure_future(_receive())
             async for message in broker.subscribe():
