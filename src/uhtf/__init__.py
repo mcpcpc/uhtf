@@ -14,6 +14,7 @@ from os.path import join
 from quart import Quart
 from quart import render_template
 
+from .test import test
 from .websocket import init_websocket
 
 __version__ = "0.0.1"
@@ -23,7 +24,13 @@ def create_app(test_config: dict = None) -> Quart:
     """Application instantiator."""
 
     app = Quart(__name__, instance_relative_config=True)
-    app.config.from_mapping(SECRET_KEY="dev")
+    app.config.from_mapping(
+        SECRET_KEY="dev",
+        SOURCE_MEASURING_UNIT_HOSTNAME="10.0.0.2",
+        SOURCE_MEASURING_UNIT_PORT=5025,
+        TEST_BOX_CONTROLLER_HOSTNAME="10.0.0.3",
+        TEST_BOX_CONTROLLER_PORT=5025,
+    )
     if test_config is None:
         app.config.from_pyfile(
             "config.py",
@@ -41,4 +48,5 @@ def create_app(test_config: dict = None) -> Quart:
         return await render_template("index.html")
 
     init_websocket(app)
+    app.register_blueprint(test)
     return app
