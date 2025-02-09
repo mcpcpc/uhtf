@@ -114,7 +114,6 @@ def init_websocket(app: Quart) -> Quart:
                 if isinstance(part, dict):
                     response.part_number = part["part_number"]
                     response.part_description = part["part_description"]
-                    response.setup_outcome = "RUNNING"
                     await broker.publish(dumps(response.__dict__))
                 else:
                     response.console = "Configuration does not exist."
@@ -122,12 +121,16 @@ def init_websocket(app: Quart) -> Quart:
                     continue
                 phase_setup = await setup()
                 response.setup_outcome = phase_setup[0]["outcome"].value
-                if phase_setup[0]["outcome"].value == "FAIL":
-                    await broker.publish(dumps(response.__dict__))
+                response.console = dumps(phase_setup[0])
+                await broker.publish(dumps(response.__dict__))
+                if response.setup_outcome == "FAIL":
                     continue
-                else:
-                    response.measure_preamp_current_outcome = "RUNNING"
-                    await broker.publish(dumps(response.__dict__))
+                phase_teardown = await teardown()
+                response.teardown_outcome = phase_teardown[0]["outcome"].value
+                response.console = dumsp(phase_teardown[0])
+                await broker.publish(dumps(response.__dict__))
+                if response.teardown_outcome == "FAIL":
+                    continue
 
 
         try:
