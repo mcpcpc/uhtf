@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8
 
+"""
+SPDX-FileCopyrightText: 2025 Michael Czigler
+SPDX-License-Identifier: BSD-3-Clause
+
+Test endpoint.
+"""
+
 from socket import AF_INET
 from socket import SHUT_RDWR
 from socket import SOCK_STREAM

@@ -1,6 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8
 
+"""
+SPDX-FileCopyrightText: 2025 Michael Czigler
+SPDX-License-Identifier: BSD-3-Clause
+
+Part endpoint.
+"""
+
 from quart import Blueprint
 from quart import request
 
