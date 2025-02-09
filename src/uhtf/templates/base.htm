@@ -20,7 +20,10 @@
         </button>
         <a class="navbar-brand p-0 me-0 me-lg-2" href="{{ url_for('index') }}" aria-label="HTF">HTF</a>
         <div class="d-flex">
-          <a class="" href="#">
+          <a href="#">
+            <svg class="bi">
+              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#info-circle"></use>
+            </svg>
           </a>
         </div>
       </nav>
