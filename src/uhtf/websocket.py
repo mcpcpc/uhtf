@@ -18,7 +18,7 @@ from re import search
 from quart import Quart
 from quart import websocket
 
-UDI_REGEX = r"(01)(?P<item_number>\d{14})" \
+GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
           + r"(21)(?P<serial_number>\d{5})"
 
@@ -26,7 +26,7 @@ UDI_REGEX = r"(01)(?P<item_number>\d{14})" \
 def udi_extract(label: str) -> dict | None:
     """Extract parts from UDI label."""
 
-    match = search(UDI_REGEX, label)
+    match = search(GS1_REGEX, label)
     if not match:
         return None
     return match.groupdict()
