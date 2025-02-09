@@ -52,9 +52,11 @@ class WebsocketResponse:
     serial_number: str = "Unknown"
     part_number: str = "Unknown"
     part_description: str = "Unknown"
-    setup_outcome: str = "Unknown"
-    teardown_outcome: str = "Unknown"
-    console: str = "No Data"
+    setup_outcome: str = ""
+    measure_preamp_current_outcome: str = ""
+    measure_bias_voltage_outcome: str = ""
+    teardown_outcome: str = ""
+    console: str = "None"
 
 
 class Broker:
@@ -109,6 +111,7 @@ def init_websocket(app: Quart) -> Quart:
                 if isinstance(part, dict):
                     response.part_number = part["part_number"]
                     response.part_description = part["part_description"]
+                    response.setup_outcome = "Running"
                     await broker.publish(dumps(response.__dict__))
                 else:
                     response.console = "Configuration does not exist."

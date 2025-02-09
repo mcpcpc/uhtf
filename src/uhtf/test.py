@@ -8,6 +8,7 @@ SPDX-License-Identifier: BSD-3-Clause
 Test endpoint.
 """
 
+from datetime import datetime
 from socket import AF_INET
 from socket import SHUT_RDWR
 from socket import SOCK_STREAM
@@ -16,6 +17,8 @@ from socket import socket
 from quart import Blueprint
 from quart import current_app
 from quart import request
+from tofupilot import MeasurementOutcome
+from tofupilot import PhaseOutcome
 
 test = Blueprint("test", __name__)
 
@@ -116,15 +119,27 @@ class TestBoxController(TCP):
 async def setup() -> tuple:
     """Test hardware setup."""
 
-    hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
-    port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
-    with TestBoxController(hostname, port) as controller:
-        controller.setup()
-    hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
-    port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
-    with SourceMeasuringUnit(hostname, port) as smu:
-        smu.setup()
-    return "Setup successful", 200
+    start_time_millis = datetime.now().timestamp() * 1000
+    try:
+        hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
+        port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
+        with TestBoxController(hostname, port) as controller:
+            controller.setup()
+        hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
+        port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
+        with SourceMeasuringUnit(hostname, port) as smu:
+            smu.setup()
+        outcome = PhaseOutcome.PASS
+    except Exception as e:
+        print(e)
+        outcome = PhaseOutcome.FAIL 
+    end_time_millis = datetime.now().timestamp() * 1000
+    phase = dict(
+        outcome=outcome,
+        start_time_millis=start_time_millis,
+        end_time_millis=end_time_millis,
+    )
+    return phase, 200
 
 
 @test.get("/test/teardown")
