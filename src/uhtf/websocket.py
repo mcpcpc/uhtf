@@ -69,9 +69,9 @@ def init_websocket(app: Quart) -> Quart:
             while True:
                 message = await websocket.receive()
                 udi = udi_extract(message)
-                resp = dict(outcome="Pass")
+                resp = dict(outcome="Pass", console="")
                 await broker.publish(dumps(resp))
-                await sleep(5)  # 5 second delay
+                #await sleep(5)  # 5 second delay
 
         try:
             task = ensure_future(_receive())
