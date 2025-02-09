@@ -18,7 +18,7 @@ from re import search
 from quart import Quart
 from quart import websocket
 
-from database import get_db
+from .database import get_db
 
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
