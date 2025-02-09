@@ -13,20 +13,17 @@ from asyncio import sleep
 from asyncio import Queue
 from collections.abc import AsyncGenerator
 from json import dumps
-#from json import loads
 from re import search
 
 from quart import Quart
 from quart import websocket
-
-#from state_machines import TestStateMachine
 
 UDI_REGEX = r"(01)(?P<item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
           + r"(21)(?P<serial_number>\d{5})"
 
 
-def udi_extract(label: str) -> dict:
+def udi_extract(label: str) -> dict | None:
     """Extract parts from UDI label."""
 
     match = search(UDI_REGEX, label)
@@ -63,7 +60,6 @@ def init_websocket(app: Quart) -> Quart:
     """Websocket instantiator."""
 
     broker = Broker()
-    #test_state_machine = TestStateMachine()
 
     @app.websocket("/ws") 
     async def ws():
@@ -73,8 +69,8 @@ def init_websocket(app: Quart) -> Quart:
             while True:
                 message = await websocket.receive()
                 udi = udi_extract(message)
-                response = dumps(udi)
-                await broker.publish(response)
+                resp = dict(outcome="Pass")
+                await broker.publish(dumps(resp))
                 await sleep(5)  # 5 second delay
 
         try:

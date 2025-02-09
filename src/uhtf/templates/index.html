@@ -44,7 +44,7 @@
                     <span class="text-muted fw-semibold">
                       <small>Evaluation Summary</small>
                     </span>
-                    <span id="result" class="badge text-upper text-bg-secondary">Not Evaluated</span>  
+                    <span id="outcome" class="badge text-upper text-bg-secondary">Not Evaluated</span>  
                   </div>
                 </div>
               </div>
@@ -64,7 +64,7 @@
           
           ws.addEventListener('message', function (event) {
             const data = JSON.parse(event.data);
-            console.log(data); 
+            document.getElementById("outcome").textContent = data["outcome"];
           });
           
           function send(event) {
