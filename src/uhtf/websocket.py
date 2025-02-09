@@ -70,7 +70,7 @@ def init_websocket(app: Quart) -> Quart:
                 message = await websocket.receive()
                 udi = udi_extract(message)
                 print(udi)
-                if udi:
+                if isinstance(udi, dict):
                     resp = dict(outcome="Pass", console="")
                 else:  
                     resp = dict(outcome="Fail", console="Invalid UDI string.")
