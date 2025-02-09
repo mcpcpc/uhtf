@@ -70,9 +70,15 @@ def init_websocket(app: Quart) -> Quart:
                 message = await websocket.receive()
                 udi = udi_extract(message)
                 if isinstance(udi, dict):
-                    resp = dict(outcome="Pass", console="")
+                    resp = dict(
+                        outcome="Pass",
+                        console="",
+                    )
                 else:  
-                    resp = dict(outcome="Fail", console="Invalid UDI string.")
+                    resp = dict(
+                        outcome="Fail",
+                        console="Invalid UDI string.",
+                    )
                 await broker.publish(dumps(resp))
                 #await sleep(5)  # 5 second delay
 
