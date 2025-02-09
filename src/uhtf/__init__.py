@@ -14,6 +14,7 @@ from os.path import join
 from quart import Quart
 from quart import render_template
 
+from .database import init_database
 from .test import test
 from .websocket import init_websocket
 
@@ -26,6 +27,7 @@ def create_app(test_config: dict = None) -> Quart:
     app = Quart(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
+        DATABASE=join(app.instance_path, "uhtf.db"),
         SOURCE_MEASURING_UNIT_HOSTNAME="10.0.0.2",
         SOURCE_MEASURING_UNIT_PORT=5025,
         TEST_BOX_CONTROLLER_HOSTNAME="10.0.0.3",
@@ -47,6 +49,7 @@ def create_app(test_config: dict = None) -> Quart:
     async def index():
         return await render_template("index.html")
 
+    init_database(app)
     init_websocket(app)
     app.register_blueprint(test)
     return app
