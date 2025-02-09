@@ -15,6 +15,7 @@ from quart import Quart
 from quart import render_template
 
 from .database import init_database
+from .part import part
 from .test import test
 from .websocket import init_websocket
 
@@ -51,5 +52,6 @@ def create_app(test_config: dict = None) -> Quart:
 
     init_database(app)
     init_websocket(app)
+    app.register_blueprint(part)
     app.register_blueprint(test)
     return app
