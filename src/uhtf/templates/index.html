@@ -65,9 +65,18 @@
           ws.addEventListener('message', function (event) {
             const data = JSON.parse(event.data);
             console.log(data)
-            document.getElementById("outcome").classList.remove('text-bg-secondary'); 
-            document.getElementById("outcome").classList.add('text-bg-success');
             document.getElementById("outcome").textContent = data["outcome"]; 
+            document.getElementById("outcome").classList.remove('text-bg-secondary');
+            document.getElementById("outcome").classList.remove('text-bg-success');
+            document.getElementById("outcome").classList.remove('text-bg-danger');
+            if (data["outcome"] === "Pass") {
+              document.getElementById("outcome").classList.add('text-bg-success');
+            } else if (data["outcome"] === "Fail") {
+              document.getElementById("outcome").classList.add('text-bg-danger');
+            } else {
+              document.getElementById("outcome").classList.add('text-bg-info');
+            }
+            document.getElementById("outcome").textContent = data["outcome"];
           });
           
           function send(event) {
