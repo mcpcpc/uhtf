@@ -69,6 +69,7 @@ def init_websocket(app: Quart) -> Quart:
             while True:
                 message = await websocket.receive()
                 udi = udi_extract(message)
+                print(udi)
                 if udi:
                     resp = dict(outcome="Pass", console="")
                 else:  
