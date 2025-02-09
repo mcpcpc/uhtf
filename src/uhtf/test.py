@@ -38,9 +38,13 @@ class TCP:
         self.sock.close()
 
     def send(self, command: bytes) -> None:
+        """Send instrumentation command."""
+
         self.sock.sendall(command)
 
     def query(self, command: bytes) -> bytes:
+        """Query instrumentation command."""
+
         buffer = bytes(0)
         self.sock.sendall(command)
         while True:
@@ -54,6 +58,8 @@ class SourceMeasuringUnit(TCP):
     """Source measuring unit."""
 
     def setup(self) -> None:
+        """Setup source measuring unit."""
+
         self.sock.send(b":CH1:VOLT 10.000\n")
         self.sock.send(b":CH1:CURR 1.000\n")
         self.sock.send(b":CH2:VOLT 7.000\n")
@@ -63,6 +69,8 @@ class SourceMeasuringUnit(TCP):
         self.sock.send(b":OUTP CH3,ON\n")
 
     def teardown(self) -> None:
+        """Teardown source measuring unit."""
+
         self.sock.send(b":OUTP CH1,OFF\n")
         self.sock.send(b":OUTP CH2,OFF\n")
         self.sock.send(b":OUTP CH3,OFF\n")
@@ -86,14 +94,20 @@ class TestBoxController(TCP):
     """Test box controller."""
 
     def setup(self) -> None:
+        """Setup test box controller."""
+
         for n in range(1,33):
             self.low(n)
 
     def high(self, n: int) -> None:
+        """Set testbox controller pin to HIGH state."""
+
         msg = f":GPIO{n} HIGH\n".encode()
         self.sock.send(msg)
 
     def low(self, n: int) -> None:
+        """Set testbox controller pin to LOW state."""
+
         msg = f":GPIO{n} LOW\n".encode()
         self.sock.send(msg)
 
