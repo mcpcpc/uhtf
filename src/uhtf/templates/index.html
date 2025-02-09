@@ -111,11 +111,11 @@
           function setter(name, value) {
             document.getElementById(name).textContent = value;
             if (value === "PASS") {
-              document.getElementById(name).className = "text-bg-success";
+              document.getElementById(name).className = "badge text-bg-success";
             } else if (value === "FAIL") {
-              document.getElementById(name).className = "text-bg-success";
+              document.getElementById(name).className = "badge text-bg-danger";
             } else {
-              document.getElementById(name).className = "text-bg-info";
+              document.getElementById(name).className = "badge text-bg-info";
             }
           }
           
