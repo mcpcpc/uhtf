@@ -23,7 +23,7 @@
                   <div class="d-flex">
                     <button type="reset" form="evaluate" class="btn btn-sm icon-link me-2">
                       <svg class="bi">
-                        <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#eraser">
+                        <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#eraser-fill">
                       </svg>
                       Reset
                     </button>
@@ -107,14 +107,14 @@
             document.getElementById("part_number").textContent = data["part_number"];
             document.getElementById("part_description").textContent = data["part_description"];
             document.getElementById("console").textContent = data["console"];
-            setter("setup_outcome", data["setup_outcome"]);
-            setter("preamp_current_outcome", data["preamp_current_outcome"]);
-            setter("bias_voltage_outcome", data["bias_voltage_outcome"]);
-            setter("teardown_outcome", data["teardown_outcome"]);
+            setBadge("setup_outcome", data["setup_outcome"]);
+            setBadge("preamp_current_outcome", data["preamp_current_outcome"]);
+            setBadge("bias_voltage_outcome", data["bias_voltage_outcome"]);
+            setBadge("teardown_outcome", data["teardown_outcome"]);
             
           });
           
-          function setter(name, value) {
+          function setBadge(name, value) {
             document.getElementById(name).textContent = value;
             if (value === "PASS") {
               document.getElementById(name).className = "badge text-bg-success";
