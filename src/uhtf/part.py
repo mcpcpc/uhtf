@@ -18,6 +18,8 @@ part = Blueprint("part", __name__)
 
 @part.get("/part/<int:id>")
 async def read(id: int) -> tuple:
+    """Read part endpoint."""
+
     part = get_db().execute(
         """
         SELECT * FROM part WHERE id = ?
@@ -29,12 +31,16 @@ async def read(id: int) -> tuple:
 
 @part.get("/part")
 async def list() -> tuple:
+    """List parts endpoint."""
+
     parts = get_db().executre("SELECT * FROM part").fetchall()
     return list(map(dict, parts)), 201
 
 
 @part.post("/part")
 async def create() -> tuple:
+    """Create part endpoint."""
+
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
@@ -63,6 +69,8 @@ async def create() -> tuple:
 
 @part.get("/part/<int:id>/delete")
 async def delete(id: int) -> tuple:
+    """Delete part endpoint."""
+ 
     db = get_db()
     db.execute("DELETE FROM part WHERE id = ?", (id,))
     db.commit()
@@ -71,6 +79,8 @@ async def delete(id: int) -> tuple:
 
 @part.post("/part/<int:id>/update")
 async def update(id: int) -> tuple:
+    """Update part endpoint."""
+
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
