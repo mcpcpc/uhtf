@@ -19,6 +19,7 @@ from re import search
 from quart import Quart
 from quart import url_for
 from quart import websocket
+from tofupilot import TofuPilotClient
 
 from .test import setup
 from .test import preamp_current
@@ -62,6 +63,16 @@ class WebsocketResponse:
     bias_voltage_outcome: str = ""
     teardown_outcome: str = ""
     console: str = "None"
+
+
+@dataclass
+class Procedure:
+    """Procedure representation."""
+
+    unit_under_test: dict
+    procedure_id: str = "FVT1"
+    procedure_name: str = "Multi-Coil Test"
+    run_passed: bool = True
 
 
 class Broker:
@@ -121,25 +132,32 @@ def init_websocket(app: Quart) -> Quart:
                     response.console = "Configuration does not exist."
                     await broker.publish(dumps(response.__dict__))
                     continue
+                unit_under_test = {
+                    "serial_number": gs1["serial_number"],
+                    "part_number": part["part_number"],
+                }
+                procedure = Procedure(unit_under_test=unit_under_test)
                 phase_setup = await setup()
                 response.setup_outcome = phase_setup[0]["outcome"].value
                 response.console = dumps(phase_setup[0])
                 await broker.publish(dumps(response.__dict__))
                 if response.setup_outcome == "FAIL":
+                    procedure.run_passed = False
                     continue
                 phase_preamp_current = await preamp_current()
                 response.preamp_current_outcome = phase_preamp_current[0]["outcome"].value
                 response.console = dumps(phase_preamp_current[0])
                 await broker.publish(dumps(response.__dict__))
                 if response.preamp_current_outcome == "FAIL":
+                    procedure.run_passed = False
                     continue
                 phase_teardown = await teardown()
                 response.teardown_outcome = phase_teardown[0]["outcome"].value
                 response.console = dumsp(phase_teardown[0])
                 await broker.publish(dumps(response.__dict__))
                 if response.teardown_outcome == "FAIL":
+                    procedure.run_passed = False
                     continue
-
 
         try:
             task = ensure_future(_receive())
