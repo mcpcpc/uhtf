@@ -139,22 +139,33 @@ async def setup() -> tuple:
         start_time_millis=start_time_millis,
         end_time_millis=end_time_millis,
     )
-    return phase, 200
+    return phase, 201
 
 
 @test.get("/test/teardown")
 async def teardown() -> tuple:
     """Test hardware teardown."""
 
-    hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
-    port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
-    with TestBoxController(hostname, port) as controller:
-        controller.setup()
-    hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
-    port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
-    with SourceMeasuringUnit(hostname, port) as smu:
-        smu.teardown()
-    return "Teardown successful", 200
+    start_time_millis = datetime.now().timestamp() * 1000
+    try:
+        hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
+        port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
+        with TestBoxController(hostname, port) as controller:
+            controller.setup()
+        hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
+        port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
+        with SourceMeasuringUnit(hostname, port) as smu:
+            smu.teardown()
+        outcome = PhaseOutcome.PASS
+    except Exception as e:
+        outcome = PhaseOutcome.FAIL
+    end_time_millis = datetime.now().timestamp() * 1000
+    phase = dict(
+        outcome=outcome,
+        start_time_millis=start_time_millis,
+        end_time_millis=end_time_millis,
+    )
+    return phase, 201
 
 
 @test.get("/test/measure_preamp_current")
