@@ -129,16 +129,16 @@ async def setup() -> tuple:
         port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
         with SourceMeasuringUnit(hostname, port) as smu:
             smu.setup()
-        outcome = PhaseOutcome.PASS
+        phase_outcome = PhaseOutcome.PASS
     except Exception as e:
-        print(e)
-        outcome = PhaseOutcome.FAIL 
+        phase_outcome = PhaseOutcome.FAIL 
     end_time_millis = datetime.now().timestamp() * 1000
-    phase = dict(
-        outcome=outcome,
-        start_time_millis=start_time_millis,
-        end_time_millis=end_time_millis,
-    )
+    phase = {
+        "name": "phase_setup",
+        "outcome": phase_outcome,
+        "start_time_millis": start_time_millis,
+        "end_time_millis": end_time_millis,
+    }
     return phase, 201
 
 
@@ -156,15 +156,16 @@ async def teardown() -> tuple:
         port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
         with SourceMeasuringUnit(hostname, port) as smu:
             smu.teardown()
-        outcome = PhaseOutcome.PASS
+        phase_outcome = PhaseOutcome.PASS
     except Exception as e:
-        outcome = PhaseOutcome.FAIL
+        phase_outcome = PhaseOutcome.FAIL
     end_time_millis = datetime.now().timestamp() * 1000
-    phase = dict(
-        outcome=outcome,
-        start_time_millis=start_time_millis,
-        end_time_millis=end_time_millis,
-    )
+    phase = {
+        "name": "phase_teardown",
+        "outcome": phase_outcome,
+        "start_time_millis": start_time_millis,
+        "end_time_millis": end_time_millis,
+    }
     return phase, 201
 
 
@@ -172,19 +173,50 @@ async def teardown() -> tuple:
 async def measure_preamp_current() -> tuple:
     """Test hardware measure preamp current."""
 
+    start_time_millis = datetime.now().timestamp() * 1000
     hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
     port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
+    lower_limit = int(request.args.get("lower_limit", 0.0))
+    upper_limit = int(request.args.get("upper_limit", 3.0))
     with SourceMeasuringUnit(hostname, port) as smu:
         current = smu.measure_preamp_current()
-    return current, 201
+    if current > lower_limit and current < upper_limit:
+        measurement_outcome = MeasurementOutcome.PASS
+    else:
+        measurement_outcome = MeasurementOutcome.FAIL
+    if measurement_outcome == MeasurementOutcome.PASS:
+        phase_outcome = PhaseOutcome.PASS
+    else:
+        phase_outcome = PhaseOutcome.FAIL
+    end_time_millis = datetime.now().timestamp() * 1000
+    phase = {
+        "name": "phase_preamp_current",
+        "outcome": phase_outcome,
+        "start_time_millis": start_time_millis,
+        "end_time_millis": end_time_millis,
+        "measurements": [
+            {
+                "name": "measurement_preamp_current",
+                "units": "I",
+                "lower_limit": lower_limit,
+                "upper_limit": upper_limit,
+                "measured_value": current,
+                "outcome": measurement_outcome,
+            },
+        ],
+    }
+    return phase, 201
 
 
 @test.get("/test/measure_bias_voltage/<int:n>")
 async def measure_bias_voltage(n: int) -> tuple:
     """Test hardware measure bias voltage on `n`."""
 
+    start_time_millis = datetime.now().timestamp() * 1000
     hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
     port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
+    lower_limit = int(request.args.get("lower_limit", 0.0))
+    upper_limit = int(request.args.get("upper_limit", 7.0))
     with TestBoxController(hostname, port) as controller:
         controller.high(n)
         hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
@@ -192,4 +224,29 @@ async def measure_bias_voltage(n: int) -> tuple:
         with SourceMeasuringUnit(hostname, port) as smu:
             voltage = smu.measure_bias_voltage()
         controller.low(n)
-    return voltage, 201
+    if voltage > lower_limit and voltage < upper_limit:
+        measurement_outcome = MeasurementOutcome.PASS
+    else:
+        measurement_outcome = MeasurementOutcome.FAIL
+    if measurement_outcome == MeasurementOutcome.PASS:
+        phase_outcome = PhaseOutcome.PASS
+    else:
+        phase_outcome = PhaseOutcome.FAIL
+    end_time_millis = datetime.now().timestamp() * 1000
+    phase = {
+        "name": f"phase_{n}_bias_voltage",
+        "outcome": phase_outcome,
+        "start_time_millis": start_time_millis,
+        "end_time_millis": end_time_millis,
+        "measurements": [
+            {
+                "name": f"measurement_{n}_bias_voltage",
+                "units": "V",
+                "lower_limit": lower_limit,
+                "upper_limit": upper_limit,
+                "measured_value": voltage,
+                "outcome": measurement_outcome,
+            },
+        ],
+    }
+    return phase, 201
