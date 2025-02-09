@@ -67,11 +67,11 @@
 	          </div>
 		  <div class="d-flex justify-content-between align-items-center mb-1">
 		    <span class="fw-semibold text-secondary"><small>Preamp Current</small></span>
-                    <span id="measure_preamp_current_outcome"></span>
+                    <span id="preamp_current_outcome"></span>
 	          </div>
 		  <div class="d-flex justify-content-between align-items-center mb-1">
 		    <span class="fw-semibold text-secondary"><small>Bias Voltage</small></span>
-                    <span id="measure_bias_voltage_outcome"></span>
+                    <span id="bias_voltage_outcome"></span>
 	          </div>
 		  <div class="d-flex justify-content-between align-items-center mb-1">
 		    <span class="fw-semibold text-secondary"><small>Teardown</small></span>
@@ -101,6 +101,7 @@
             document.getElementById("part_number").textContent = data["part_number"];
             document.getElementById("part_description").textContent = data["part_description"];
             setter("setup_outcome", data["setup_outcome"]);
+            setter("preamp_current_outcome", data["preamp_current_outcome"]);
             setter("teardown_outcome", data["teardown_outcome"]);
             document.getElementById("console").textContent = data["console"];
             

@@ -169,8 +169,8 @@ async def teardown() -> tuple:
     return phase, 201
 
 
-@test.get("/test/measure_preamp_current")
-async def measure_preamp_current() -> tuple:
+@test.get("/test/preamp_current")
+async def preamp_current() -> tuple:
     """Test hardware measure preamp current."""
 
     start_time_millis = datetime.now().timestamp() * 1000
@@ -208,8 +208,8 @@ async def measure_preamp_current() -> tuple:
     return phase, 201
 
 
-@test.get("/test/measure_bias_voltage/<int:n>")
-async def measure_bias_voltage(n: int) -> tuple:
+@test.get("/test/bias_voltage/<int:n>")
+async def bias_voltage(n: int) -> tuple:
     """Test hardware measure bias voltage on `n`."""
 
     start_time_millis = datetime.now().timestamp() * 1000

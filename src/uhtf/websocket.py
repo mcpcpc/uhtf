@@ -21,6 +21,8 @@ from quart import url_for
 from quart import websocket
 
 from .test import setup
+from .test import preamp_current
+from .test import bias_voltage
 from .test import teardown
 from .database import get_db
 
@@ -56,8 +58,8 @@ class WebsocketResponse:
     part_number: str = "Unknown"
     part_description: str = "Unknown"
     setup_outcome: str = ""
-    measure_preamp_current_outcome: str = ""
-    measure_bias_voltage_outcome: str = ""
+    preamp_current_outcome: str = ""
+    bias_voltage_outcome: str = ""
     teardown_outcome: str = ""
     console: str = "None"
 
@@ -124,6 +126,12 @@ def init_websocket(app: Quart) -> Quart:
                 response.console = dumps(phase_setup[0])
                 await broker.publish(dumps(response.__dict__))
                 if response.setup_outcome == "FAIL":
+                    continue
+                phase_preamp_current = await preamp_current()
+                response.preamp_current_outcome = phase_preamp_current[0]["outcome"].value
+                response.console = dumps(phase_preamp_current[0])
+                await broker.publish(dumps(response.__dict__))
+                if response.preamp_current_outcome == "FAIL":
                     continue
                 phase_teardown = await teardown()
                 response.teardown_outcome = phase_teardown[0]["outcome"].value
