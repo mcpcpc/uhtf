@@ -48,11 +48,11 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO part (
-                global_tracking_part_number,
+                global_tracking_identification_number,
                 part_number,
                 part_description
             ) VALUES (
-                :global_tracking_part_number,
+                :global_tracking_identification_number,
                 :part_number,
                 :part_description
             )
@@ -88,13 +88,13 @@ async def update(id: int) -> tuple:
         db.execute(
             """
             UPDATE part SET
-                global_tracking_part_number = ?,
+                global_tracking_identification_number = ?,
                 part_number = ?,
                 part_description = ?
             WHERE id = ?
             """,
             (
-                form.get("global_tracking_part_number"),
+                form.get("global_tracking_identification_number"),
                 form.get("part_number"),
                 form.get("part_description"),
                 id,
