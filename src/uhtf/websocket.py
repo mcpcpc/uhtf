@@ -154,19 +154,18 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.run_passed = False
                     continue
                 # preamp current phase
-                phase_preamp_current = htf.preamp_current(0.0, 3.0)
+                phase_preamp_current = htf.preamp_current(0.000, 3.000)
                 response.preamp_current_outcome = phase_preamp_current["outcome"].value
                 response.console = dumps(phase_preamp_current)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.preamp_current_outcome == "FAIL":
                     procedure.run_passed = False
-                    continue
-                # bias current phase
+                # bias current phase (iterative)
                 phases_bias_voltage = []
                 response.bias_voltage_outcome = "PASS"
                 for n in range(1, 33):    
-                    phase = htf.bias_voltage(n, 0.0, 3.0)
+                    phase = htf.bias_voltage(n, 0.000, 8.000)
                     phases_bias_voltage.append(phase)
                     if phase["outcome"].value == "FAIL":
                         response.bias_voltage_outcome = "FAIL"
@@ -175,7 +174,6 @@ def init_websocket(app: Quart) -> Quart:
                 await broker.publish(message)
                 if response.bias_voltage_outcome == "FAIL":
                     procedure.run_passed = False
-                    continue
                 # teardown phase
                 phase_teardown = htf.teardown()
                 response.teardown_outcome = phase_teardown[0]["outcome"].value
@@ -184,7 +182,6 @@ def init_websocket(app: Quart) -> Quart:
                 await broker.publish(message)
                 if response.teardown_outcome == "FAIL":
                     procedure.run_passed = False
-                    continue
 
         try:
             task = ensure_future(_receive())
