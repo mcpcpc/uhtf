@@ -13,6 +13,7 @@ from socket import AF_INET
 from socket import SHUT_RDWR
 from socket import SOCK_STREAM
 from socket import socket
+from time import sleep
 
 from quart import Blueprint
 from quart import current_app
@@ -29,10 +30,11 @@ class TCP:
     def __init__(self, hostname: str, port: int) -> None:
         self.hostname = hostname
         self.port = port
+        self.sock = None
 
     def __enter__(self) -> "TCP":
         self.sock = socket(AF_INET, SOCK_STREAM)
-        self.sock.settimeout(3)  # 3 second timeout
+        self.sock.settimeout(5)  # 5 second timeout
         self.sock.connect((self.hostname, self.port))
         return self
 
@@ -81,14 +83,14 @@ class SourceMeasuringUnit(TCP):
     def measure_bias_voltage(self) -> float:
         """Measure bias voltage."""
 
-        result = self.sock.query(b":MEAS:VOLT? CH2\n")
+        result = self.query(b":MEAS:VOLT? CH2\n")
         voltage = float(result.decode().strip())
         return voltage
 
     def measure_preamp_current(self) -> float:
         """Measure preamp current."""
 
-        result = self.sock.query(b":MEAS:CURR? CH1\n")
+        result = self.query(b":MEAS:CURR? CH1\n")
         current = float(result.decode().strip())
         return current
 
@@ -107,12 +109,14 @@ class TestBoxController(TCP):
 
         msg = f":GPIO{n} HIGH\n".encode()
         self.sock.send(msg)
+        sleep(0.3)  # wait 300ms
 
     def low(self, n: int) -> None:
         """Set testbox controller pin to LOW state."""
 
         msg = f":GPIO{n} LOW\n".encode()
         self.sock.send(msg)
+        sleep(0.3)  # wait 300ms
 
 
 @test.get("/test/setup")
@@ -169,15 +173,10 @@ async def teardown() -> tuple:
     return phase, 201
 
 
-@test.get("/test/preamp_current")
-async def preamp_current() -> tuple:
-    """Test hardware measure preamp current."""
-
+def preamp_current_func(lower_limit: float, upper_limit: float) -> dict:
     start_time_millis = datetime.now().timestamp() * 1000
     hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
     port = current_app.config["SOURCE_MEASURING_UNIT_PORT"]
-    lower_limit = int(request.args.get("lower_limit", 0.0))
-    upper_limit = int(request.args.get("upper_limit", 3.0))
     with SourceMeasuringUnit(hostname, port) as smu:
         current = smu.measure_preamp_current()
     if current > lower_limit and current < upper_limit:
@@ -189,7 +188,7 @@ async def preamp_current() -> tuple:
     else:
         phase_outcome = PhaseOutcome.FAIL
     end_time_millis = datetime.now().timestamp() * 1000
-    phase = {
+    return {
         "name": "phase_preamp_current",
         "outcome": phase_outcome,
         "start_time_millis": start_time_millis,
@@ -205,18 +204,22 @@ async def preamp_current() -> tuple:
             },
         ],
     }
+
+
+@test.get("/test/preamp_current")
+async def preamp_current() -> tuple:
+    """Test hardware measure preamp current."""
+
+    lower_limit = request.args.get("lower_limit", 0.0, type=float)
+    upper_limit = request.args.get("upper_limit", 3.0, type=float)
+    phase = preamp_current_func(lower_limit, upper_limit)
     return phase, 201
 
 
-@test.get("/test/bias_voltage/<int:n>")
-async def bias_voltage(n: int) -> tuple:
-    """Test hardware measure bias voltage on `n`."""
-
+def bias_voltage_func(n: int, lower_limit: float, upper_limit: float) -> dict:
     start_time_millis = datetime.now().timestamp() * 1000
     hostname = current_app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
     port = current_app.config["TEST_BOX_CONTROLLER_PORT"]
-    lower_limit = int(request.args.get("lower_limit", 0.0))
-    upper_limit = int(request.args.get("upper_limit", 7.0))
     with TestBoxController(hostname, port) as controller:
         controller.high(n)
         hostname = current_app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
@@ -233,7 +236,7 @@ async def bias_voltage(n: int) -> tuple:
     else:
         phase_outcome = PhaseOutcome.FAIL
     end_time_millis = datetime.now().timestamp() * 1000
-    phase = {
+    return {
         "name": f"phase_{n}_bias_voltage",
         "outcome": phase_outcome,
         "start_time_millis": start_time_millis,
@@ -249,4 +252,14 @@ async def bias_voltage(n: int) -> tuple:
             },
         ],
     }
+
+
+@test.get("/test/bias_voltage/<int:n>")
+async def bias_voltage(n: int) -> tuple:
+    """Test hardware measure bias voltage on `n`."""
+
+    lower_limit = int(request.args.get("lower_limit", 0.000))
+    upper_limit = int(request.args.get("upper_limit", 8.000))
+    phase = bias_voltage_func(n, lower_limit, upper_limit)
     return phase, 201
+

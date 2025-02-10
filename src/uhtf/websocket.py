@@ -17,13 +17,12 @@ from json import dumps
 from re import search
 
 from quart import Quart
-from quart import url_for
 from quart import websocket
 from tofupilot import TofuPilotClient
 
 from .test import setup
-from .test import preamp_current
-from .test import bias_voltage
+from .test import preamp_current_func
+from .test import bias_voltage_func
 from .test import teardown
 from .database import get_db
 
@@ -144,11 +143,23 @@ def init_websocket(app: Quart) -> Quart:
                 if response.setup_outcome == "FAIL":
                     procedure.run_passed = False
                     continue
-                phase_preamp_current = await preamp_current()
-                response.preamp_current_outcome = phase_preamp_current[0]["outcome"].value
-                response.console = dumps(phase_preamp_current[0])
+                phase_preamp_current = preamp_current_func(0.0, 3.0)
+                response.preamp_current_outcome = phase_preamp_current["outcome"].value
+                response.console = dumps(phase_preamp_current)
                 await broker.publish(dumps(response.__dict__))
                 if response.preamp_current_outcome == "FAIL":
+                    procedure.run_passed = False
+                    continue
+                phases_bias_voltage = []
+                response.bias_voltage_outcome = "PASS"
+                for n in range(1, 33):    
+                    phase = bias_voltage_func(n, 0.0, 3.0)
+                    phases_bias_voltage.append(phase)
+                    if phase["outcome"].value == "FAIL":
+                        response.bias_voltage_outcome = "FAIL"
+                response.console = dumps(phases_bias_voltage)
+                await broker.publish(dumps(response.__dict__))
+                if response.bias_voltage_outcome == "FAIL":
                     procedure.run_passed = False
                     continue
                 phase_teardown = await teardown()
