@@ -5,7 +5,7 @@
 SPDX-FileCopyrightText: 2025 Michael Czigler
 SPDX-License-Identifier: BSD-3-Clause
 
-Test framework model.
+Hardwate test framework model.
 """
 
 from datetime import datetime
@@ -101,15 +101,14 @@ class HardwareTestFramework:
     ) -> None:
         self.smu = smu
         self.controller = controller
-        self.pa_current_limit = pa_current_limit
 
-    def setup(self) -> dict:
+    def setup(self, pa_current_limit: float) -> dict:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.controller as controller:
                 controller.reset()
             with self.smu as smu:
-                smu.setup(self.pa_current_limit)
+                smu.setup(pa_current_limit)
             phase_outcome = PhaseOutcome.PASS
         except Exception as e:
             phase_outcome = PhaseOutcome.FAIL 

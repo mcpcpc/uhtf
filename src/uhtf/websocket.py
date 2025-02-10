@@ -20,10 +20,9 @@ from quart import Quart
 from quart import websocket
 from tofupilot import TofuPilotClient
 
-from .test import setup
-from .test import preamp_current_func
-from .test import bias_voltage_func
-from .test import teardown
+from .model import HardwareTestFramework
+from .model import SourceMeasuringUnit
+from .model import TestBoxController
 from .database import get_db
 
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
@@ -49,7 +48,7 @@ def lookup(template: dict) -> dict | None:
 
 
 @dataclass
-class WebsocketResponse:
+class Response:
     """Default response."""
 
     global_trade_item_number: str = "Unknown"
@@ -101,6 +100,13 @@ class Broker:
 def init_websocket(app: Quart) -> Quart:
     """Websocket instantiator."""
 
+    smu_hostname = app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
+    smu_port = app.config["SOURCE_MEASURING_UNIT_PORT"]
+    controller_hostname = app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
+    controller_port = app.config["TEST_BOX_CONTROLLER_PORT"]
+    smu = SourceMeasuringUnit(smu_hostname, smu_port)
+    controller = TestBoxController(controller_hostname, controller_port)
+    htf = HardwareTestFramework(smu, controller)
     broker = Broker()
 
     @app.websocket("/ws") 
@@ -110,7 +116,7 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                response = WebsocketResponse()
+                response = Response()
                 await broker.publish(dumps(response.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
@@ -131,19 +137,19 @@ def init_websocket(app: Quart) -> Quart:
                     response.console = "Configuration does not exist."
                     await broker.publish(dumps(response.__dict__))
                     continue
-                unit_under_test = {
-                    "serial_number": gs1["serial_number"],
-                    "part_number": part["part_number"],
-                }
+                unit_under_test = dict(
+                    serial_number=gs1["serial_number"],
+                    part_number=part["part_number"],
+                )
                 procedure = Procedure(unit_under_test=unit_under_test)
-                phase_setup = await setup()
-                response.setup_outcome = phase_setup[0]["outcome"].value
-                response.console = dumps(phase_setup[0])
+                phase_setup = htf.setup(3.0)
+                response.setup_outcome = phase_setup["outcome"].value
+                response.console = dumps(phase_setup)
                 await broker.publish(dumps(response.__dict__))
                 if response.setup_outcome == "FAIL":
                     procedure.run_passed = False
                     continue
-                phase_preamp_current = preamp_current_func(0.0, 3.0)
+                phase_preamp_current = htf.preamp_current(0.0, 3.0)
                 response.preamp_current_outcome = phase_preamp_current["outcome"].value
                 response.console = dumps(phase_preamp_current)
                 await broker.publish(dumps(response.__dict__))
@@ -153,7 +159,7 @@ def init_websocket(app: Quart) -> Quart:
                 phases_bias_voltage = []
                 response.bias_voltage_outcome = "PASS"
                 for n in range(1, 33):    
-                    phase = bias_voltage_func(n, 0.0, 3.0)
+                    phase = htf.bias_voltage(n, 0.0, 3.0)
                     phases_bias_voltage.append(phase)
                     if phase["outcome"].value == "FAIL":
                         response.bias_voltage_outcome = "FAIL"

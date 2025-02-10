@@ -1,0 +1,37 @@
+{% extends 'base.htm' %}
+{% block title %}Parts{% endblock %}
+{% block container %}
+        <div class="toolbar mb-5">
+          <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
+            <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+              <h1 class="mb-1 fw-bold fs-4">Parts Management</h1>
+              <ul class="breadcrumb fw-semibold fs-base my-1">
+                <li class="breadcrumb-item text-secondary">
+                  <a href="{{ url_for('index') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
+                </li>
+                <li class="breadcrumb-item text-muted">Parts</li>
+                <li class="breadcrumb-item text-emphasis">Manage</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
+          <div class="card bg-body shadow-sm border-0">
+            <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center">
+              <h5 class="card-title m-0">Parts</h5>
+              <div class="d-flex">
+                <button type="reset" form="evaluate" class="btn btn-primary icon-link">
+                  <svg class="bi">
+                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#plus">
+                  </svg>
+                  New
+                </button>
+              </div>
+            </div> 
+            <div class="card-body">
+              {% for part in parts %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+{% endblock %}
