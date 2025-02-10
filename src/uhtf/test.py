@@ -258,8 +258,8 @@ def bias_voltage_func(n: int, lower_limit: float, upper_limit: float) -> dict:
 async def bias_voltage(n: int) -> tuple:
     """Test hardware measure bias voltage on `n`."""
 
-    lower_limit = int(request.args.get("lower_limit", 0.000))
-    upper_limit = int(request.args.get("upper_limit", 8.000))
+    lower_limit = request.args.get("lower_limit", 0.000, type=float)
+    upper_limit = request.args.get("upper_limit", 8.000, type=float)
     phase = bias_voltage_func(n, lower_limit, upper_limit)
     return phase, 201
 
