@@ -21,9 +21,7 @@ async def read(id: int) -> tuple:
     """Read part endpoint."""
 
     part = get_db().execute(
-        """
-        SELECT * FROM part WHERE id = ?
-        """,
+        "SELECT * FROM part WHERE id = ?",
         (id,),
     ).fetchone()
     return dict(part), 201
@@ -33,7 +31,7 @@ async def read(id: int) -> tuple:
 async def list() -> tuple:
     """List parts endpoint."""
 
-    parts = get_db().executre("SELECT * FROM part").fetchall()
+    parts = get_db().execute("SELECT * FROM part").fetchall()
     return list(map(dict, parts)), 201
 
 
