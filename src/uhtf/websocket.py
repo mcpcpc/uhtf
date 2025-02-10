@@ -44,6 +44,8 @@ def lookup(template: dict) -> dict | None:
         """,
         (template["global_trade_item_number"],),
     ).fetchone()
+    if not row:
+        return None
     return dict(row)
 
 
