@@ -30,11 +30,11 @@ async def read(id: int) -> tuple:
 
 
 @part.get("/part")
-async def list() -> tuple:
+async def readall() -> tuple:
     """List parts endpoint."""
 
     rows = get_db().execute("SELECT * FROM part").fetchall()
-    if not rows:
+    if len(rows) < 1:
         return "Parts do not exist.", 404
     return list(map(dict, rows)), 201
 
