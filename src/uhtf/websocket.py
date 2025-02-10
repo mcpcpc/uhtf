@@ -53,16 +53,16 @@ def lookup(template: dict) -> dict | None:
 class Response:
     """Default response."""
 
-    global_trade_item_number: str = "Unknown"
-    manufacture_date: str = "Unknown"
-    serial_number: str = "Unknown"
-    part_number: str = "Unknown"
-    part_description: str = "Unknown"
-    setup_outcome: str = ""
-    preamp_current_outcome: str = ""
-    bias_voltage_outcome: str = ""
-    teardown_outcome: str = ""
-    console: str = "None"
+    global_trade_item_number: str = "..."
+    manufacture_date: str = "..."
+    serial_number: str = "..."
+    part_number: str = "..."
+    part_description: str = "..."
+    setup_outcome: str = "Not Evaluated"
+    preamp_current_outcome: str = "Not Evaluated"
+    bias_voltage_outcome: str = "Not Evaluated"
+    teardown_outcome: str = "Not Evaluated"
+    console: str = "..."
 
 
 @dataclass
@@ -90,7 +90,8 @@ class Broker:
     async def subscribe(self) -> AsyncGenerator[str, None]:
         """Subscribe to websocket."""
  
-        connection = Queue()
+        #connection = Queue()
+        connection = Queue(1)
         self.connections.add(connection)
         try:
             while True:
