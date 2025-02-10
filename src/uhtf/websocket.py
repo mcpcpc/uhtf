@@ -164,7 +164,7 @@ def init_websocket(app: Quart) -> Quart:
                     continue
                 phase_teardown = await teardown()
                 response.teardown_outcome = phase_teardown[0]["outcome"].value
-                response.console = dumsp(phase_teardown[0])
+                response.console = dumps(phase_teardown[0])
                 await broker.publish(dumps(response.__dict__))
                 if response.teardown_outcome == "FAIL":
                     procedure.run_passed = False
