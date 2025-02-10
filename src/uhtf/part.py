@@ -20,19 +20,23 @@ part = Blueprint("part", __name__)
 async def read(id: int) -> tuple:
     """Read part endpoint."""
 
-    part = get_db().execute(
+    row = get_db().execute(
         "SELECT * FROM part WHERE id = ?",
         (id,),
     ).fetchone()
-    return dict(part), 201
+    if not row:
+        return "Part does not exist.", 404
+    return dict(row), 201
 
 
 @part.get("/part")
 async def list() -> tuple:
     """List parts endpoint."""
 
-    parts = get_db().execute("SELECT * FROM part").fetchall()
-    return list(map(dict, parts)), 201
+    rows = get_db().execute("SELECT * FROM part").fetchall()
+    if not rows:
+        return "Parts do not exist.", 404
+    return list(map(dict, rows)), 201
 
 
 @part.post("/part")
