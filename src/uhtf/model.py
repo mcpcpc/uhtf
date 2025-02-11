@@ -122,22 +122,17 @@ class HardwareTestFramework:
 
     def preamp_current(self, lower_limit, upper_limit) -> dict:
         start_time_millis = datetime.now().timestamp() * 1000
-        with self.smu as smu:
-            current = smu.measure_preamp_current()
-        if current > lower_limit and current < upper_limit:
-            measurement_outcome = MeasurementOutcome.PASS
-        else:
-            measurement_outcome = MeasurementOutcome.FAIL
-        if measurement_outcome == MeasurementOutcome.PASS:
-            phase_outcome = PhaseOutcome.PASS
-        else:
-            phase_outcome = PhaseOutcome.FAIL
-        end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
-            name="phase_preamp_current",
-            outcome=phase_outcome,
-            start_time_millis=start_time_millis,
-            end_time_millis=end_time_millis,
+        try:
+            with self.smu as smu:
+                current = smu.measure_preamp_current()
+            if current > lower_limit and current < upper_limit:
+                measurement_outcome = MeasurementOutcome.PASS
+            else:
+                measurement_outcome = MeasurementOutcome.FAIL
+            if measurement_outcome == MeasurementOutcome.PASS:
+                phase_outcome = PhaseOutcome.PASS
+            else:
+                phase_outcome = PhaseOutcome.FAIL
             measurements=[
                 dict(
                     name="measurement_preamp_current",
@@ -147,30 +142,35 @@ class HardwareTestFramework:
                     measured_value=current,
                     outcome=measurement_outcome,
                 ),
-            ],
+            ]
+        except Exception as e:
+            phase_outcome = PhaseOutcome.ERROR
+            measurements = None
+        end_time_millis = datetime.now().timestamp() * 1000
+        return dict(
+            name="phase_preamp_current",
+            outcome=phase_outcome,
+            start_time_millis=start_time_millis,
+            end_time_millis=end_time_millis,
+            measurements = measurements,
         )
 
     def bias_voltage(self, n: int, lower_limit, upper_limit) -> dict:
         start_time_millis = datetime.now().timestamp() * 1000
-        with self.controller as controller:
-            controller.high(n)
-            with self.smu as smu:
-                voltage = smu.measure_bias_voltage()
-            controller.low(n)
-        if (voltage > lower_limit) and (voltage < upper_limit):
-            measurement_outcome = MeasurementOutcome.PASS
-        else:
-            measurement_outcome = MeasurementOutcome.FAIL
-        if measurement_outcome == MeasurementOutcome.PASS:
-            phase_outcome = PhaseOutcome.PASS
-        else:
-            phase_outcome = PhaseOutcome.FAIL
-        end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
-            name=f"phase_ch{n}_bias_voltage",
-            outcome=phase_outcome,
-            start_time_millis=start_time_millis,
-            end_time_millis=end_time_millis,
+        try:
+            with self.controller as controller:
+                controller.high(n)
+                with self.smu as smu:
+                    voltage = smu.measure_bias_voltage()
+                controller.low(n)
+            if (voltage > lower_limit) and (voltage < upper_limit):
+                measurement_outcome = MeasurementOutcome.PASS
+            else:
+                measurement_outcome = MeasurementOutcome.FAIL
+            if measurement_outcome == MeasurementOutcome.PASS:
+                phase_outcome = PhaseOutcome.PASS
+            else:
+                phase_outcome = PhaseOutcome.FAIL
             measurements=[
                 dict(
                     name=f"measurement_ch{n}_bias_voltage",
@@ -180,7 +180,17 @@ class HardwareTestFramework:
                     measured_value=voltage,
                     outcome=measurement_outcome,
                 ),
-            ],
+            ]
+        except Exception as e:
+            phase_outcome = PhaseOutcome.ERROR
+            measurements = None
+        end_time_millis = datetime.now().timestamp() * 1000
+        return dict(
+            name=f"phase_ch{n}_bias_voltage",
+            outcome=phase_outcome,
+            start_time_millis=start_time_millis,
+            end_time_millis=end_time_millis,
+            measurements=measurements,
         )
 
     def teardown(self) -> dict:
