@@ -29,8 +29,26 @@
               </div>
             </div> 
             <div class="card-body">
-              {% for part in parts %}
-              {% endfor %}
+              <div class="table-responsive">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Part Number</th>
+                      <th scope="col">Description</th>
+                      <th scope="col">GTIN</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for part in parts %}
+                    <tr>
+                      <td>{{ part.part_number }}</td>
+                      <td>{{ part.part_desciption }}</td>
+                      <td>{{ part.global_trade_item_number }}</td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>

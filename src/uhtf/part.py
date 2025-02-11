@@ -9,6 +9,7 @@ Part endpoint.
 """
 
 from quart import Blueprint
+from quart import render_template
 from quart import request
 
 from .database import get_db
@@ -30,13 +31,11 @@ async def read(id: int) -> tuple:
 
 
 @part.get("/part")
-async def readall() -> tuple:
-    """List parts endpoint."""
+async def manage() -> tuple:
+    """Manage parts endpoint."""
 
     rows = get_db().execute("SELECT * FROM part").fetchall()
-    if len(rows) < 1:
-        return "Parts do not exist.", 404
-    return list(map(dict, rows)), 201
+    return await render_template("part.html", parts=rows)
 
 
 @part.post("/part")
