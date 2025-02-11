@@ -52,7 +52,7 @@
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
                         <td>{{ part.part_number }}</td>
                         <td class="text-nowrap">{{ part.part_description }}</td>
-                        <td>{{ part.global_trade_item_number }}</td>
+                        <td><code>{{ part.global_trade_item_number }}</code></td>
                       </tr>
                       {% endfor %}
                     </tbody>
