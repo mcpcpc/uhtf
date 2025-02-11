@@ -13,22 +13,20 @@
                 <li class="breadcrumb-item text-emphasis">Manage</li>
               </ul>
             </div>
+            <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+              <button class="btn btn-primary icon-link">
+                <svg class="bi">
+                  <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#plus">
+                </svg>
+                New
+              </button>
+            </div>
           </div>
         </div>
         <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
           <div class="card bg-body shadow-sm border-0">
-            <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center">
-              <h5 class="card-title m-0">Parts</h5>
-              <div class="d-flex">
-                <button type="reset" form="evaluate" class="btn btn-primary icon-link">
-                  <svg class="bi">
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#plus">
-                  </svg>
-                  New
-                </button>
-              </div>
-            </div> 
             <div class="card-body">
+              <h5 class="card-title">Parts</h5>
               <div class="table-responsive">
                 <table class="table">
                   <thead>
