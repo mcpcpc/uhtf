@@ -53,6 +53,7 @@ def lookup(template: dict) -> dict | None:
 class Response:
     """Default response."""
 
+    phases: list
     global_trade_item_number: str = "..."
     manufacture_date: str = "..."
     serial_number: str = "..."
@@ -62,7 +63,6 @@ class Response:
     preamp_current_outcome: str = "Not Evaluated"
     bias_voltage_outcome: str = "Not Evaluated"
     teardown_outcome: str = "Not Evaluated"
-    console: str = ""
 
 
 @dataclass
@@ -90,7 +90,6 @@ class Broker:
     async def subscribe(self) -> AsyncGenerator[str, None]:
         """Subscribe to websocket."""
  
-        #connection = Queue()
         connection = Queue(1)
         self.connections.add(connection)
         try:
@@ -119,8 +118,7 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                response = Response()
-                phases = []
+                response = Response([])
                 await broker.publish(dumps(response.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
@@ -129,7 +127,6 @@ def init_websocket(app: Quart) -> Quart:
                     response.serial_number = gs1["serial_number"]
                     await broker.publish(dumps(response.__dict__))
                 else:
-                    response.console = "Invalid GS1 barcode."
                     await broker.publish(dumps(response.__dict__))
                     continue
                 part = lookup(gs1)
@@ -138,7 +135,6 @@ def init_websocket(app: Quart) -> Quart:
                     response.part_description = part["part_description"]
                     await broker.publish(dumps(response.__dict__))
                 else:
-                    response.console = "Configuration does not exist."
                     await broker.publish(dumps(response.__dict__))
                     continue
                 unit_under_test = dict(
@@ -148,9 +144,8 @@ def init_websocket(app: Quart) -> Quart:
                 procedure = Procedure(unit_under_test=unit_under_test)
                 # setup phase
                 phase_setup = htf.setup(3.0)
-                phases.append(phase_setup)
+                response.phases.append(phase_setup)
                 response.setup_outcome = phase_setup["outcome"].value
-                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.setup_outcome == "FAIL":
@@ -158,30 +153,29 @@ def init_websocket(app: Quart) -> Quart:
                     continue
                 # preamp current phase
                 phase_preamp_current = htf.preamp_current(0.000, 3.000)
-                phases.append(phase_preamp_current)
+                response.phases.append(phase_preamp_current)
                 response.preamp_current_outcome = phase_preamp_current["outcome"].value
-                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.preamp_current_outcome == "FAIL":
                     procedure.run_passed = False
                 # bias current phase (iterative)
                 response.bias_voltage_outcome = "PASS"
-                for n in range(1, 33):    
+                for n in range(1, 31):    
                     phase = htf.bias_voltage(n, 0.000, 8.000)
-                    phases.append(phase)
+                    response.phases.append(phase)
+                    message = dumps(response.__dict__)
+                    await broker.publish(message)
                     if phase["outcome"].value == "FAIL":
                         response.bias_voltage_outcome = "FAIL"
-                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.bias_voltage_outcome == "FAIL":
                     procedure.run_passed = False
                 # teardown phase
                 phase_teardown = htf.teardown()
-                phases.append(phase_teardown)
+                response.phases.append(phase_teardown)
                 response.teardown_outcome = phase_teardown["outcome"].value
-                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.teardown_outcome == "FAIL":
