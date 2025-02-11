@@ -9,8 +9,10 @@ Part endpoint.
 """
 
 from quart import Blueprint
+from quart import redirect
 from quart import render_template
 from quart import request
+from quart import url_for
 
 from .database import get_db
 
@@ -68,14 +70,16 @@ async def create() -> tuple:
     return "Part created successfully.", 201
 
 
-@part.get("/part/<int:id>/delete")
-async def delete(id: int) -> tuple:
-    """Delete part endpoint."""
- 
+@part.post("/part/delete")
+async def delete():
     db = get_db()
-    db.execute("DELETE FROM part WHERE id = ?", (id,))
-    db.commit()
-    return "Part successfully deleted.", 200
+    form = await request.form
+    part_ids = form.getlist("part_id")
+    for id in part_ids:
+        db.execute("DELETE FROM part WHERE id = ?", (id,))
+        db.commit()
+    return redirect(url_for(".read"))
+
 
 
 @part.post("/part/<int:id>/update")
