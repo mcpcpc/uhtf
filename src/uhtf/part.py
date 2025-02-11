@@ -36,7 +36,14 @@ async def read(id: int) -> tuple:
 async def manage() -> tuple:
     """Manage parts endpoint."""
 
-    rows = get_db().execute("SELECT * FROM part").fetchall()
+    rows = get_db().execute(
+        """
+        SELECT * FROM
+            part
+        ORDER BY
+            part_number ASC
+        """
+    ).fetchall()
     return await render_template("part.html", parts=rows)
 
 
