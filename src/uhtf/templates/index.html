@@ -120,14 +120,18 @@
           
           function setBadge(name, value) {
             document.getElementById(name).textContent = value;
-            if (value === "PASS") {
-              document.getElementById(name).className = "badge text-bg-success";
-            } else if (value === "FAIL") {
-              document.getElementById(name).className = "badge text-bg-danger";
-            } else if (value === "ERROR") {
-              document.getElementById(name).className = "badge text-bg-warning";
-            } else {
-              document.getElementById(name).className = "badge text-bg-light";
+            switch(value) {
+              case "PASS":
+                document.getElementById(name).className = "badge text-bg-success";
+                break;
+              case "FAIL":
+                document.getElementById(name).className = "badge text-bg-danger";
+                break;
+              case "ERROR":
+                document.getElementById(name).className = "badge text-bg-warning";
+                break;
+              default:
+                document.getElementById(name).className = "badge text-bg-light";
             }
           }
           
