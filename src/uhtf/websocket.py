@@ -62,7 +62,7 @@ class Response:
     preamp_current_outcome: str = "Not Evaluated"
     bias_voltage_outcome: str = "Not Evaluated"
     teardown_outcome: str = "Not Evaluated"
-    console: str = "..."
+    console: str = ""
 
 
 @dataclass
