@@ -73,15 +73,15 @@
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
                     <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
-                    <input type="text" class="form-control" id="global_trade_item_number" required>
+                    <input type="text" class="form-control" id="global_trade_item_number" name="global_trade_item_number" required>
                   </div>
                   <div class="mb-3">
                     <label for="part_name" class="col-form-label">Part Name</label>
-                    <input type="text" class="form-control" id="part_name" required>
+                    <input type="text" class="form-control" id="part_name" name="part_name" required>
                   </div>
                   <div class="mb-3">
                     <label for="part_description" class="col-form-label">Part Description</label>
-                    <input type="text" class="form-control" id="part_description" required>
+                    <input type="text" class="form-control" id="part_description" name="part_description" required>
                   </div>
                 </form>
               </div>
