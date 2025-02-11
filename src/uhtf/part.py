@@ -64,10 +64,10 @@ async def create() -> tuple:
         )
         db.commit()
     except db.ProgrammingError:
-        return "Missing parameter(s).", 400
+        flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
-        return "Invalid parameter(s).", 400
-    return "Part created successfully.", 201
+        flash("Invalid parameter(s).", "warning")
+    return redirect(url_for(".manage"))
 
 
 @part.post("/part/delete")
@@ -78,7 +78,7 @@ async def delete():
     for id in part_ids:
         db.execute("DELETE FROM part WHERE id = ?", (id,))
         db.commit()
-    return redirect(url_for(".read"))
+    return redirect(url_for(".manage"))
 
 
 
