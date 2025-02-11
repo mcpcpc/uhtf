@@ -187,7 +187,7 @@ class HardwareTestFramework:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.controller as controller:
-                controller.setup()
+                controller.reset()
             with self.smu as smu:
                 smu.teardown()
             phase_outcome = PhaseOutcome.PASS

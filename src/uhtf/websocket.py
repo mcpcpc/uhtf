@@ -120,6 +120,7 @@ def init_websocket(app: Quart) -> Quart:
             while True:
                 message = await websocket.receive()
                 response = Response()
+                phases = []
                 await broker.publish(dumps(response.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
@@ -147,8 +148,9 @@ def init_websocket(app: Quart) -> Quart:
                 procedure = Procedure(unit_under_test=unit_under_test)
                 # setup phase
                 phase_setup = htf.setup(3.0)
+                phases.append(phase_setup)
                 response.setup_outcome = phase_setup["outcome"].value
-                response.console = dumps(phase_setup)
+                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.setup_outcome == "FAIL":
@@ -156,29 +158,30 @@ def init_websocket(app: Quart) -> Quart:
                     continue
                 # preamp current phase
                 phase_preamp_current = htf.preamp_current(0.000, 3.000)
+                phases.append(phase_preamp_current)
                 response.preamp_current_outcome = phase_preamp_current["outcome"].value
-                response.console = dumps(phase_preamp_current)
+                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.preamp_current_outcome == "FAIL":
                     procedure.run_passed = False
                 # bias current phase (iterative)
-                phases_bias_voltage = []
                 response.bias_voltage_outcome = "PASS"
                 for n in range(1, 33):    
                     phase = htf.bias_voltage(n, 0.000, 8.000)
-                    phases_bias_voltage.append(phase)
+                    phases.append(phase)
                     if phase["outcome"].value == "FAIL":
                         response.bias_voltage_outcome = "FAIL"
-                response.console = dumps(phases_bias_voltage)
+                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.bias_voltage_outcome == "FAIL":
                     procedure.run_passed = False
                 # teardown phase
                 phase_teardown = htf.teardown()
+                phases.append(phase_teardown)
                 response.teardown_outcome = phase_teardown["outcome"].value
-                response.console = dumps(phase_teardown)
+                response.console = dumps(phases)
                 message = dumps(response.__dict__)
                 await broker.publish(message)
                 if response.teardown_outcome == "FAIL":
