@@ -47,7 +47,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for part in parts %}
+                      {% for part in parts|sort('part_number') %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
                         <td>{{ part.part_number }}</td>
