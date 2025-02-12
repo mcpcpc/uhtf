@@ -66,9 +66,9 @@ class Procedure:
 
     procedure_id: str = "FVT1"
     procedure_name: str = "Multi-Coil Test"
-    unit_under_test: dict = None
-    #phases: list = field(default_factory=list)
-    phases: list = field(default_factory=uut_factory)
+    #unit_under_test: dict = None
+    unit_under_test: dict = field(default_factory=uut_factory)
+    phases: list = field(default_factory=list)
     run_passed: bool = True
 
 
