@@ -124,8 +124,10 @@
                   default:
                     const name = phase["name"];
                     const value = phase["name"]["measurements"][0]["measured_value"];
+                    const ll = phase["name"]["measurements"][0]["lower_limit"];
+                    const ul = phase["name"]["measurements"][0]["upper_limit"];
                     const outcome = phase["outcome"];
-                    const row = `<tr><td>${name}<br /><small>Value: ${value}</small></td><td><span id="${name}">${outcome}</span></td></tr>`;
+                    const row = `<tr><td>${name}<br /><small>Value: ${value}, LSL: ${ll}, USL: ${ul}</small></td><td><span id="${name}">${outcome}</span></td></tr>`;
                     document.getElementById("detail").innerHTML += row;
                 }
               });
