@@ -21,9 +21,9 @@ from quart import Quart
 from quart import websocket
 from tofupilot import TofuPilotClient
 
-from .model import HardwareTestFramework
-from .model import SourceMeasuringUnit
-from .model import TestBoxController
+from .models.test import HardwareTestFramework
+from .models.test import SourceMeasuringUnit
+from .models.test import TestBoxController
 from .database import get_db
 
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
