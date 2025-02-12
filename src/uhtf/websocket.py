@@ -12,6 +12,7 @@ from asyncio import ensure_future
 from asyncio import sleep
 from asyncio import Queue
 from collections.abc import AsyncGenerator
+from dataclasses import asdict
 from dataclasses import dataclass
 from dataclasses import field
 from json import dumps
@@ -105,7 +106,7 @@ def init_websocket(app: Quart) -> Quart:
                     part_number="",
                     part_description="",
                 )
-                await broker.publish(dumps(procedure.__dict__))
+                await broker.publish(dumps(asdict(procedure)))
                 match = search(GS1_REGEX, message)
                 if isinstance(match, Match):
                     gtin = match.group("global_trade_item_number")
@@ -114,52 +115,52 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.unit_under_test["global_trade_item_number"] = gtin
                     procedure.unit_under_test["manufacture_date"] = manufacture_date
                     procedure.unit_under_test["serial_number"] = serial_number
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                 else:
                     procedure.run_passed = False
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                     continue
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
                     procedure.unit_under_test["part_number"] = part["part_number"]
                     procedure.unit_under_test["part_description"] = part["part_description"]
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                 else:
                     procedure.run_passed = False
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                     continue
                 # setup phase
                 phase = htf.setup(3.0)
                 procedure.phases.append(phase)
-                await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value != "PASS":
+                await broker.publish(dumps(asdict(procedure)))
+                if phase.outcome.value != "PASS":
                     procedure.run_passed = False
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                     continue
                 # preamp current phase
                 phase = htf.preamp_current(-0.005, 3.000)
                 procedure.phases.append(phase)
-                await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value != "PASS":
+                await broker.publish(dumps(asdict(procedure)))
+                if phase.outcome.value != "PASS":
                     procedure.run_passed = False
                 # bias current phase (iterative)
                 for n in range(1, 31):    
                     phase = htf.bias_voltage(n, 0.000, 8.000)
                     procedure.phases.append(phase)
-                    await broker.publish(dumps(procedure.__dict__))
-                    if phase["outcome"].value != "PASS":
+                    await broker.publish(dumps(asdict(procedure)))
+                    if phase.outcome.value != "PASS":
                         procedure.run_passed = False
                 # teardown phase
                 phase = htf.teardown()
                 procedure.phases.append(phase)
-                await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value != "PASS":
+                await broker.publish(dumps(asdict(procedure)))
+                if phase.outcome.value != "PASS":
                     procedure.run_passed = False
-                    await broker.publish(dumps(procedure.__dict__))
+                    await broker.publish(dumps(asdict(procedure)))
                     continue
                 # finalize results
                 procedure.run_passed = True
-                await broker.publish(dumps(procedure.__dict__))
+                await broker.publish(dumps(asdict(procedure)))
 
         try:
             task = ensure_future(_receive())

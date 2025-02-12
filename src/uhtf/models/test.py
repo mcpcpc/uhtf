@@ -15,7 +15,9 @@ from socket import SOCK_STREAM
 from socket import socket
 from time import sleep
 
+from .base import Measurement
 from .base import MeasurementOutcome
+from .base import Phase
 from .base import PhaseOutcome
 
 
@@ -102,7 +104,7 @@ class HardwareTestFramework:
         self.smu = smu
         self.controller = controller
 
-    def setup(self, pa_current_limit: float) -> dict:
+    def setup(self, pa_current_limit: float) -> Phase:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.controller as controller:
@@ -113,14 +115,14 @@ class HardwareTestFramework:
         except Exception as e:
             phase_outcome = PhaseOutcome.FAIL 
         end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
+        return Phase(
             name="phase_setup",
             outcome=phase_outcome,
             start_time_millis=start_time_millis,
             end_time_millis=end_time_millis,
         )
 
-    def preamp_current(self, lower_limit, upper_limit) -> dict:
+    def preamp_current(self, lower_limit, upper_limit) -> Phase:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.smu as smu:
@@ -134,7 +136,7 @@ class HardwareTestFramework:
             else:
                 phase_outcome = PhaseOutcome.FAIL
             measurements=[
-                dict(
+                Measurement(
                     name="measurement_preamp_current",
                     units="I",
                     lower_limit=lower_limit,
@@ -147,7 +149,7 @@ class HardwareTestFramework:
             phase_outcome = PhaseOutcome.ERROR
             measurements = None
         end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
+        return Phase(
             name="phase_preamp_current",
             outcome=phase_outcome,
             start_time_millis=start_time_millis,
@@ -155,7 +157,7 @@ class HardwareTestFramework:
             measurements = measurements,
         )
 
-    def bias_voltage(self, n: int, lower_limit, upper_limit) -> dict:
+    def bias_voltage(self, n: int, lower_limit, upper_limit) -> Phase:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.controller as controller:
@@ -172,7 +174,7 @@ class HardwareTestFramework:
             else:
                 phase_outcome = PhaseOutcome.FAIL
             measurements=[
-                dict(
+                Measurement(
                     name=f"measurement_ch{n}_bias_voltage",
                     units="V",
                     lower_limit=lower_limit,
@@ -185,7 +187,7 @@ class HardwareTestFramework:
             phase_outcome = PhaseOutcome.ERROR
             measurements = None
         end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
+        return Phase(
             name=f"phase_ch{n}_bias_voltage",
             outcome=phase_outcome,
             start_time_millis=start_time_millis,
@@ -193,7 +195,7 @@ class HardwareTestFramework:
             measurements=measurements,
         )
 
-    def teardown(self) -> dict:
+    def teardown(self) -> Phase:
         start_time_millis = datetime.now().timestamp() * 1000
         try:
             with self.controller as controller:
@@ -204,7 +206,7 @@ class HardwareTestFramework:
         except Exception as e:
             phase_outcome = PhaseOutcome.FAIL
         end_time_millis = datetime.now().timestamp() * 1000
-        return dict(
+        return Phase(
             name="phase_teardown",
             outcome=phase_outcome,
             start_time_millis=start_time_millis,
