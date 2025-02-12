@@ -15,6 +15,7 @@ from collections.abc import AsyncGenerator
 from dataclasses import dataclass
 from dataclasses import field
 from json import dumps
+from re import Match
 from re import search
 
 from quart import Quart
@@ -31,19 +32,12 @@ GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(21)(?P<serial_number>\d{5})"
 
 
-def get_gs1(barcode: str) -> dict | None:
-    match = search(GS1_REGEX, barcode)
-    if not match:
-        return None
-    return match.groupdict()
-
-
-def lookup(template: dict) -> dict | None:
+def lookup(global_trade_item_number: str) -> dict | None:
     row = get_db().execute(
         """
         SELECT * FROM part WHERE global_trade_item_number = ?
         """,
-        (template["global_trade_item_number"],),
+        (global_trade_item_number,),
     ).fetchone()
     if not row:
         return None
@@ -113,16 +107,19 @@ def init_websocket(app: Quart) -> Quart:
                     part_description="",
                 )
                 await broker.publish(dumps(procedure.__dict__))
-                gs1 = get_gs1(message)
-                if isinstance(gs1, dict):
-                    procedure.unit_under_test["global_trade_item_number"] = gs1["global_trade_item_number"]
-                    procedure.unit_under_test["manufacture_date"] = gs1["manufacture_date"]
-                    procedure.unit_under_test["serial_number"] = gs1["serial_number"]
+                match = search(GS1_REGEX, message)
+                if isinstance(match, Match):
+                    gtin = match.group("global_trade_item_number")
+                    manufacture_date = match.group("manufacture_date")
+                    serial_number = match.group("serial_number")
+                    procedure.unit_under_test["global_trade_item_number"] = gtin
+                    procedure.unit_under_test["manufacture_date"] = manufacture_date
+                    procedure.unit_under_test["serial_number"] = serial_number
                     await broker.publish(dumps(procedure.__dict__))
                 else:
                     await broker.publish(dumps(procedure.__dict__))
                     continue
-                part = lookup(gs1)
+                part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
                     procedure.unit_under_test["part_number"] = part["part_number"]
                     procedure.unit_under_test["part_description"] = part["part_description"]
