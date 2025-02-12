@@ -98,7 +98,7 @@
             setBadge("run_status", procedure["run_passed"]);
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
-		var html = "";
+                var html = "";
                 html += `<div class="d-flex justify-content-between align-items-center mb-1">`;
                 html += `<span class="fw-semibold"><small>${phase['name']}</small></span>`;
                 html += `<span id="${phase['name']}">${phase['outcome']}</span></div>`;
