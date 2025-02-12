@@ -135,10 +135,10 @@
             //setBadge("bias_voltage_outcome", data["bias_voltage_outcome"]);
           });
           
-          function setBadge(name, state) { 
+          function setBadge(name, value) { 
             const badge = document.getElementById(name);
-            badge.textContent = state;
-            switch(state) {
+            badge.textContent = value;
+            switch(value) {
               case "PASS":
                 badge.className = "badge text-bg-success";
                 break;
