@@ -31,16 +31,6 @@ GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(21)(?P<serial_number>\d{5})"
 
 
-def uut_factory() -> dict:
-    return dict(
-        global_trade_item_number="",
-        manufacture_date="",
-        serial_number="",
-        part_number="",
-        part_description="",
-    )
-
-
 def get_gs1(barcode: str) -> dict | None:
     match = search(GS1_REGEX, barcode)
     if not match:
@@ -66,8 +56,7 @@ class Procedure:
 
     procedure_id: str = "FVT1"
     procedure_name: str = "Multi-Coil Test"
-    #unit_under_test: dict = None
-    unit_under_test: dict = field(default_factory=uut_factory)
+    unit_under_test: dict = None
     phases: list = field(default_factory=list)
     run_passed: bool = True
 
@@ -116,6 +105,13 @@ def init_websocket(app: Quart) -> Quart:
             while True:
                 message = await websocket.receive()
                 procedure = Procedure()
+                procedure.unit_under_test = dict(
+                    global_trade_item_number="",
+                    manufacture_date="",
+                    serial_number="",
+                    part_number="",
+                    part_description="",
+                )
                 await broker.publish(dumps(procedure.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
