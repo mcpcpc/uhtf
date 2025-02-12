@@ -78,7 +78,7 @@
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-semibold text-secondary"><small>Preamp Current</small></span>
-		    <span id="phase_preamp_current"></span>
+                    <span id="phase_preamp_current"></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-semibold text-secondary"><small>Bias Voltage</small></span>
@@ -136,20 +136,19 @@
           });
           
           function setBadge(name, value) { 
-            const badge = document.getElementById(name);
-            badge.textContent = value;
+            document.getElementById(name).textContent = value;
             switch(value) {
               case "PASS":
-                badge.className = "badge text-bg-success";
+                document.getElementById(name).className = "badge text-bg-success";
                 break;
               case "FAIL":
-                badge.className = "badge text-bg-danger";
+                document.getElementById(name).className = "badge text-bg-danger";
                 break;
               case "ERROR":
-                badge.className = "badge text-bg-warning";
+                document.getElementById(name).className = "badge text-bg-warning";
                 break;
               default:
-                badge.className = "badge text-bg-light";
+                document.getElementById(name).className = "badge text-bg-light";
             }
           }
           
