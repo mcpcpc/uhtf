@@ -122,7 +122,10 @@
                     setBadge("phase_teardown", phase["outcome"]);
                     break;
                   default:
-                    const row = `<tr><td>${phase["name"]}</td><td>${phase["outcome"]}</td></tr>`;
+                    const name = phase["name"];
+                    const value = phase["name"]["measurements"][0]["measured_value"];
+                    const outcome = phase["outcome"];
+                    const row = `<tr><td>${name}<br /><small>Value: ${value}</small></td><td><span id="${name}">${outcome}</span></td></tr>`;
                     document.getElementById("detail").innerHTML += row;
                 }
               });
