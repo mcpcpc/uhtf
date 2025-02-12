@@ -134,27 +134,27 @@ def init_websocket(app: Quart) -> Quart:
                 phase = htf.setup(3.0)
                 procedure.phases.append(phase)
                 await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value == "FAIL":
+                if phase["outcome"].value != "PASS":
                     procedure.run_passed = False
                     continue
                 # preamp current phase
                 phase = htf.preamp_current(-0.005, 3.000)
                 procedure.phases.append(phase)
                 await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value == "FAIL":
+                if phase["outcome"].value != "PASS":
                     procedure.run_passed = False
                 # bias current phase (iterative)
                 for n in range(1, 31):    
                     phase = htf.bias_voltage(n, 0.000, 8.000)
                     procedure.phases.append(phase)
                     await broker.publish(dumps(procedure.__dict__))
-                    if phase["outcome"].value == "FAIL":
+                    if phase["outcome"].value != "PASS":
                         procedure.run_passed = False
                 # teardown phase
                 phase = htf.teardown()
                 procedure.phases.append(phase)
                 await broker.publish(dumps(procedure.__dict__))
-                if phase["outcome"].value == "FAIL":
+                if phase["outcome"].value != "PASS":
                     procedure.run_passed = False
 
         try:
