@@ -15,8 +15,8 @@ from socket import SOCK_STREAM
 from socket import socket
 from time import sleep
 
-from tofupilot import MeasurementOutcome
-from tofupilot import PhaseOutcome
+from .base import MeasurementOutcome
+from .base import PhaseOutcome
 
 
 class TCP:
