@@ -26,16 +26,19 @@ from .model import SourceMeasuringUnit
 from .model import TestBoxController
 from .database import get_db
 
-UNIT_UNDER_TEST = dict(
-    global_trade_item_number="",
-    manufacture_date="",
-    serial_number="",
-    part_number="",
-    part_description="",
-)
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
           + r"(21)(?P<serial_number>\d{5})"
+
+
+def uut_factory() -> dict:
+    return dict(
+        global_trade_item_number="",
+        manufacture_date="",
+        serial_number="",
+        part_number="",
+        part_description="",
+    )
 
 
 def get_gs1(barcode: str) -> dict | None:
@@ -65,7 +68,7 @@ class Procedure:
     procedure_name: str = "Multi-Coil Test"
     unit_under_test: dict = None
     #phases: list = field(default_factory=list)
-    phases: list = field(default=UNIT_UNDER_TEST)
+    phases: list = field(default_factory=uut_factory)
     run_passed: bool = True
 
 
