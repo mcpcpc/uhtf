@@ -92,8 +92,8 @@
                   <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-semibold text-secondary"><small>Details</small></span>
                   </div>
-                  <div class="overflow-x-auto" style="height: 300px">
-                  </div>
+                  <table id="detail" class="table table-borderless overflow-x-auto" style="height: 300px">
+                  </table>
                 </div>
               </div>
             </div>
@@ -121,12 +121,16 @@
                   case "phase_teardown":
                     setBadge("phase_teardown", phase["outcome"]);
                     break;
+                  default:
+                    const row = `<tr><td>${phase["name"]}</td><td>${phase["outcome"]}</td></tr>`;
+                    document.getElementById("detail").innerHTML += row;
                 }
               });
             } else {
               setBadge("setup_outcome", "");
               setBadge("preamp_current_outcome", "");
               setBadge("teardown_outcome", "");
+              document.getElementById("detail").innerHTML = "";
             }
             //setBadge("bias_voltage_outcome", data["bias_voltage_outcome"]);
           });
