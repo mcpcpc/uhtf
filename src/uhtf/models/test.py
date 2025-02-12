@@ -15,7 +15,7 @@ from .base import Measurement
 from .base import MeasurementOutcome
 from .base import Phase
 from .base import PhaseOutcome
-from .tcp impor TCP
+from .tcp import TCP
 
 
 class SourceMeasuringUnit(TCP):
