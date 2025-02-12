@@ -138,7 +138,7 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.run_passed = False
                     continue
                 # preamp current phase
-                phase = htf.preamp_current(0.000, 3.000)
+                phase = htf.preamp_current(-0.050, 3.000)
                 procedure.phases.append(phase)
                 await broker.publish(dumps(procedure.__dict__))
                 if phase["outcome"].value == "FAIL":
