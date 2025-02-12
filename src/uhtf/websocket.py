@@ -20,7 +20,6 @@ from re import search
 
 from quart import Quart
 from quart import websocket
-from tofupilot import TofuPilotClient
 
 from .models.test import HardwareTestFramework
 from .models.test import SourceMeasuringUnit
