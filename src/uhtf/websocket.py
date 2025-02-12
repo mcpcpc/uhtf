@@ -52,7 +52,7 @@ class Procedure:
     procedure_name: str = "Multi-Coil Test"
     unit_under_test: dict = None
     phases: list = field(default_factory=list)
-    run_passed: bool = True
+    run_passed: bool | None = None
 
 
 class Broker:
@@ -117,6 +117,7 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.unit_under_test["serial_number"] = serial_number
                     await broker.publish(dumps(procedure.__dict__))
                 else:
+                    procedure.run_passed = False
                     await broker.publish(dumps(procedure.__dict__))
                     continue
                 part = lookup(match.group("global_trade_item_number"))
@@ -125,6 +126,7 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.unit_under_test["part_description"] = part["part_description"]
                     await broker.publish(dumps(procedure.__dict__))
                 else:
+                    procedure.run_passed = False
                     await broker.publish(dumps(procedure.__dict__))
                     continue
                 # setup phase
@@ -133,6 +135,7 @@ def init_websocket(app: Quart) -> Quart:
                 await broker.publish(dumps(procedure.__dict__))
                 if phase["outcome"].value != "PASS":
                     procedure.run_passed = False
+                    await broker.publish(dumps(procedure.__dict__))
                     continue
                 # preamp current phase
                 phase = htf.preamp_current(-0.005, 3.000)
@@ -153,6 +156,11 @@ def init_websocket(app: Quart) -> Quart:
                 await broker.publish(dumps(procedure.__dict__))
                 if phase["outcome"].value != "PASS":
                     procedure.run_passed = False
+                    await broker.publish(dumps(procedure.__dict__))
+                    continue
+                # finalize results
+                procedure.run_passed = True
+                await broker.publish(dumps(procedure.__dict__))
 
         try:
             task = ensure_future(_receive())
