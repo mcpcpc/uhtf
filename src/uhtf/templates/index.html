@@ -103,17 +103,28 @@
           const ws = new WebSocket(`ws://${location.host}/ws`);
           
           ws.addEventListener('message', function (event) {
-            const data = JSON.parse(event.data);
-            document.getElementById("global_trade_item_number").textContent = data["global_trade_item_number"];
-            document.getElementById("manufacture_date").textContent = data["manufacture_date"];
-            document.getElementById("serial_number").textContent = data["serial_number"];
-            document.getElementById("part_number").textContent = data["part_number"];
-            document.getElementById("part_description").textContent = data["part_description"];
-            setBadge("setup_outcome", data["setup_outcome"]);
-            setBadge("preamp_current_outcome", data["preamp_current_outcome"]);
-            setBadge("bias_voltage_outcome", data["bias_voltage_outcome"]);
-            setBadge("teardown_outcome", data["teardown_outcome"]);
-            
+            const procedure = JSON.parse(event.data);
+            document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
+            document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
+            document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
+            document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
+            document.getElementById("part_description").textContent = procedure["unit_under_test"]["part_description"];
+            if (procedure["phases"].length > 0) {
+              procedure["phases"].forEach((phase) => {
+                switch(phase["name"]) {
+                  case "phase_setup":
+                    setBadge("setup_outcome", phase["outcome"]);
+                    break;
+                  case "phase_preamp_current":
+                    setBadge("preamp_current_outcome", phase["outcome"]);
+                    break;
+                  case "phase_teardown":
+                    setBadge("teardown_outcome", phase["outcome"]);
+                    break;
+                }
+              });
+            }
+            //setBadge("bias_voltage_outcome", data["bias_voltage_outcome"]);
           });
           
           function setBadge(name, value) {

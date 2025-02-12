@@ -13,6 +13,7 @@ from asyncio import sleep
 from asyncio import Queue
 from collections.abc import AsyncGenerator
 from dataclasses import dataclass
+from dataclasses import field
 from json import dumps
 from re import search
 
@@ -50,28 +51,13 @@ def lookup(template: dict) -> dict | None:
 
 
 @dataclass
-class Response:
-    """Default response."""
-
-    phases: list
-    global_trade_item_number: str = "..."
-    manufacture_date: str = "..."
-    serial_number: str = "..."
-    part_number: str = "..."
-    part_description: str = "..."
-    setup_outcome: str = "Not Evaluated"
-    preamp_current_outcome: str = "Not Evaluated"
-    bias_voltage_outcome: str = "Not Evaluated"
-    teardown_outcome: str = "Not Evaluated"
-
-
-@dataclass
 class Procedure:
     """Procedure representation."""
 
-    unit_under_test: dict
     procedure_id: str = "FVT1"
     procedure_name: str = "Multi-Coil Test"
+    unit_under_test: dict = None
+    phases: list = field(default_factory=list)
     run_passed: bool = True
 
 
@@ -118,67 +104,55 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                response = Response([])
-                await broker.publish(dumps(response.__dict__))
+                procedure = Procedure()
+                await broker.publish(dumps(procedure.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
-                    response.global_trade_item_number = gs1["global_trade_item_number"]
-                    response.manufacture_date = gs1["manufacture_date"]
-                    response.serial_number = gs1["serial_number"]
-                    await broker.publish(dumps(response.__dict__))
+                    await broker.publish(dumps(procedure.__dict__))
                 else:
-                    await broker.publish(dumps(response.__dict__))
+                    await broker.publish(dumps(procedure.__dict__))
                     continue
                 part = lookup(gs1)
                 if isinstance(part, dict):
-                    response.part_number = part["part_number"]
-                    response.part_description = part["part_description"]
-                    await broker.publish(dumps(response.__dict__))
+                    await broker.publish(dumps(procedure.__dict__))
                 else:
-                    await broker.publish(dumps(response.__dict__))
+                    await broker.publish(dumps(procedure.__dict__))
                     continue
-                unit_under_test = dict(
+                procedure.unit_under_test=dict(
+                    global_trade_item_number=gs1["global_trade_item_number"],
+                    manufacture_date=gs1["manufacture_date"],
                     serial_number=gs1["serial_number"],
                     part_number=part["part_number"],
+                    part_description=part["part_description"],
                 )
-                procedure = Procedure(unit_under_test=unit_under_test)
                 # setup phase
-                phase_setup = htf.setup(3.0)
-                response.phases.append(phase_setup)
-                response.setup_outcome = phase_setup["outcome"].value
-                message = dumps(response.__dict__)
-                await broker.publish(message)
-                if response.setup_outcome == "FAIL":
+                phase = htf.setup(3.0)
+                procedure.phases.append(phase)
+                await broker.publish(dumps(procedure.__dict__))
+                if phase.outcome.value == "FAIL":
                     procedure.run_passed = False
                     continue
                 # preamp current phase
-                phase_preamp_current = htf.preamp_current(0.000, 3.000)
-                response.phases.append(phase_preamp_current)
-                response.preamp_current_outcome = phase_preamp_current["outcome"].value
-                message = dumps(response.__dict__)
-                await broker.publish(message)
-                if response.preamp_current_outcome == "FAIL":
+                phase = htf.preamp_current(0.000, 3.000)
+                procedure.phases.append(phase)
+                await broker.publish(dumps(procedure.__dict__))
+                if phase.outcome.value == "FAIL":
                     procedure.run_passed = False
                 # bias current phase (iterative)
-                response.bias_voltage_outcome = "PASS"
                 for n in range(1, 31):    
                     phase = htf.bias_voltage(n, 0.000, 8.000)
-                    response.phases.append(phase)
-                    message = dumps(response.__dict__)
-                    await broker.publish(message)
+                    procedure.phases.append(phase)
+                    await broker.publish(dumps(procedure.__dict__))
                     if phase["outcome"].value == "FAIL":
                         response.bias_voltage_outcome = "FAIL"
-                message = dumps(response.__dict__)
-                await broker.publish(message)
-                if response.bias_voltage_outcome == "FAIL":
+                await broker.publish(dumps(procedure.__dict__))
+                if phase.outcome.value == "FAIL":
                     procedure.run_passed = False
                 # teardown phase
-                phase_teardown = htf.teardown()
-                response.phases.append(phase_teardown)
-                response.teardown_outcome = phase_teardown["outcome"].value
-                message = dumps(response.__dict__)
-                await broker.publish(message)
-                if response.teardown_outcome == "FAIL":
+                phase = htf.teardown()
+                procedure.phases.append(phase)
+                await broker.publish(dumps(procedure.__dict__))
+                if phase["outcome"].value == "FAIL":
                     procedure.run_passed = False
 
         try:
