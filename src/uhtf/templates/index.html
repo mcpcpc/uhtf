@@ -140,16 +140,16 @@
             badge.textContent = value;
             switch(value) {
               case "PASS":
-                document.getElementById(name).className = "badge text-bg-success";
+                badge.className = "badge text-bg-success";
                 break;
               case "FAIL":
-                document.getElementById(name).className = "badge text-bg-danger";
+                badge.className = "badge text-bg-danger";
                 break;
               case "ERROR":
-                document.getElementById(name).className = "badge text-bg-warning";
+                badge.className = "badge text-bg-warning";
                 break;
               default:
-                document.getElementById(name).className = "badge text-bg-light";
+                badge.className = "badge text-bg-light";
             }
           }
           
