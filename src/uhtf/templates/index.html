@@ -136,7 +136,8 @@
           });
           
           function setBadge(name, value) { 
-            document.getElementById(name).textContent = value;
+            var badge = document.getElementById(name);
+            badge.textContent = value;
             switch(value) {
               case "PASS":
                 document.getElementById(name).className = "badge text-bg-success";
