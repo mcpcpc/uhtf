@@ -115,23 +115,21 @@ def init_websocket(app: Quart) -> Quart:
                 await broker.publish(dumps(procedure.__dict__))
                 gs1 = get_gs1(message)
                 if isinstance(gs1, dict):
+                    procedure.unit_under_test["global_trade_item_number"] = gs1["global_trade_item_number"]
+                    procedure.unit_under_test["manufacture_date"] = gs1["manufacture_date"]
+                    procedure.unit_under_test["serial_number"] = gs1["serial_number"]
                     await broker.publish(dumps(procedure.__dict__))
                 else:
                     await broker.publish(dumps(procedure.__dict__))
                     continue
                 part = lookup(gs1)
                 if isinstance(part, dict):
+                    procedure.unit_under_test["part_number"] = part["part_number"]
+                    procedure.unit_under_test["part_description"] = part["part_description"]
                     await broker.publish(dumps(procedure.__dict__))
                 else:
                     await broker.publish(dumps(procedure.__dict__))
                     continue
-                procedure.unit_under_test=dict(
-                    global_trade_item_number=gs1["global_trade_item_number"],
-                    manufacture_date=gs1["manufacture_date"],
-                    serial_number=gs1["serial_number"],
-                    part_number=part["part_number"],
-                    part_description=part["part_description"],
-                )
                 # setup phase
                 phase = htf.setup(3.0)
                 procedure.phases.append(phase)
