@@ -149,10 +149,7 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.phases.append(phase)
                     await broker.publish(dumps(procedure.__dict__))
                     if phase["outcome"].value == "FAIL":
-                        response.bias_voltage_outcome = "FAIL"
-                await broker.publish(dumps(procedure.__dict__))
-                if phase.outcome.value == "FAIL":
-                    procedure.run_passed = False
+                        procedure.run_passed = False
                 # teardown phase
                 phase = htf.teardown()
                 procedure.phases.append(phase)
