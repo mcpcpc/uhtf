@@ -20,7 +20,7 @@
             <div class="card-header bg-body border-0 p-3 d-flex justify-content-between align-items-center">
               <h5 class="card-title m-0">Parts</h5>
               <div class="d-flex">
-                <button class="btn btn-secondary icon-link me-2" form="delete" id="delete">
+                <button class="btn btn-secondary icon-link me-2" form="delete" id="deletePart">
                   <svg class="bi">
                     <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#trash2-fill">
                   </svg>
@@ -100,7 +100,7 @@
             }
           }
           const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-          const delete = document.getElementById('delete');
+          const deletePart = document.getElementById('deletePart');
           checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
               let checked = false;
@@ -109,7 +109,7 @@
                   checked = true;
                 }
               });
-              delete.disabled = !checked;
+              deletePart.disabled = !checked;
             });
           });
         </script>
