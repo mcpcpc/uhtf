@@ -65,6 +65,8 @@ class UnitUnderTest:
     part_name: str | None = None
     revision: str | None = None
     batch_number: str | None = None
+    global_trade_item_number: str | None = None  # temp
+    manufacture_date: str  | None = None  # temp
 
 
 @dataclass

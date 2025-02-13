@@ -22,6 +22,8 @@ from re import search
 from quart import Quart
 from quart import websocket
 
+from .models.base import Procedure
+from .models.base import UnitUnderTest
 from .models.test import HardwareTestFramework
 from .models.test import SourceMeasuringUnit
 from .models.test import TestBoxController
@@ -42,17 +44,6 @@ def lookup(global_trade_item_number: str) -> dict | None:
     if not row:
         return None
     return dict(row)
-
-
-@dataclass
-class Procedure:
-    """Procedure representation."""
-
-    procedure_id: str = "FVT1"
-    procedure_name: str = "Multi-Coil Test"
-    unit_under_test: dict = None
-    phases: list = field(default_factory=list)
-    run_passed: bool | None = None
 
 
 class Broker:
@@ -98,23 +89,18 @@ def init_websocket(app: Quart) -> Quart:
         async def _receive() -> None:
             while True:
                 message = await websocket.receive()
-                procedure = Procedure()
-                procedure.unit_under_test = dict(
-                    global_trade_item_number="",
-                    manufacture_date="",
-                    serial_number="",
-                    part_number="",
-                    part_description="",
-                )
+                unit_under_test = UnitUnderTest(None)
+                procedure = Procedure("FVT01", "Multi-coil Check")
+                procedure.unit_under_test = unit_under_test
                 await broker.publish(dumps(asdict(procedure)))
                 match = search(GS1_REGEX, message)
                 if isinstance(match, Match):
                     gtin = match.group("global_trade_item_number")
                     manufacture_date = match.group("manufacture_date")
                     serial_number = match.group("serial_number")
-                    procedure.unit_under_test["global_trade_item_number"] = gtin
-                    procedure.unit_under_test["manufacture_date"] = manufacture_date
-                    procedure.unit_under_test["serial_number"] = serial_number
+                    procedure.unit_under_test.global_trade_item_number = gtin
+                    procedure.unit_under_test.manufacture_date = manufacture_date
+                    procedure.unit_under_test.serial_number = serial_number
                     await broker.publish(dumps(asdict(procedure)))
                 else:
                     procedure.run_passed = False
@@ -122,8 +108,8 @@ def init_websocket(app: Quart) -> Quart:
                     continue  # restart procedure
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
-                    procedure.unit_under_test["part_number"] = part["part_number"]
-                    procedure.unit_under_test["part_description"] = part["part_description"]
+                    procedure.unit_under_test.part_number = part["part_number"]
+                    procedure.unit_under_test.part_name = part["part_description"]
                     await broker.publish(dumps(asdict(procedure)))
                 else:
                     procedure.run_passed = False

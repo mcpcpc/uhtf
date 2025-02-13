@@ -93,7 +93,7 @@
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
-            document.getElementById("part_description").textContent = procedure["unit_under_test"]["part_description"];
+            document.getElementById("part_description").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
             setBadge("run_status", procedure["run_passed"]);
             if (procedure["phases"].length > 0) {
