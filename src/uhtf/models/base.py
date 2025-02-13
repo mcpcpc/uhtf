@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8
+
+"""
+SPDX-FileCopyrightText: 2025 Michael Czigler
+SPDX-License-Identifier: BSD-3-Clause
+
+Base models.
+"""
+
 from dataclasses import dataclass
 from dataclasses import field
 from enum import StrEnum
