@@ -97,6 +97,7 @@
             checkboxes = document.getElementsByName('part_id');
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
+              checkboxes[i].trigger("change");
             }
           }
           var checkboxes = document.getElementsByName('part_id');
