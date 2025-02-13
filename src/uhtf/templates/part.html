@@ -22,9 +22,15 @@
               <div class="d-flex">
                 <button class="btn btn-secondary icon-link me-2" form="delete">
                   <svg class="bi">
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#trash">
+                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#trash2-fill">
                   </svg>
                   Delete
+                </button>
+                <button class="btn btn-primary icon-link" data-bs-toggle="modal" data-bs-target="#updatePartModal">
+                  <svg class="bi">
+                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil-fill">
+                  </svg>
+                  Update
                 </button>
                 <button class="btn btn-primary icon-link" data-bs-toggle="modal" data-bs-target="#createPartModal">
                   <svg class="bi">
@@ -92,6 +98,35 @@
             </div>
           </div>
         </div>
+        <div class="modal fade" id="updatePartModal" tabindex="-1" aria-labelledby="updatePartModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="updatePartModalLabel">Update Part</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="create" action="{{ url_for('.update') }}" method="post">
+                  <div class="mb-3">
+                    <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
+                    <input type="text" class="form-control" id="global_trade_item_number" name="global_trade_item_number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="part_number" class="col-form-label">Part Number</label>
+                    <input type="text" class="form-control" id="part_number" name="part_number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="part_description" class="col-form-label">Part Description</label>
+                    <input type="text" class="form-control" id="part_description" name="part_description" required>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="submit" form="create" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
         <script type="text/javascript">
         function selectAll(source) {
           checkboxes = document.getElementsByName('part_id');
@@ -99,5 +134,7 @@
             checkboxes[i].checked = source.checked;
           }
         }
+        
+        function updateForm(
         </script>
 {% endblock %}
