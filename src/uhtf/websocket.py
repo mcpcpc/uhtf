@@ -119,7 +119,7 @@ def init_websocket(app: Quart) -> Quart:
                 else:
                     procedure.run_passed = False
                     await broker.publish(dumps(asdict(procedure)))
-                    continue
+                    continue  # restart procedure
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
                     procedure.unit_under_test["part_number"] = part["part_number"]
@@ -128,7 +128,7 @@ def init_websocket(app: Quart) -> Quart:
                 else:
                     procedure.run_passed = False
                     await broker.publish(dumps(asdict(procedure)))
-                    continue
+                    continue  # restart procedure
                 # setup phase
                 phase = htf.setup(3.0)
                 procedure.phases.append(phase)
@@ -136,7 +136,7 @@ def init_websocket(app: Quart) -> Quart:
                 if phase.outcome.value != "PASS":
                     procedure.run_passed = False
                     await broker.publish(dumps(asdict(procedure)))
-                    continue
+                    continue  # restart procedure
                 # preamp current phase
                 phase = htf.preamp_current(-0.005, 3.000)
                 procedure.phases.append(phase)
@@ -157,9 +157,9 @@ def init_websocket(app: Quart) -> Quart:
                 if phase.outcome.value != "PASS":
                     procedure.run_passed = False
                     await broker.publish(dumps(asdict(procedure)))
-                    continue
                 # finalize results
-                procedure.run_passed = True
+                if procedure.run_passed != False:
+                    procedure.run_passed = True
                 await broker.publish(dumps(asdict(procedure)))
 
         try:
