@@ -99,7 +99,7 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+          const checkboxes = document.getElementsByName('part_id');
           const deletePart = document.getElementById('deletePart');
           checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function() {
