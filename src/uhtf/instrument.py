@@ -24,7 +24,7 @@ instrument = Blueprint("instrument", __name__)
 async def read() -> tuple:
     """Read instruments callback."""
 
-    rows = get_db().execute(
+    instruments = get_db().execute(
         """
         SELECT * FROM
             instrument
@@ -34,7 +34,7 @@ async def read() -> tuple:
     ).fetchall()
     return await render_template(
         "instrument.html",
-        instruments=rows,
+        instruments=instruments,
     )
 
 

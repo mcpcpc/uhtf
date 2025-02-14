@@ -23,7 +23,7 @@ part = Blueprint("part", __name__)
 async def read() -> tuple:
     """Read parts callback."""
 
-    rows = get_db().execute(
+    parts = get_db().execute(
         """
         SELECT * FROM 
             part
@@ -33,7 +33,7 @@ async def read() -> tuple:
     ).fetchall()
     return await render_template(
         "part.html",
-        parts=rows,
+        parts=parts,
     )
 
 
