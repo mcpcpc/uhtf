@@ -5,10 +5,11 @@
 SPDX-FileCopyrightText: 2025 Michael Czigler
 SPDX-License-Identifier: BSD-3-Clause
 
-Part endpoints.
+Instrument endpoints.
 """
 
 from quart import Blueprint
+from quart import flash
 from quart import redirect
 from quart import render_template
 from quart import request
@@ -16,40 +17,30 @@ from quart import url_for
 
 from .database import get_db
 
-part = Blueprint("part", __name__)
+instrument = Blueprint("instrument", __name__)
 
 
-@part.get("/part/<int:id>")
-async def read(id: int) -> tuple:
-    """Read part endpoint."""
-
-    row = get_db().execute(
-        "SELECT * FROM part WHERE id = ?",
-        (id,),
-    ).fetchone()
-    if not row:
-        return "Part does not exist.", 404
-    return dict(row), 201
-
-
-@part.get("/part")
-async def manage() -> tuple:
-    """Manage parts endpoint."""
+@@instrument.get("/instrument")
+async def read() -> tuple:
+    """Read instruments callback."""
 
     rows = get_db().execute(
         """
         SELECT * FROM
-            part
+            instrument
         ORDER BY
-            part_number ASC
+            description ASC
         """
     ).fetchall()
-    return await render_template("part.html", parts=rows)
+    return await render_template(
+        "instrument.html",
+        instruments=rows,
+    )
 
 
-@part.post("/part")
+@instrument.post("/instrument")
 async def create() -> tuple:
-    """Create part endpoint."""
+    """Create instrument callback."""
 
     form = (await request.form).copy().to_dict()
     try:
@@ -57,14 +48,14 @@ async def create() -> tuple:
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
-            INSERT INTO part (
-                global_trade_item_number,
-                part_number,
-                part_description
+            INSERT INTO instrument (
+                description,
+                hostname,
+                port
             ) VALUES (
-                :global_trade_item_number,
-                :part_number,
-                :part_description
+                :description,
+                :hostname,
+                :port
             )
             """,
             form,
@@ -74,24 +65,29 @@ async def create() -> tuple:
         flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
         flash("Invalid parameter(s).", "warning")
-    return redirect(url_for(".manage"))
+    return redirect(url_for(".read"))
 
 
-@part.post("/part/delete")
+@instrument.post("/instrument/delete")
 async def delete():
+    """Delete instruments callback."""
+
     db = get_db()
     form = await request.form
-    part_ids = form.getlist("part_id")
-    for id in part_ids:
-        db.execute("DELETE FROM part WHERE id = ?", (id,))
+    instrument_ids = form.getlist("instrument_id")
+    for instrument_id in instrument_ids:
+        db.execute(
+            "DELETE FROM instrument WHERE id = ?",
+            (instrument_id,)
+        )
         db.commit()
-    return redirect(url_for(".manage"))
+    return redirect(url_for(".read"))
 
 
 
-@part.post("/part/<int:id>/update")
+@instrument.post("/instrument/<int:id>/update")
 async def update(id: int) -> tuple:
-    """Update part endpoint."""
+    """Update instrument endpoint."""
 
     form = (await request.form).copy().to_dict()
     try:
@@ -99,16 +95,16 @@ async def update(id: int) -> tuple:
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
-            UPDATE part SET
-                global_trade_item_number = ?,
-                part_number = ?,
-                part_description = ?
+            UPDATE instrument SET
+                description = ?,
+                hostname = ?,
+                port = ?
             WHERE id = ?
             """,
             (
-                form.get("global_trade_item_number"),
-                form.get("part_number"),
-                form.get("part_description"),
+                form.get("description"),
+                form.get("hostname"),
+                form.get("port"),
                 id,
             ),
         )
@@ -117,5 +113,4 @@ async def update(id: int) -> tuple:
         flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
         flash("Invalid parameter(s).", "warning")
-    return redirect(url_for(".manage"))
-
+    return redirect(url_for(".read"))
