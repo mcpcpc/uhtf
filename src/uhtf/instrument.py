@@ -96,6 +96,7 @@ async def update(id: int) -> tuple:
         db.execute(
             """
             UPDATE instrument SET
+                updated_at = CURRENT_TIMESTAMP,
                 description = ?,
                 hostname = ?,
                 port = ?
