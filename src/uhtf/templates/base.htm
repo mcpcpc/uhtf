@@ -66,6 +66,14 @@
                     Parts
                   </a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125em, 0)" href="{{ url_for('part.read') }}">
+                    <svg class="bi">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#bar-chart-steps"></use>
+                    </svg>
+                    Phases
+                  </a>
+                </li>
                 <li class="nav-item dropdown">
                   <button class="btn btn-link nav-link icon-link dropdown-toggle" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
                     <svg class="bi theme-icon-active">
