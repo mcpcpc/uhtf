@@ -25,10 +25,7 @@ async def read() -> tuple:
 
     rows = get_db().execute(
         """
-        SELECT * FROM
-            part
-        ORDER BY
-            part_number ASC
+        SELECT * FROM part ORDER BY number ASC
         """
     ).fetchall()
     return await render_template("part.html", parts=rows)
@@ -46,12 +43,12 @@ async def create() -> tuple:
             """
             INSERT INTO part (
                 global_trade_item_number,
-                part_number,
-                part_name
+                number,
+                name
             ) VALUES (
                 :global_trade_item_number,
-                :part_number,
-                :part_name
+                :number,
+                :name
             )
             """,
             form,
@@ -90,14 +87,14 @@ async def update(id: int) -> tuple:
             """
             UPDATE part SET
                 global_trade_item_number = ?,
-                part_number = ?,
-                part_name = ?
+                number = ?,
+                name = ?
             WHERE id = ?
             """,
             (
                 form.get("global_trade_item_number"),
-                form.get("part_number"),
-                form.get("part_name"),
+                form.get("number"),
+                form.get("name"),
                 id,
             ),
         )

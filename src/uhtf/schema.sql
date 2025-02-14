@@ -18,6 +18,6 @@ CREATE TABLE part (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT NULL,
     global_trade_item_number TEXT UNIQUE NOT NULL,
-    part_number TEXT UNIQUE NOT NULL,
-    part_name TEXT UNIQUE NOT NULL
+    number TEXT UNIQUE NOT NULL,
+    name TEXT UNIQUE NOT NULL
 );
