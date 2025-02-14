@@ -29,7 +29,7 @@ async def read() -> tuple:
         SELECT * FROM
             instrument
         ORDER BY
-            description ASC
+            name ASC
         """
     ).fetchall()
     return await render_template(
@@ -49,11 +49,11 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO instrument (
-                description,
+                name,
                 hostname,
                 port
             ) VALUES (
-                :description,
+                :name,
                 :hostname,
                 :port
             )
@@ -97,13 +97,13 @@ async def update(id: int) -> tuple:
             """
             UPDATE instrument SET
                 updated_at = CURRENT_TIMESTAMP,
-                description = ?,
+                name = ?,
                 hostname = ?,
                 port = ?
             WHERE id = ?
             """,
             (
-                form.get("description"),
+                form.get("name"),
                 form.get("hostname"),
                 form.get("port"),
                 id,
