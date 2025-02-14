@@ -92,6 +92,7 @@ async def update(id: int) -> tuple:
         db.execute(
             """
             UPDATE part SET
+                updated_at = CURRENT_TIMESTAMP,
                 global_trade_item_number = ?,
                 number = ?,
                 name = ?
