@@ -31,9 +31,6 @@
             <h5 class="offcanvas-title" id="bdSidebarOffcanvasLabel">Navigation</h5>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar">
           </div>
-          <!--
-          <div class="offcanvas-body p-4">
-          -->
           <div class="offcanvas-body px-4">
             <nav class="w-100" aria-label="Navigation">
               <ul class="navbar-nav justify-content-end flex-grow-1">
@@ -43,6 +40,14 @@
                       <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#send-fill"></use>
                     </svg>
                     Test
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125em, 0)" href="{{ url_for('measurement.read') }}">
+                    <svg class="bi">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#ethernet"></use>
+                    </svg>
+                    Measurements
                   </a>
                 </li>
                 <li class="nav-item">
