@@ -4,6 +4,7 @@
 DROP TABLE IF EXISTS instrument;
 DROP TABLE IF EXISTS measurement;
 DROP TABLE IF EXISTS part;
+DROP TABLE IF EXISTS phase;
 
 CREATE TABLE instrument (
     id INTEGER PRIMARY KEY,
@@ -37,5 +38,12 @@ CREATE TABLE part (
     updated_at DATETIME DEFAULT NULL,
     global_trade_item_number TEXT UNIQUE NOT NULL,
     number TEXT UNIQUE NOT NULL,
+    name TEXT UNIQUE NOT NULL
+);
+
+CREATE TABLE phase (
+    id INTEGER PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
     name TEXT UNIQUE NOT NULL
 );
