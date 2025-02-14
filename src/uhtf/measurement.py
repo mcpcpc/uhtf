@@ -50,6 +50,10 @@ async def read() -> tuple:
             measurement.delay AS delay 
         FROM
             measurement
+        INNER JOIN
+            command ON instrument = measurement.instrument_id
+        INNER JOIN
+            command ON part = measurement.part_id
         ORDER BY
             phase ASC,
             name ASC
