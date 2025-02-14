@@ -83,9 +83,14 @@
               </div>
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
-                  <div class="mb-3">
-                    <label for="part_id" class="col-form-label">Part Name</label>
-                    <input type="text" class="form-control" id="part_id" name="part_id" required>
+                  <div class="form-floating mb-3">
+                    <select name="part_id" class="form-select" id="part_id" required>
+                      <option selected>Choose...</option>
+                      {% for part in parts %}
+                      <option value={{ part.id }}>{{ part.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="part_id">Part</label>
                   </div>
                   <div class="mb-3">
                     <label for="phase" class="col-form-label">Phase Name</label>
