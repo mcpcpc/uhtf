@@ -25,10 +25,7 @@ async def read() -> tuple:
 
     phases = get_db().execute(
         """
-        SELECT * FROM 
-            phase
-        ORDER BY
-            name ASC
+        SELECT * FROM phase
         """
     ).fetchall()
     return await render_template(
