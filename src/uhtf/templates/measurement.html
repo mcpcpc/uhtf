@@ -92,9 +92,14 @@
                     </select>
                     <label for="part_id">Part</label>
                   </div>
-                  <div class="mb-3">
-                    <label for="phase" class="col-form-label">Phase Name</label>
-                    <input type="text" class="form-control" id="phase" name="phase" required>
+                  <div class="form-floating mb-3">
+                    <select name="phase_id" class="form-select" id="phase_id" required>
+                      <option selected>Choose...</option>
+                      {% for phase in phases %}
+                      <option value={{ phase.id }}>{{ phase.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="part_id">Phase</label>
                   </div>
                   <div class="form-floating mb-3">
                     <select name="instrument_id" class="form-select" id="instrument_id" required>

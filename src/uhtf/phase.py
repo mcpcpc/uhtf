@@ -28,7 +28,7 @@ async def read() -> tuple:
         SELECT * FROM 
             phase
         ORDER BY
-            number ASC
+            name ASC
         """
     ).fetchall()
     return await render_template(

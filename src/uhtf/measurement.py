@@ -35,14 +35,19 @@ async def read() -> tuple:
         SELECT * FROM part
         """
     ).fetchall()
+    phases = get_db().execute(
+        """
+        SELECT * FROM phase
+        """
+    ).fetchall()
     measurements = get_db().execute(
         """
         SELECT
             measurement.id AS id,
             instrument.name AS instrument,
             part.name AS part,
+            phase.name AS phase,
             measurement.name AS name,
-            measurement.phase AS phase,
             measurement.scpi AS scpi,
             measurement.units AS units,
             measurement.lower_limit AS lower_limit,
@@ -54,9 +59,10 @@ async def read() -> tuple:
             instrument ON instrument.id = measurement.instrument_id
         INNER JOIN
             part ON part.id = measurement.part_id
+        INNER JOIN
+            phase ON phase.id = measurement.phase_id
         ORDER BY
-            phase ASC,
-            name ASC
+            part ASC
         """
     ).fetchall()
     return await render_template(
@@ -64,6 +70,7 @@ async def read() -> tuple:
         instruments=instruments,
         measurements=measurements,
         parts=parts,
+        phases=phases,
     )
 
 
@@ -79,9 +86,9 @@ async def create() -> tuple:
             """
             INSERT INTO measurement (
                 part_id,
+                phase_id,
                 instrument_id,
                 name,
-                phase,
                 scpi,
                 units,
                 lower_limit,
@@ -90,9 +97,9 @@ async def create() -> tuple:
                 
             ) VALUES (
                 :part_id,
+                :phase_id,
                 :instrument_id,
                 :name,
-                :phase,
                 :scpi,
                 :units,
                 :lower_limit,
@@ -140,9 +147,9 @@ async def update(id: int) -> tuple:
             UPDATE measurement SET
                 updated_at = CURRENT_TIMESTAMP,
                 part_id = ?,
+                phase_id = ?,
                 instrument_id = ?,
                 name = ?,
-                phase = ?,
                 scpi = ?,
                 units = ?,
                 lower_limit = ?,
@@ -152,9 +159,9 @@ async def update(id: int) -> tuple:
             """,
             (
                 form.get("part_id"),
+                form.get("phase_id"),
                 form.get("instrument_id"),
                 form.get("name"),
-                form.get("phase"),
                 form.get("scpi"),
                 form.get("units"),
                 form.get("lower_limit"),
