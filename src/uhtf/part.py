@@ -25,10 +25,16 @@ async def read() -> tuple:
 
     rows = get_db().execute(
         """
-        SELECT * FROM part ORDER BY number ASC
+        SELECT * FROM 
+            part
+        ORDER BY
+            number ASC
         """
     ).fetchall()
-    return await render_template("part.html", parts=rows)
+    return await render_template(
+        "part.html",
+        parts=rows,
+    )
 
 
 @part.post("/part")
