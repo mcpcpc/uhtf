@@ -64,8 +64,8 @@
                     <span id="part_number"></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-semibold text-secondary"><small>Part Description</small></span>
-                    <span id="part_description"></span>
+                    <span class="fw-semibold text-secondary"><small>Part Name</small></span>
+                    <span id="part_name"></span>
                   </div>
                 </div>
               </div>
@@ -93,7 +93,7 @@
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
-            document.getElementById("part_description").textContent = procedure["unit_under_test"]["part_name"];
+            document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
             setBadge("run_status", procedure["run_passed"]);
             if (procedure["phases"].length > 0) {

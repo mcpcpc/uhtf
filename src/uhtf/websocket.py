@@ -109,7 +109,7 @@ def init_websocket(app: Quart) -> Quart:
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
                     procedure.unit_under_test.part_number = part["part_number"]
-                    procedure.unit_under_test.part_name = part["part_description"]
+                    procedure.unit_under_test.part_name = part["part_name"]
                     await broker.publish(dumps(asdict(procedure)))
                 else:
                     procedure.run_passed = False

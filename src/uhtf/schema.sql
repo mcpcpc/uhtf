@@ -19,5 +19,5 @@ CREATE TABLE part (
     updated_at DATETIME DEFAULT NULL,
     global_trade_item_number TEXT UNIQUE NOT NULL,
     part_number TEXT UNIQUE NOT NULL,
-    part_description TEXT UNIQUE NOT NULL
+    part_name TEXT UNIQUE NOT NULL
 );

@@ -42,7 +42,7 @@
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
                         <th scope="col" class="text-nowrap">Part Number</th>
-                        <th scope="col" class="w-100">Description</th>
+                        <th scope="col" class="w-100">Name</th>
                         <th scope="col" class="text-nowrap">GTIN</th>
                       </tr>
                     </thead>
@@ -51,7 +51,7 @@
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
                         <td>{{ part.part_number }}</td>
-                        <td class="text-nowrap">{{ part.part_description }}</td>
+                        <td class="text-nowrap">{{ part.part_name }}</td>
                         <td><code>{{ part.global_trade_item_number }}</code></td>
                       </tr>
                       {% endfor %}
@@ -80,8 +80,8 @@
                     <input type="text" class="form-control" id="part_number" name="part_number" required>
                   </div>
                   <div class="mb-3">
-                    <label for="part_description" class="col-form-label">Part Description</label>
-                    <input type="text" class="form-control" id="part_description" name="part_description" required>
+                    <label for="part_name" class="col-form-label">Part Name</label>
+                    <input type="text" class="form-control" id="part_name" name="part_name" required>
                   </div>
                 </form>
               </div>

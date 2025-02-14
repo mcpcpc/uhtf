@@ -47,11 +47,11 @@ async def create() -> tuple:
             INSERT INTO part (
                 global_trade_item_number,
                 part_number,
-                part_description
+                part_name
             ) VALUES (
                 :global_trade_item_number,
                 :part_number,
-                :part_description
+                :part_name
             )
             """,
             form,
@@ -91,13 +91,13 @@ async def update(id: int) -> tuple:
             UPDATE part SET
                 global_trade_item_number = ?,
                 part_number = ?,
-                part_description = ?
+                part_name = ?
             WHERE id = ?
             """,
             (
                 form.get("global_trade_item_number"),
                 form.get("part_number"),
-                form.get("part_description"),
+                form.get("part_name"),
                 id,
             ),
         )
