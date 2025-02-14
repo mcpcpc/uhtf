@@ -51,9 +51,9 @@ async def read() -> tuple:
         FROM
             measurement
         INNER JOIN
-            command ON instrument = measurement.instrument_id
+            instrument ON instrument.id = measurement.instrument_id
         INNER JOIN
-            command ON part = measurement.part_id
+            part ON part.id = measurement.part_id
         ORDER BY
             phase ASC,
             name ASC
