@@ -2,6 +2,7 @@
 -- Drop any existing data and create empty tables.
 
 DROP TABLE IF EXISTS instrument;
+DROP TABLE IF EXISTS measurement;
 DROP TABLE IF EXISTS part;
 
 CREATE TABLE instrument (
@@ -11,6 +12,23 @@ CREATE TABLE instrument (
     description TEXT UNIQUE NOT NULL,
     hostname TEXT UNIQUE NOT NULL,
     port INTEGER DEFAULT 5025
+);
+
+CREATE TABLE measurement (
+    id INTEGER PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
+    part_id INTEGER NOT NULL,
+    instrument_id INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    phase TEXT NOT NULL,
+    scpi TEXT NOT NULL,
+    units TEXT DEFAULT NULL,
+    lower_limit REAL DEFAULT NULL,
+    upper_limit REAL DEFAULT NULL,
+    delay INTEGER DEFAULT 0,
+    FOREIGN KEY(part_id) REFERENCES part(id) ON DELETE CASCADE ON UPDATE NO ACTION
+    FOREIGN KEY(instrument_id) REFERENCES instrument(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
 CREATE TABLE part (
