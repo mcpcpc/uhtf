@@ -96,9 +96,14 @@
                     <label for="phase" class="col-form-label">Phase Name</label>
                     <input type="text" class="form-control" id="phase" name="phase" required>
                   </div>
-                  <div class="mb-3">
-                    <label for="instument_id" class="col-form-label">Instrument Name</label>
-                    <input type="text" class="form-control" id="instument_id" name="instument_id" required>
+                  <div class="form-floating mb-3">
+                    <select name="instrument_id" class="form-select" id="instrument_id" required>
+                      <option selected>Choose...</option>
+                      {% for instrument in instruments %}
+                      <option value={{ instrument.id }}>{{ instrument.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="instrument_id">Instrument</label>
                   </div>
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Measurement Name</label>
