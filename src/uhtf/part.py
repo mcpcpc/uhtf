@@ -19,22 +19,9 @@ from .database import get_db
 part = Blueprint("part", __name__)
 
 
-@part.get("/part/<int:id>")
-async def read(id: int) -> tuple:
-    """Read part endpoint."""
-
-    row = get_db().execute(
-        "SELECT * FROM part WHERE id = ?",
-        (id,),
-    ).fetchone()
-    if not row:
-        return "Part does not exist.", 404
-    return dict(row), 201
-
-
 @part.get("/part")
-async def manage() -> tuple:
-    """Manage parts endpoint."""
+async def read() -> tuple:
+    """Read parts callback."""
 
     rows = get_db().execute(
         """
@@ -49,7 +36,7 @@ async def manage() -> tuple:
 
 @part.post("/part")
 async def create() -> tuple:
-    """Create part endpoint."""
+    """Create part callback."""
 
     form = (await request.form).copy().to_dict()
     try:
@@ -74,24 +61,26 @@ async def create() -> tuple:
         flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
         flash("Invalid parameter(s).", "warning")
-    return redirect(url_for(".manage"))
+    return redirect(url_for(".read"))
 
 
 @part.post("/part/delete")
 async def delete():
+    """Delete parts callback."""
+
     db = get_db()
     form = await request.form
     part_ids = form.getlist("part_id")
     for id in part_ids:
         db.execute("DELETE FROM part WHERE id = ?", (id,))
         db.commit()
-    return redirect(url_for(".manage"))
+    return redirect(url_for(".read"))
 
 
 
 @part.post("/part/<int:id>/update")
 async def update(id: int) -> tuple:
-    """Update part endpoint."""
+    """Update part callback."""
 
     form = (await request.form).copy().to_dict()
     try:
@@ -117,5 +106,5 @@ async def update(id: int) -> tuple:
         flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
         flash("Invalid parameter(s).", "warning")
-    return redirect(url_for(".manage"))
+    return redirect(url_for(".read"))
 
