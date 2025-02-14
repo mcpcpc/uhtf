@@ -20,7 +20,7 @@ from .database import get_db
 instrument = Blueprint("instrument", __name__)
 
 
-@@instrument.get("/instrument")
+@instrument.get("/instrument")
 async def read() -> tuple:
     """Read instruments callback."""
 
