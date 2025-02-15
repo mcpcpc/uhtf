@@ -129,8 +129,8 @@
           }
 
           const updateModal = document.getElementById("updateModal");
-          const editButtons = document.querySelectorAll(".update-btn");
-          editButtons.forEach(button => {
+          const updateButtons = document.querySelectorAll(".update-btn");
+          updateButtons.forEach(button => {
             button.addEventListener("click", function () {
               const row = this.closest("tr");
               const cells = row.getElementsByTagName("td");
