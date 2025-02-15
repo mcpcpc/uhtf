@@ -25,7 +25,10 @@ async def read() -> tuple:
 
     phases = get_db().execute(
         """
-        SELECT * FROM phase
+        SELECT * FROM
+            phase
+        ORDER BY
+            priority ASC
         """
     ).fetchall()
     return await render_template(
@@ -45,9 +48,11 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO phase (
-                name
+                name,
+                priority
             ) VALUES (
-                :name
+                :name,
+                :priority
             )
             """,
             form,
@@ -85,11 +90,13 @@ async def update(id: int) -> tuple:
             """
             UPDATE phase SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = ?
+                name = ?,
+                priority = ?
             WHERE id = ?
             """,
             (
                 form.get("name"),
+                form.get("priority"),
                 id,
             ),
         )
