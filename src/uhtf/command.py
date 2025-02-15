@@ -91,6 +91,7 @@ async def update() -> tuple:
     """Update command callback."""
 
     form = (await request.form).copy().to_dict()
+    print(form)
     command_id = form.pop("id")
     try:
         db = get_db()
