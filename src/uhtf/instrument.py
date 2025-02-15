@@ -62,9 +62,9 @@ async def create() -> tuple:
         )
         db.commit()
     except db.ProgrammingError:
-        flash("Missing parameter(s).", "warning")
+        await flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
-        flash("Invalid parameter(s).", "warning")
+        await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
 
 
@@ -111,7 +111,7 @@ async def update(id: int) -> tuple:
         )
         db.commit()
     except db.ProgrammingError:
-        flash("Missing parameter(s).", "warning")
+        await flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
-        flash("Invalid parameter(s).", "warning")
+        await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
