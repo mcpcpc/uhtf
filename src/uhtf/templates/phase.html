@@ -49,7 +49,7 @@
                       {% for phase in phases %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
-                        <td class="text-nowrap">{{ phase.name }} <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.priority }}')"><svg class="bi"><use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil"></svg></a></td>
+                        <td class="text-nowrap">{{ phase.name }} <a class="text-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.priority }}')"><svg class="bi"><use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil-fill"></svg></a></td>
                         <td>{{ phase.priority }}</td>
                       </tr>
                       {% endfor %}
