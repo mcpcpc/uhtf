@@ -41,18 +41,18 @@
                     <thead>
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
-                        <th scope="col" class="text-nowrap">Part Number</th>
-                        <th scope="col" class="w-100">Name</th>
                         <th scope="col" class="text-nowrap">GTIN</th>
+                        <th scope="col" class="w-100">Name</th>
+                        <th scope="col" class="text-nowrap">Part Number</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for part in parts %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
-                        <td><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">{{ part.number }}</a></td>
+                        <td><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">{{ part.global_trade_item_number }}</a></td>
                         <td class="text-nowrap">{{ part.name }}</td>
-                        <td><code>{{ part.global_trade_item_number }}</code></td>
+                        <td><code>{{ part.number }}</code></td>
                       </tr>
                       {% endfor %}
                     </tbody>
