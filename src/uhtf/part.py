@@ -9,6 +9,7 @@ Part endpoints.
 """
 
 from quart import Blueprint
+from quart import flash
 from quart import redirect
 from quart import render_template
 from quart import request
