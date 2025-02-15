@@ -51,7 +51,7 @@
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="command_id" value="{{ command.id }}" /></td>
                         <td class="text-nowrap"><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ command.id }}', '{{ command.name }}', '{{ command.scpi }}', '{{ command.delay }}')">{{ command.name }}</a></td>
-                        <td>{{ command.scpi }}</td>
+                        <td class="text-nowrap">{{ command.scpi }}</td>
                         <td>{{ command.delay }}</td>
                       </tr>
                       {% endfor %}
