@@ -55,8 +55,7 @@ async def read() -> tuple:
             measurement.name AS name,
             measurement.units AS units,
             measurement.lower_limit AS lower_limit,
-            measurement.upper_limit AS upper_limit,
-            measurement.delay AS delay 
+            measurement.upper_limit AS upper_limit
         FROM
             measurement
         INNER JOIN
