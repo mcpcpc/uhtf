@@ -51,8 +51,8 @@
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
                         <td><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">{{ part.global_trade_item_number }}</a></td>
-                        <td class="text-nowrap">{{ part.number }}</td>
-                        <td>{{ part.name }}</td>
+                        <td>{{ part.number }}</td>
+                        <td class="text-nowrap">{{ part.name }}</td>
                       </tr>
                       {% endfor %}
                     </tbody>
