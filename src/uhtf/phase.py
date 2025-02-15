@@ -107,4 +107,3 @@ async def update() -> tuple:
     except db.IntegrityError:
         await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
-
