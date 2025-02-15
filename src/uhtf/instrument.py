@@ -85,11 +85,12 @@ async def delete():
 
 
 
-@instrument.post("/instrument/<int:id>/update")
-async def update(id: int) -> tuple:
+@instrument.post("/instrument/update")
+async def update() -> tuple:
     """Update instrument endpoint."""
 
     form = (await request.form).copy().to_dict()
+    instrument_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -106,7 +107,7 @@ async def update(id: int) -> tuple:
                 form.get("name"),
                 form.get("hostname"),
                 form.get("port"),
-                id,
+                instrument_id,
             ),
         )
         db.commit()

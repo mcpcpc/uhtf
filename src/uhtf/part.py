@@ -81,11 +81,12 @@ async def delete():
 
 
 
-@part.post("/part/<int:id>/update")
-async def update(id: int) -> tuple:
+@part.post("/part/update")
+async def update() -> tuple:
     """Update part callback."""
 
     form = (await request.form).copy().to_dict()
+    part_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -102,7 +103,7 @@ async def update(id: int) -> tuple:
                 form.get("global_trade_item_number"),
                 form.get("number"),
                 form.get("name"),
-                id,
+                part_id,
             ),
         )
         db.commit()
