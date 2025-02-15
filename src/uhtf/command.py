@@ -32,8 +32,7 @@ async def read() -> tuple:
         """
     ).fetchall()
     return await render_template(
-        "command.html",
-        commands=commands,
+        "command.html"
     )
 
 
