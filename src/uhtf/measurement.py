@@ -44,9 +44,9 @@ async def read() -> tuple:
         """
         SELECT
             measurement.id AS id,
-            instrument.name AS instrument,
             part.name AS part,
             phase.name AS phase,
+            instrument.name AS instrument,
             measurement.name AS name,
             measurement.scpi AS scpi,
             measurement.units AS units,
