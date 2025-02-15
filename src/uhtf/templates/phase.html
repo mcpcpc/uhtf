@@ -41,22 +41,22 @@
                     <thead>
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
-                        <th scope="col" class="w-100">Name</th>
-                        <th scope="col" class="w-100">Priority</th>
                         <!-- start edit -->
                         <th scope="col"></th>
                         <!-- start edit -->
+                        <th scope="col" class="w-100">Name</th>
+                        <th scope="col" class="w-100">Priority</th>
                       </tr>
                     </thead>
                     <tbody>
                       {% for phase in phases %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
-                        <td class="text-nowrap">{{ phase.name }}</td>
-                        <td>{{ phase.priority }}</td>
                         <!-- start edit -->
                         <td><button class="btn update-btn" data-bs-toggle="modal" data-bs-target="#updateModal">Edit</button></td>
                         <!-- end edit -->
+                        <td class="text-nowrap">{{ phase.name }}</td>
+                        <td>{{ phase.priority }}</td>
                       </tr>
                       {% endfor %}
                     </tbody>
