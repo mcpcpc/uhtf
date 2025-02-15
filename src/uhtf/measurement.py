@@ -79,6 +79,7 @@ async def create() -> tuple:
     """Create measurement callback."""
 
     form = (await request.form).copy().to_dict()
+    print(form)
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
