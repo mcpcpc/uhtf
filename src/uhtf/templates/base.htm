@@ -123,6 +123,15 @@
         </div>
       </aside>
       <main class="order-1" style="grid-area: main">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class=flashes>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
         {% block container %}{% endblock %}
       </main>
     </div>
