@@ -55,7 +55,7 @@
                         <td class="text-nowrap">{{ phase.name }}</td>
                         <td>{{ phase.priority }}</td>
                         <!-- start edit -->
-                        <td><button class="edit-btn" data-bs-toggle="modal" data-bs-target="#updateModal">Edit</button></td>
+                        <td><button class="btn update-btn" data-bs-toggle="modal" data-bs-target="#updateModal">Edit</button></td>
                         <!-- end edit -->
                       </tr>
                       {% endfor %}
@@ -104,11 +104,11 @@
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Phase Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="update-name" name="name" required>
                   </div>
                   <div class="mb-3">
                     <label for="priority" class="col-form-label">Priority</label>
-                    <input type="number" class="form-control" id="priority" name="priority" value="0" required>
+                    <input type="number" class="form-control" id="update-priority" name="priority" value="0" required>
                   </div>
                 </form>
               </div>
@@ -128,15 +128,14 @@
             }
           }
 
-          const editModal = document.getElementById("updateModal");
-          const editButtons = document.querySelectorAll(".edit-btn");
+          const updateModal = document.getElementById("updateModal");
+          const editButtons = document.querySelectorAll(".update-btn");
           editButtons.forEach(button => {
             button.addEventListener("click", function () {
               const row = this.closest("tr");
               const cells = row.getElementsByTagName("td");
-              document.getElementById("name").value = cells[0].textContent;
-              document.getElementById("priority").value = cells[1].textContent;
-              editModal.style.display = "block";
+              document.getElementById("update-name").value = cells[0].textContent;
+              document.getElementById("update-priority").value = cells[1].textContent;
             });
           });
         </script>
