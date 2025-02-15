@@ -78,11 +78,12 @@ async def delete():
     return redirect(url_for(".read"))
 
 
-@phase.post("/phase/<int:id>/update")
-async def update(id: int) -> tuple:
+@phase.post("/phase/update")
+async def update() -> tuple:
     """Update phase callback."""
 
     form = (await request.form).copy().to_dict()
+    phase_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -97,7 +98,7 @@ async def update(id: int) -> tuple:
             (
                 form.get("name"),
                 form.get("priority"),
-                id,
+                phase_id,
             ),
         )
         db.commit()
