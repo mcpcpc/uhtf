@@ -50,7 +50,7 @@
                       {% for part in parts %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
-                        <td>{{ part.number }}</td>
+                        <td><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">{{ part.number }}</a></td>
                         <td class="text-nowrap">{{ part.name }}</td>
                         <td><code>{{ part.global_trade_item_number }}</code></td>
                       </tr>
@@ -73,6 +73,40 @@
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
                     <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
+                    <input type="text" class="form-control" name="global_trade_item_number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="number" class="col-form-label">Part Number</label>
+                    <input type="text" class="form-control" name="number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="col-form-label">Part Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
+                <button type="submit" form="create" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Part</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="update" action="{{ url_for('.update') }}" method="post">
+                  <div class="mb-3">
+                    <label for="id" class="col-form-label">ID</label>
+                    <input type="number" class="form-control" id="id" name="id" disabled readonly>
+                  </div>
+                  <div class="mb-3">
+                    <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
                     <input type="text" class="form-control" id="global_trade_item_number" name="global_trade_item_number" required>
                   </div>
                   <div class="mb-3">
@@ -86,8 +120,7 @@
                 </form>
               </div>
               <div class="modal-footer border-0">
-                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
-                <button type="submit" form="create" class="btn btn-primary">Create</button>
+                <button type="submit" form="update" class="btn btn-primary">Update</button>
               </div>
             </div>
           </div>
@@ -98,6 +131,12 @@
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
             }
+          }
+          function populateUpdateModal(id, gtin, number, name) {
+            document.getElementById("id").value = id;
+            document.getElementById("global_trade_item_number").value = gtin;
+            document.getElementById("number").value = number;
+            document.getElementById("name").value = name;
           }
         </script>
 {% endblock %}
