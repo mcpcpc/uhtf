@@ -95,7 +95,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
-                <form id="create" action="{{ url_for('.update') }}" method="post">
+                <form id="update" action="{{ url_for('.update') }}" method="post">
                   <div class="mb-3">
                     <label for="id" class="col-form-label">Reference ID</label>
                     <input type="number" class="form-control" id="id" name="id" readonly>
@@ -112,7 +112,7 @@
               </div>
               <div class="modal-footer border-0">
                 <button type="reset" form="create" class="btn btn-secondary">Clear</button>
-                <button type="submit" form="create" class="btn btn-primary">Create</button>
+                <button type="submit" form="update" class="btn btn-primary">Update</button>
               </div>
             </div>
           </div>
