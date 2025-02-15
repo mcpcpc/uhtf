@@ -43,6 +43,7 @@
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
                         <th scope="col" class="w-100">Name</th>
                         <th scope="col" class="w-100">Priority</th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -51,6 +52,7 @@
                         <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
                         <td class="text-nowrap">{{ phase.name }}</td>
                         <td>{{ phase.priority }}</td>
+                        <td><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="populateUpdateModal({{ phase.id }}, '{{ phase.name }}', {{ phase.priority }})">Edit</button></td>
                       </tr>
                       {% endfor %}
                     </tbody>
@@ -69,6 +71,35 @@
               </div>
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
+                  <div class="mb-3">
+                    <label for="name" class="col-form-label">Phase Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="priority" class="col-form-label">Priority</label>
+                    <input type="number" class="form-control" name="priority" value="0" required>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
+                <button type="submit" form="create" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Phase</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="create" action="{{ url_for('.update') }}" method="post">
+                  <div class="mb-3">
+                    <label for="id" class="col-form-label">Reference ID</label>
+                    <input type="number" class="form-control" id="id" name="id" readonly>
+                  </div>
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Phase Name</label>
                     <input type="text" class="form-control" id="name" name="name" required>
@@ -92,6 +123,11 @@
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
             }
+          }
+          function populateUpdateModal(id, name, proiority) {
+            document.getElementById("id").value = id;
+            document.getElementById("name").value = name;
+            document.getElementById("priority").value = priority;
           }
         </script>
 {% endblock %}
