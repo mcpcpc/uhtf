@@ -24,7 +24,11 @@ measurement = Blueprint("measurement", __name__)
 async def read() -> tuple:
     """Read measurements callback."""
 
-    
+    commands = get_db().execute(
+        """
+        SELECT * FROM command
+        """
+    ).fetchall()
     instruments = get_db().execute(
         """
         SELECT * FROM instrument
@@ -47,8 +51,8 @@ async def read() -> tuple:
             part.name AS part,
             phase.name AS phase,
             instrument.name AS instrument,
+            command.name AS command,
             measurement.name AS name,
-            measurement.scpi AS scpi,
             measurement.units AS units,
             measurement.lower_limit AS lower_limit,
             measurement.upper_limit AS upper_limit,
@@ -57,6 +61,8 @@ async def read() -> tuple:
             measurement
         INNER JOIN
             instrument ON instrument.id = measurement.instrument_id
+        INNER JOIN
+            command ON command.id = measurement.command_id
         INNER JOIN
             part ON part.id = measurement.part_id
         INNER JOIN
@@ -67,6 +73,7 @@ async def read() -> tuple:
     ).fetchall()
     return await render_template(
         "measurement.html",
+        commands=commands,
         instruments=instruments,
         measurements=measurements,
         parts=parts,
@@ -88,23 +95,21 @@ async def create() -> tuple:
                 part_id,
                 phase_id,
                 instrument_id,
+                command_id,
                 name,
-                scpi,
                 units,
                 lower_limit,
-                upper_limit,
-                delay
+                upper_limit
                 
             ) VALUES (
                 :part_id,
                 :phase_id,
                 :instrument_id,
+                :command_id,
                 :name,
-                :scpi,
                 :units,
                 :lower_limit,
-                :upper_limit,
-                :delay
+                :upper_limit
             )
             """,
             form,

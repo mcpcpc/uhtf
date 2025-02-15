@@ -45,11 +45,10 @@
                         <th scope="col" class="text-nowrap">Phase Name</th>
                         <th scope="col" class="text-nowrap">Measurement Name</th>
                         <th scope="col" class="text-nowrap">Instrument Name</th>
-                        <th scope="col" class="text-nowrap">SCPI Command</th>
+                        <th scope="col" class="text-nowrap">Command Name</th>
                         <th scope="col">Units</th>
                         <th scope="col" class="text-nowrap">Lower Limit</th>
                         <th scope="col" class="text-nowrap">Upper Limit</th>
-                        <th scope="col">Delay</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -60,11 +59,10 @@
                         <td class="text-nowrap">{{ measurement.phase }}</td>
                         <td class="text-nowrap">{{ measurement.name }}</td>
                         <td class="text-nowrap">{{ measurement.instrument }}</td>
-                        <td class="text-nowrap"><pre>{{ measurement.scpi }}</pre></td>
+                        <td class="text-nowrap">{{ measurement.command }}</td>
                         <td>{{ measurement.units }}</td>
                         <td>{{ measurement.lower_limit }}</td>
                         <td>{{ measurement.upper_limit }}</td>
-                        <td>{{ measurement.delay }}</td>
                       </tr>
                       {% endfor %}
                     </tbody>
@@ -102,6 +100,15 @@
                     <label for="part_id">Phase</label>
                   </div>
                   <div class="form-floating mb-3">
+                    <select name="command_id" class="form-select" id="command_id" required>
+                      <option selected>Choose...</option>
+                      {% for command in commands %}
+                      <option value={{ command.id }}>{{ command.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="command_id">Command</label>
+                  </div>
+                  <div class="form-floating mb-3">
                     <select name="instrument_id" class="form-select" id="instrument_id" required>
                       <option selected>Choose...</option>
                       {% for instrument in instruments %}
@@ -115,10 +122,6 @@
                     <input type="text" class="form-control" id="name" name="name" required>
                   </div>
                   <div class="mb-3">
-                    <label for="scpi" class="col-form-label">SCPI Command(s)</label>
-                    <textarea class="form-control" id="scpi" name="scpi" rows="3" required></textarea>
-                  </div>
-                  <div class="mb-3">
                     <label for="units" class="col-form-label">Units</label>
                     <input type="text" class="form-control" id="units" name="units">
                   </div>
@@ -129,10 +132,6 @@
                   <div class="mb-3">
                     <label for="upper_limit" class="col-form-label">Upper Limit</label>
                     <input type="number" class="form-control" id="upper_limit" name="upper_limit">
-                  </div>
-                  <div class="mb-3">
-                    <label for="delay" class="col-form-label">Delay</label>
-                    <input type="number" class="form-control" id="delay" name="delay" value="0" required>
                   </div>
                 </form>
               </div>

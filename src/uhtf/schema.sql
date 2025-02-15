@@ -1,10 +1,20 @@
 -- Initialize the database.
 -- Drop any existing data and create empty tables.
 
+DROP TABLE IF EXISTS command;
 DROP TABLE IF EXISTS instrument;
 DROP TABLE IF EXISTS measurement;
 DROP TABLE IF EXISTS part;
 DROP TABLE IF EXISTS phase;
+
+CREATE TABLE command (
+    id INTEGER PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
+    name TEXT UNIQUE NOT NULL,
+    scpi TEXT UNIQUE NOT NULL,
+    delay INTEGER DEFAULT 0
+);
 
 CREATE TABLE instrument (
     id INTEGER PRIMARY KEY,
@@ -22,14 +32,14 @@ CREATE TABLE measurement (
     part_id INTEGER NOT NULL,
     phase_id INTEGER NOT NULL,
     instrument_id INTEGER NOT NULL,
+    command_id INTEGER NOT NULL,
     name TEXT NOT NULL,
-    scpi TEXT NOT NULL,
     units TEXT DEFAULT NULL,
     lower_limit REAL DEFAULT NULL,
-    upper_limit REAL DEFAULT NULL,
-    delay INTEGER DEFAULT 0,
+    upper_limit REAL DEFAULT NULL
     FOREIGN KEY(part_id) REFERENCES part(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(phase_id) REFERENCES phase(id) ON DELETE CASCADE ON UPDATE NO ACTION
+    FOREIGN KEY(command_id) REFERENCES command(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(instrument_id) REFERENCES instrument(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
 
