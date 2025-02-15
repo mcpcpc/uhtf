@@ -53,12 +53,12 @@
                         <td class="text-nowrap">{{ phase.name }}</td>
                         <td>{{ phase.priority }}</td>
                         <td>
-                          <button type="button" class="btn btn-outline-secondary btn-sm icon-link" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.priority }}')">
-                          <svg class="bi">
-                            <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil">
-                          </svg>
-                          Edit
-                          </button>
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.priority }}')">
+                            <svg class="bi">
+                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil">
+                            </svg>
+                            Edit
+                          </a>
                         </td>
                       </tr>
                       {% endfor %}
