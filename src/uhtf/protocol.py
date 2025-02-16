@@ -171,7 +171,7 @@ async def update():
 
 
 @protocol.post("/protocol/<int:part_id>/raw")
-async def raw():
+async def raw(part_id: int):
     rows = get_db().execute(
         """
         SELECT
