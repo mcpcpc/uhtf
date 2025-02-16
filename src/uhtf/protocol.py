@@ -72,7 +72,6 @@ async def read() -> tuple:
             phase ON phase.id = protocol.phase_id
         """
     ).fetchall()
-    print(protocols)
     return await render_template(
         "protocol.html",
         commands=commands,
@@ -142,7 +141,6 @@ async def update() -> tuple:
     """Update protocol endpoint."""
 
     form = (await request.form).copy().to_dict()
-    protocol_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -150,21 +148,14 @@ async def update() -> tuple:
             """
             UPDATE protocol SET
                 updated_at = CURRENT_TIMESTAMP,
-                command_id = ?,
-                instrument_id = ?,
-                measurement_id = ?,
-                part_id = ?,
-                phase_id = ?
-            WHERE id = ?
+                command_id = :command_id,
+                instrument_id = :instrument_id,
+                measurement_id = :measurement_id,
+                part_id = :part_id,
+                phase_id = :phase_id
+            WHERE id = :id
             """,
-            (
-                form.get("command_id"),
-                form.get("instrument_id"),
-                form.get("measurement_id"),
-                form.get("part_id"),
-                form.get("phase_id"),
-                protocol_id,
-            ),
+            form
         )
         db.commit()
     except db.ProgrammingError:
