@@ -136,5 +136,13 @@
               checkboxes[i].checked = source.checked;
             }
           }
+          function populateUpdateModal(id, part_id, phase_id, instrument_id, command_id, measurement_id) {
+            document.getElementById("id").value = id;
+            document.getElementById("part_id").value = part_id;
+            document.getElementById("phase_id").value = phase_id;
+            document.getElementById("instrument_id").value = instrument_id;
+            document.getElementById("command_id").value = command_id;
+            document.getElementById("measurement_id").value = measurement_id;
+          }
         </script>
 {% endblock %}
