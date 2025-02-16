@@ -72,6 +72,7 @@ async def read() -> tuple:
             phase ON phase.id = protocol.phase_id
         """
     ).fetchall()
+    print(protocols)
     return await render_template(
         "protocol.html",
         commands=commands,
@@ -89,7 +90,6 @@ async def create() -> tuple:
 
     form = (await request.form).copy().to_dict() 
     form["measurement_id"] = form.get("measurement_id")
-    print(form)
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
