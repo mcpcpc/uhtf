@@ -59,11 +59,12 @@ CREATE TABLE protocol (
     updated_at DATETIME DEFAULT NULL,
     command_id INTEGER NOT NULL,
     instrument_id INTEGER NOT NULL,
-    measurement_id INTEGER DEFAULT 0,
+    measurement_id INTEGER,
     part_id INTEGER NOT NULL,
     phase_id INTEGER NOT NULL,
     FOREIGN KEY(command_id) REFERENCES command(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(instrument_id) REFERENCES instrument(id) ON DELETE CASCADE ON UPDATE NO ACTION
+    FOREIGN KEY(measurement_id) REFERENCES measurement(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(part_id) REFERENCES part(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(phase_id) REFERENCES phase(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
