@@ -56,16 +56,13 @@ async def read() -> tuple:
             part.name AS part,
             phase.name AS phase,
             instrument.name AS instrument,
-            command.name AS command,
-            measurement.name AS measurement
+            command.name AS command 
         FROM
             protocol
         INNER JOIN
             command ON command.id = protocol.command_id
         INNER JOIN
             instrument ON instrument.id = protocol.instrument_id
-        INNER JOIN
-            measurement ON measurement.id = protocol.measurement_id
         INNER JOIN
             part ON part.id = protocol.part_id
         INNER JOIN
