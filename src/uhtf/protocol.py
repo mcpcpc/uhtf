@@ -57,7 +57,7 @@ async def read() -> tuple:
             phase.name AS phase,
             instrument.name AS instrument,
             command.name AS command,
-            measurement.name AS measurement,
+            measurement.name AS measurement
         FROM
             protocol
         INNER JOIN
