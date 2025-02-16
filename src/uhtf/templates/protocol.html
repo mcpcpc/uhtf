@@ -113,7 +113,7 @@
                   </div>
                   <div class="form-floating mb-3">
                     <select name="measurement_id" class="form-select" id="measurement_id">
-                      <option selected>Choose...</option>
+                      <option disabled selected>Choose...</option>
                       {% for measurement in measurements %}
                       <option value={{ measurement.id }}>{{ measurement.name }}</option>
                       {% endfor %}
