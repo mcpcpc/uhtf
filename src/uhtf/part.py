@@ -87,7 +87,6 @@ async def update() -> tuple:
     """Update part callback."""
 
     form = (await request.form).copy().to_dict()
-    part_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -95,17 +94,12 @@ async def update() -> tuple:
             """
             UPDATE part SET
                 updated_at = CURRENT_TIMESTAMP,
-                global_trade_item_number = ?,
-                number = ?,
-                name = ?
-            WHERE id = ?
+                global_trade_item_number = :global_trade_item_number,
+                number = :number,
+                name = :name
+            WHERE id = :id
             """,
-            (
-                form.get("global_trade_item_number"),
-                form.get("number"),
-                form.get("name"),
-                part_id,
-            ),
+            form,
         )
         db.commit()
     except db.ProgrammingError:
