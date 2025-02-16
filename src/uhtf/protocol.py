@@ -113,9 +113,11 @@ async def create() -> tuple:
             form,
         )
         db.commit()
-    except db.ProgrammingError:
+    except db.ProgrammingError as e:
+        print(e)
         await flash("Missing parameter(s).", "warning")
-    except db.IntegrityError:
+    except db.IntegrityError as e:
+        print(e)
         await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
 
@@ -142,7 +144,6 @@ async def update() -> tuple:
 
     form = (await request.form).copy().to_dict()
     protocol_id = form.pop("id")
-    print(form)
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
