@@ -89,8 +89,9 @@ async def read() -> tuple:
 async def create() -> tuple:
     """Create protocol callback."""
 
-    form = (await request.form).copy().to_dict()
+    form = (await request.form).copy().to_dict() 
     form["measurement_id"] = form.get("measurement_id")
+    print(form)
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
