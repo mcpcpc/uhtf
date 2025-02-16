@@ -53,9 +53,13 @@ async def read() -> tuple:
         """
         SELECT
             protocol.id AS id,
+            part.id AS part_id,
             part.name AS part,
+            phase.id AS phase_id,
             phase.name AS phase,
+            instrument.id AS instrument_id,
             instrument.name AS instrument,
+            command.id AS command_id,
             command.name AS command 
         FROM
             protocol
