@@ -51,7 +51,7 @@
                       {% for measurement in measurements %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="measurement_id" value="{{ measurement.id }}" /></td>
-                        <td class="text-nowrap">{{ measurement.name }}</td>
+                        <td class="text-nowrap"><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">{{ measurement.name }}</a></td>
                         <td>{{ measurement.units }}</td>
                         <td>{{ measurement.lower_limit }}</td>
                         <td>{{ measurement.upper_limit }}</td>
@@ -75,6 +75,44 @@
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Measurement Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="units" class="col-form-label">Units</label>
+                    <input type="text" class="form-control" name="units">
+                  </div>
+                  <div class="mb-3">
+                    <label for="lower_limit" class="col-form-label">Lower Limit</label>
+                    <input type="number" class="form-control" name="lower_limit">
+                  </div>
+                  <div class="mb-3">
+                    <label for="upper_limit" class="col-form-label">Upper Limit</label>
+                    <input type="number" class="form-control" name="upper_limit">
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
+                <button type="submit" form="create" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Measurement</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="update" action="{{ url_for('.update') }}" method="post">
+                  <div class="mb-3">
+                    <label for="id" class="col-form-label">ID</label>
+                    <input type="number" class="form-control" id="id" name="id" readonly>
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="col-form-label">Measurement Name</label>
                     <input type="text" class="form-control" id="name" name="name" required>
                   </div>
                   <div class="mb-3">
@@ -92,8 +130,7 @@
                 </form>
               </div>
               <div class="modal-footer border-0">
-                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
-                <button type="submit" form="create" class="btn btn-primary">Create</button>
+                <button type="submit" form="update" class="btn btn-primary">Update</button>
               </div>
             </div>
           </div>
@@ -104,6 +141,13 @@
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
             }
+          }
+          function populateUpdateModal(id, name, units, lower_limit, upper_limit) {
+            document.getElementById("id").value = id;
+            document.getElementById("name").value = name;
+            document.getElementById("units").value = units;
+            document.getElementById("lower_limit").value = lower_limit;
+            document.getElementById("upper_limit").value = upper_limit;
           }
         </script>
 {% endblock %}
