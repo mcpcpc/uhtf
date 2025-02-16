@@ -29,7 +29,7 @@ async def read() -> tuple:
         SELECT * FROM
             measurement
         ORDER BY
-            part ASC
+            name ASC
         """
     ).fetchall()
     return await render_template(
