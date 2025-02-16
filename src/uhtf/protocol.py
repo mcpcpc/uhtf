@@ -112,11 +112,11 @@ async def create() -> tuple:
             form
         )
         db.commit()
-    except db.ProgrammingError as e:
-        print(e)
+    except db.ProgrammingError:
+        print("Missing parameter(s)")
         await flash("Missing parameter(s).", "warning")
-    except db.IntegrityError as e:
-        print(e)
+    except db.IntegrityError:
+        print("Invalid parameter(s)")
         await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
 
