@@ -60,13 +60,17 @@ async def read() -> tuple:
             instrument.id AS instrument_id,
             instrument.name AS instrument,
             command.id AS command_id,
-            command.name AS command 
+            command.name AS command,
+            measurement.id AS measurement_id,
+            measurement.name AS measurement
         FROM
             protocol
         INNER JOIN
             command ON command.id = protocol.command_id
         INNER JOIN
             instrument ON instrument.id = protocol.instrument_id
+        OUTER LEFT JOIN
+            measurement ON measurement.id = protocol.measurement_id
         INNER JOIN
             part ON part.id = protocol.part_id
         INNER JOIN
