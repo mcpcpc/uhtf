@@ -70,8 +70,6 @@ async def read() -> tuple:
             part ON part.id = protocol.part_id
         INNER JOIN
             phase ON phase.id = protocol.phase_id
-        ORDER BY
-            part ASC
         """
     ).fetchall()
     return await render_template(
