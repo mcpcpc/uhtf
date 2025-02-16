@@ -170,7 +170,7 @@ async def update():
     return redirect(url_for(".read"))
 
 
-@protocol.post("/protocol/<int:part_id>/raw")
+@protocol.get("/protocol/<int:part_id>/raw")
 async def raw(part_id: int):
     rows = get_db().execute(
         """
