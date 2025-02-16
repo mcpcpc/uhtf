@@ -155,7 +155,7 @@ async def update() -> tuple:
                 phase_id = :phase_id
             WHERE id = :id
             """,
-            form
+            form,
         )
         db.commit()
     except db.ProgrammingError:

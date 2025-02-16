@@ -91,7 +91,6 @@ async def update() -> tuple:
     """Update command callback."""
 
     form = (await request.form).copy().to_dict()
-    command_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -99,17 +98,12 @@ async def update() -> tuple:
             """
             UPDATE command SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = ?,
-                scpi = ?,
-                delay = ?
-            WHERE id = ?
+                name = :name,
+                scpi = :scpi,
+                delay = :delay
+            WHERE id = :id
             """,
-            (
-                form.get("name"),
-                form.get("scpi"),
-                form.get("delay"),
-                command_id,
-            ),
+            form,
         )
         db.commit()
     except db.ProgrammingError:

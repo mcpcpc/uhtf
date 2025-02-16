@@ -87,13 +87,11 @@ async def delete():
     return redirect(url_for(".read"))
 
 
-
 @measurement.post("/measurement/update")
 async def update() -> tuple:
     """Update measurement endpoint."""
 
     form = (await request.form).copy().to_dict()
-    measurement_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -101,19 +99,13 @@ async def update() -> tuple:
             """
             UPDATE measurement SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = ?,
-                units = ?,
-                lower_limit = ?,
-                upper_limit = ? 
-            WHERE id = ?
+                name = :name,
+                units = :units,
+                lower_limit = :lower_limit,
+                upper_limit = :upper_limit 
+            WHERE id = :id
             """,
-            (
-                form.get("name"),
-                form.get("units"),
-                form.get("lower_limit"),
-                form.get("upper_limit"),
-                measurement_id,
-            ),
+            form,
         )
         db.commit()
     except db.ProgrammingError:

@@ -90,7 +90,6 @@ async def update() -> tuple:
     """Update instrument endpoint."""
 
     form = (await request.form).copy().to_dict()
-    instrument_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -98,17 +97,12 @@ async def update() -> tuple:
             """
             UPDATE instrument SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = ?,
-                hostname = ?,
-                port = ?
-            WHERE id = ?
+                name = :name,
+                hostname = :hostname,
+                port = :port
+            WHERE id = :id
             """,
-            (
-                form.get("name"),
-                form.get("hostname"),
-                form.get("port"),
-                instrument_id,
-            ),
+            form,
         )
         db.commit()
     except db.ProgrammingError:

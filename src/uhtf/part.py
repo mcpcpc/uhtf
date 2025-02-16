@@ -81,7 +81,6 @@ async def delete():
     return redirect(url_for(".read"))
 
 
-
 @part.post("/part/update")
 async def update() -> tuple:
     """Update part callback."""

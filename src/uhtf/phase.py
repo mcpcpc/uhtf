@@ -81,7 +81,6 @@ async def update() -> tuple:
     """Update phase callback."""
 
     form = (await request.form).copy().to_dict()
-    phase_id = form.pop("id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -89,15 +88,11 @@ async def update() -> tuple:
             """
             UPDATE phase SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = ?,
-                retry = ?
-            WHERE id = ?
+                name = :name,
+                retry = :retry
+            WHERE id = :id
             """,
-            (
-                form.get("name"),
-                form.get("retry"),
-                phase_id,
-            ),
+            form,
         )
         db.commit()
     except db.ProgrammingError:
