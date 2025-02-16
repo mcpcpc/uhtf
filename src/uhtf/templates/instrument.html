@@ -53,7 +53,7 @@
                         <td scope="row"><input class="form-check-input" type="checkbox" name="instrument_id" value="{{ instrument.id }}" /></td>
                         <td>
                           <a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ instrument.id }}', '{{ instrument.name }}', '{{ instrument.hostname }}', '{{ instrument.port }}')">
-                            <svg width="1em" height="1em" class="bi">
+                            <svg width="0.8em" height="0.8em" class="bi">
                               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen">
                             </svg>
                           </a>
