@@ -52,7 +52,7 @@
                       {% for protocol in protocols %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="protocol_id" value="{{ protocol.id }}" /></td>
-                        <td class="text-nowrap">{{ protocol.part }}</td>
+                        <td class="text-nowrap"><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ protocol.id }}', '{{ protocol.part_id }}', '{{ protocol.phase_id }}', '{{ protocol.instrument_id }}', '{{ protocol.command_id }}', 'protocol.measurement_id')">{{ protocol.part }}</a></td>
                         <td class="text-nowrap">{{ protocol.phase }}</td>
                         <td class="text-nowrap">{{ protocol.instrument }}</td>
                         <td class="text-nowrap">{{ protocol.command }}</td>
@@ -75,6 +75,69 @@
               </div>
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
+                  <div class="form-floating mb-3">
+                    <select name="part_id" class="form-select" required>
+                      <option selected>Choose...</option>
+                      {% for part in parts %}
+                      <option value={{ part.id }}>{{ part.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="part_id">Part</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select name="phase_id" class="form-select" required>
+                      <option selected>Choose...</option>
+                      {% for phase in phases %}
+                      <option value={{ phase.id }}>{{ phase.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="part_id">Phase</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select name="command_id" class="form-select" required>
+                      <option selected>Choose...</option>
+                      {% for command in commands %}
+                      <option value={{ command.id }}>{{ command.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="command_id">Command</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select name="instrument_id" class="form-select" required>
+                      <option selected>Choose...</option>
+                      {% for instrument in instruments %}
+                      <option value={{ instrument.id }}>{{ instrument.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="instrument_id">Instrument</label>
+                  </div>
+                  <div class="form-floating mb-3">
+                    <select name="measurement_id" class="form-select">
+                      <option disabled selected>None</option>
+                      {% for measurement in measurements %}
+                      <option value={{ measurement.id }}>{{ measurement.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="measurement_id">Measurement (optional)</label>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
+                <button type="submit" form="create" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="createModalLabel">Update Measurement</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="update" action="{{ url_for('.update') }}" method="post">
                   <div class="form-floating mb-3">
                     <select name="part_id" class="form-select" id="part_id" required>
                       <option selected>Choose...</option>
@@ -123,8 +186,7 @@
                 </form>
               </div>
               <div class="modal-footer border-0">
-                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
-                <button type="submit" form="create" class="btn btn-primary">Create</button>
+                <button type="submit" form="update" class="btn btn-primary">Create</button>
               </div>
             </div>
           </div>
