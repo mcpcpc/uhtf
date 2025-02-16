@@ -41,6 +41,7 @@
                     <thead>
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
+                        <th scope="col"></th>
                         <th scope="col" class="text-nowrap w-100">Name</th>
                         <th scope="col">Hostname</th>
                         <th scope="col">Port</th>
@@ -50,7 +51,14 @@
                       {% for instrument in instruments %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="instrument_id" value="{{ instrument.id }}" /></td>
-                        <td class="text-nowrap"><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ instrument.id }}', '{{ instrument.name }}', '{{ instrument.hostname }}', '{{ instrument.port }}')">{{ instrument.name }}</a></td>
+                        <td>
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ instrument.id }}', '{{ instrument.name }}', '{{ instrument.hostname }}', '{{ instrument.port }}')">
+                            <svg class="bi">
+                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen">
+                            </svg>
+                          </a>
+                        </td>
+                        <td class="text-nowrap">{{ instrument.name }}</td>
                         <td>{{ instrument.hostname }}</td>
                         <td>{{ instrument.port }}</td>
                       </tr>
