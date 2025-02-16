@@ -102,14 +102,20 @@ async def create() -> tuple:
                 part_id,
                 phase_id
             ) VALUES (
-                :instrument_id,
-                :command_id,
-                :measurement_id,
-                :part_id,
-                :phase_id
+                ?,
+                ?,
+                ?,
+                ?,
+                ?
             )
             """,
-            form,
+            (
+                form["instrument_id"],
+                form["command_id"],
+                form["measurement_id"],
+                form["part_id"],
+                form["phase_id"],
+            ),
         )
         db.commit()
     except db.ProgrammingError as e:
