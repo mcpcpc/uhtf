@@ -89,7 +89,6 @@ async def create() -> tuple:
 
     form = (await request.form).copy().to_dict() 
     form["measurement_id"] = form.get("measurement_id")
-    print(form)
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -102,20 +101,14 @@ async def create() -> tuple:
                 part_id,
                 phase_id
             ) VALUES (
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
+                :instrument_id,
+                :command_id,
+                :measurement_id,
+                :part_id,
+                :phase_id
             )
             """,
-            (
-                form["instrument_id"],
-                form["command_id"],
-                form["measurement_id"],
-                form["part_id"],
-                form["phase_id"],
-            ),
+            form
         )
         db.commit()
     except db.ProgrammingError as e:
