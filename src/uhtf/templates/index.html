@@ -86,8 +86,8 @@
           </div>
         </div>
         <script type="text/javascript">
-          const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-          const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+          const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+          const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
           const ws = new WebSocket(`ws://${location.host}/ws`);
           ws.addEventListener('message', function (event) {
             const procedure = JSON.parse(event.data);
@@ -105,7 +105,7 @@
                 html += `<span class="fw-semibold"><small>${phase['name']}</small></span>`;
                 //html += `<span id="${phase['name']}">${phase['outcome']}</span>`;
                 if (phase["measurements"].length > 0) {
-                  html += `<span id="${phase['name']}" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="${phase['measurements'][0]['measured_value'} ${phase['measurements'][0]['units'}">${phase['outcome']}</span>`;
+                  html += `<span id="${phase['name']}" data-bs-toggle="tooltip" data-bs-placement="left" data-bs-title="${phase['measurements'][0]['measured_value']} ${phase['measurements'][0]['units']}">${phase['outcome']}</span>`;
                 } else {
                   html += `<span id="${phase['name']}">${phase['outcome']}</span>`;
                 }
