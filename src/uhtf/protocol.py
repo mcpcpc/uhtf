@@ -175,14 +175,14 @@ async def raw(part_id: int):
     rows = get_db().execute(
         """
         SELECT
-            command.scpi AS scpi,
-            command.delay AS delay,
-            instrument.hostname AS hostname,
-            instrument.port AS port,
+            command.scpi AS command_scpi,
+            command.delay AS command_delay,
+            instrument.hostname AS instrument_hostname,
+            instrument.port AS instrument_port,
             measurement.name AS measurement_name,
-            measurement.units AS units,
-            measurement.lower_limit AS lower_limit,
-            measurement.upper_limit AS upper_limit,
+            measurement.units AS measurement_units,
+            measurement.lower_limit AS measurement_lower_limit,
+            measurement.upper_limit AS measurement_upper_limit,
             phase.name AS phase_name
         FROM
             protocol
