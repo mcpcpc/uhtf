@@ -53,7 +53,7 @@ class ProtocolBuilder:
                         sleep(protocol["command_delay"] / 1000)
             except Exception as exception: # caught unknown error
                 print(exception)
-                phase_outcome = PhaseOutcome.FAIL
+                phase_outcome = PhaseOutcome.ERROR
                 break
         end_time_millis= datetime.now().timestamp() * 1000
         return Phase(
