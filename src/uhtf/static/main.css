@@ -61,7 +61,7 @@
 .custom-links-link:focus,
 .custom-links-link.active {
   color: var(--bs-emphasis-color);
-  background-color: var(--bd-sidebar-link-bg)
+  background-color: var(--bs-tertiary-bg)
 }
  
 .custom-links-link.active {
