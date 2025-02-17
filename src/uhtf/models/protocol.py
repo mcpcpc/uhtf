@@ -16,8 +16,8 @@ class ProtocolBuilder:
         self.protocols = protocols
 
     def in_range(self, protocol, value: float) -> MeasurementOutcome:
-        ll = protocol.measurement_lower_limit
-        ul = protocol.measurement_upper_limit
+        ll = protocol["measurement_lower_limit"]
+        ul = protocol["measurement_upper_limit"]
         if value > ll and value < ul:
             return MeasurementOutcome.PASS
         return MeasurementOutcome.FAIL
