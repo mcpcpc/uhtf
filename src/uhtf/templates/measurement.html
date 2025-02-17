@@ -51,9 +51,6 @@
                       {% for measurement in measurements %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="measurement_id" value="{{ measurement.id }}" /></td>
-                        <!--
-                        <td class="text-nowrap"><a data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">{{ measurement.name }}</a></td>
-                        -->
                         <td class="text-nowrap">{{ measurement.name }}</td>
                         <td>{{ measurement.units }}</td>
                         <td>{{ measurement.lower_limit }}</td>
@@ -61,7 +58,7 @@
                         <td>
                           <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">
                             <svg class="bi">
-                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pencil-fill">
+                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
                             </svg>
                           </a>
                         </td>
