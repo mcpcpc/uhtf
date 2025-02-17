@@ -102,7 +102,7 @@
                 var html = "";
                 html += `<div class="d-flex justify-content-between align-items-center mb-1">`;
                 html += `<span class="fw-semibold"><small>${phase['name']}</small></span>`;
-                html += `<span id="${phase['name']}">${phase['outcome']}</span></div>`;
+                html += `<span id="${phase['name']}">${phase['outcome']}</span>`;
                 html += `</div>`;
                 document.getElementById("detail").innerHTML += html;
                 setBadge(phase['name'], phase['outcome']);
