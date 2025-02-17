@@ -169,38 +169,3 @@ async def update():
     except db.IntegrityError:
         await flash("Invalid parameter(s).", "warning")
     return redirect(url_for(".read"))
-
-
-@protocol.get("/protocol/<int:part_id>/raw")
-async def raw(part_id: int):
-    rows = get_db().execute(
-        """
-        SELECT
-            command.scpi AS command_scpi,
-            command.delay AS command_delay,
-            instrument.hostname AS instrument_hostname,
-            instrument.port AS instrument_port,
-            measurement.name AS measurement_name,
-            measurement.units AS measurement_units,
-            measurement.lower_limit AS measurement_lower_limit,
-            measurement.upper_limit AS measurement_upper_limit,
-            phase.name AS phase_name
-        FROM
-            protocol
-        INNER JOIN
-            command ON command.id = protocol.command_id
-        INNER JOIN
-            instrument ON instrument.id = protocol.instrument_id
-        OUTER LEFT JOIN
-            measurement ON measurement.id = protocol.measurement_id
-        INNER JOIN
-            part ON part.id = protocol.part_id
-        INNER JOIN
-            phase ON phase.id = protocol.phase_id
-        WHERE
-            part.id = ?
-        """,
-        (part_id,) 
-    ).fetchall()
-    records = list(map(dict, rows))
-    return records, 201
