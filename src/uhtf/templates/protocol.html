@@ -57,7 +57,7 @@
                         <td class="text-nowrap">{{ protocol.command }}</td>
                         <td class="text-nowrap">{{ protocol.measurement }}</td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ protocol.id }}', '{{ protocol.part_id }}', '{{ protocol.phase_id }}', '{{ protocol.instrument_id }}', '{{ protocol.command_id }}', '{{ protocol.measurement_id }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
                             </svg>
