@@ -15,6 +15,7 @@ from collections.abc import AsyncGenerator
 from dataclasses import asdict
 from dataclasses import dataclass
 from dataclasses import field
+from itertools import groupby
 from json import dumps
 from re import Match
 from re import search
@@ -24,9 +25,7 @@ from quart import websocket
 
 from .models.base import Procedure
 from .models.base import UnitUnderTest
-from .models.test import HardwareTestFramework
-from .models.test import SourceMeasuringUnit
-from .models.test import TestBoxController
+from .models.protocol import ProtocolBuilder
 from .database import get_db
 
 GS1_REGEX = r"(01)(?P<global_trade_item_number>\d{14})" \
@@ -73,13 +72,6 @@ class Broker:
 def init_websocket(app: Quart) -> Quart:
     """Websocket instantiator."""
 
-    smu_hostname = app.config["SOURCE_MEASURING_UNIT_HOSTNAME"]
-    smu_port = app.config["SOURCE_MEASURING_UNIT_PORT"]
-    controller_hostname = app.config["TEST_BOX_CONTROLLER_HOSTNAME"]
-    controller_port = app.config["TEST_BOX_CONTROLLER_PORT"]
-    smu = SourceMeasuringUnit(smu_hostname, smu_port)
-    controller = TestBoxController(controller_hostname, controller_port)
-    htf = HardwareTestFramework(smu, controller)
     broker = Broker()
 
     @app.websocket("/ws") 
@@ -115,34 +107,46 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.run_passed = False
                     await broker.publish(dumps(asdict(procedure)))
                     continue  # restart procedure
-                # setup phase
-                phase = htf.setup(3.0)
-                procedure.phases.append(phase)
-                await broker.publish(dumps(asdict(procedure)))
-                if phase.outcome.value != "PASS":
-                    procedure.run_passed = False
-                    await broker.publish(dumps(asdict(procedure)))
-                    continue  # restart procedure
-                # preamp current phase
-                phase = htf.preamp_current(-0.005, 3.000)
-                procedure.phases.append(phase)
-                await broker.publish(dumps(asdict(procedure)))
-                if phase.outcome.value != "PASS":
-                    procedure.run_passed = False
-                # bias current phase (iterative)
-                for n in range(1, 31):    
-                    phase = htf.bias_voltage(n, 0.000, 8.000)
+                rows = get_db().execute(
+                    """
+                    SELECT
+                        command.scpi AS command_scpi,
+                        command.delay AS command_delay,
+                        instrument.hostname AS instrument_hostname,
+                        instrument.port AS instrument_port,
+                        measurement.name AS measurement_name,
+                        measurement.units AS measurement_units,
+                        measurement.lower_limit AS measurement_lower_limit,
+                        measurement.upper_limit AS measurement_upper_limit,
+                        phase.name AS phase_name
+                    FROM
+                        protocol
+                    INNER JOIN
+                        command ON command.id = protocol.command_id
+                    INNER JOIN
+                        instrument ON instrument.id = protocol.instrument_id
+                    OUTER LEFT JOIN
+                        measurement ON measurement.id = protocol.measurement_id
+                    INNER JOIN
+                        part ON part.id = protocol.part_id
+                    INNER JOIN
+                        phase ON phase.id = protocol.phase_id
+                    WHERE
+                        part.id = ?
+                    """,
+                    (part["id"],),
+                ).fetchall()
+                records = list(map(dict, rows))
+                grouped = groupby(records, key=lambda r: r["phase_name"])
+                for key, group in grouped:
+                    protocol_list = list(map(dict, group))
+                    builder = ProtocolBuilder(protocol_list)
+                    phase = builder.run()
                     procedure.phases.append(phase)
                     await broker.publish(dumps(asdict(procedure)))
                     if phase.outcome.value != "PASS":
                         procedure.run_passed = False
-                # teardown phase
-                phase = htf.teardown()
-                procedure.phases.append(phase)
-                await broker.publish(dumps(asdict(procedure)))
-                if phase.outcome.value != "PASS":
-                    procedure.run_passed = False
-                    await broker.publish(dumps(asdict(procedure)))
+                        await broker.publish(dumps(asdict(procedure)))
                 # finalize results
                 if procedure.run_passed != False:
                     procedure.run_passed = True
@@ -157,4 +161,3 @@ def init_websocket(app: Quart) -> Quart:
             await task
 
     return app
-
