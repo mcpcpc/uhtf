@@ -32,6 +32,109 @@
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar">
           </div>
           <div class="offcanvas-body px-4">
+            <nav class="custom-links w-100" aria-label="Navigation">
+              <ul class="custom-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
+                <li class="custom-links-group py-2">
+                  <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
+                    <svg class="bi me-2" width="1em" height="1em">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#send-fill"></use>
+                    </svg>
+                    Application
+                  </strong>
+                  <ul class="list-unstyled fw-normal pb-2 small">
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('index') }}">
+                        Test
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="custom-links-group py-2">
+                  <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
+                    <svg class="bi me-2" width="1em" height="1em">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#send-fill"></use>
+                    </svg>
+                    Manage
+                  </strong>
+                  <ul class="list-unstyled fw-normal pb-2 small">
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('command.read') }}">
+                        Commands
+                      </a>
+                    </li>
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('instrument.read') }}">
+                        Instruments
+                      </a>
+                    </li>
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('measurement.read') }}">
+                        Measurements
+                      </a>
+                    </li>
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('part.read') }}">
+                        Parts
+                      </a>
+                    </li>
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('phase.read') }}">
+                        Phases
+                      </a>
+                    </li>
+                    <li>
+                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('protocol.read') }}">
+                        Protocols
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+                <li class="nav-item dropdown">
+                  <button class="btn btn-link nav-link icon-link dropdown-toggle" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
+                    <svg class="bi theme-icon-active">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill">
+                    </svg>
+                    <span id="bd-theme-text">Theme</span>
+                  </button>
+                  <ul class="dropdown-menu custom-dropdown dropdown-menu-end" aria-labelledby="bd-theme-text">
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sun-fill"></use>
+                        </svg>
+                        Light
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill"></use>
+                        </svg>
+                        Dark
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#circle-half"></use>
+                        </svg>
+                        Auto
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </nav>
+            <!--
             <nav class="w-100" aria-label="Navigation">
               <ul class="navbar-nav justify-content-end flex-grow-1">
                 <li class="nav-item">
@@ -135,6 +238,7 @@
                 </li>
               </ul>
             </nav>
+            -->
           </div>
         </div>
       </aside>
