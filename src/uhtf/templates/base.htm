@@ -43,7 +43,7 @@
                   </strong>
                   <ul class="list-unstyled fw-normal pb-2 small">
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('index') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'index' %} active{% endif %}" href="{{ url_for('index') }}">
                         Test
                       </a>
                     </li>
@@ -58,32 +58,32 @@
                   </strong>
                   <ul class="list-unstyled fw-normal pb-2 small">
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('command.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'command.read' %} active{% endif %}" href="{{ url_for('command.read') }}">
                         Commands
                       </a>
                     </li>
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('instrument.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'instrument.read' %} active{% endif %}" href="{{ url_for('instrument.read') }}">
                         Instruments
                       </a>
                     </li>
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('measurement.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'measurement.read' %} active{% endif %}" href="{{ url_for('measurement.read') }}">
                         Measurements
                       </a>
                     </li>
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('part.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'part.read' %} active{% endif %}" href="{{ url_for('part.read') }}">
                         Parts
                       </a>
                     </li>
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('phase.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'phase.read' %} active{% endif %}" href="{{ url_for('phase.read') }}">
                         Phases
                       </a>
                     </li>
                     <li>
-                      <a class="custom-links-link d-inline-block rounded" href="{{ url_for('protocol.read') }}">
+                      <a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'protocol.read' %} active{% endif %}" href="{{ url_for('protocol.read') }}">
                         Protocols
                       </a>
                     </li>
