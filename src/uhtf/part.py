@@ -26,10 +26,7 @@ async def read() -> tuple:
 
     parts = get_db().execute(
         """
-        SELECT * FROM 
-            part
-        ORDER BY
-            number ASC
+        SELECT * FROM part
         """
     ).fetchall()
     return await render_template(
