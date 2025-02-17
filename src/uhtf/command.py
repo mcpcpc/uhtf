@@ -26,10 +26,7 @@ async def read() -> tuple:
 
     commands = get_db().execute(
         """
-        SELECT * FROM
-            command
-        ORDER BY
-            name ASC
+        SELECT * FROM command
         """
     ).fetchall()
     return await render_template(
