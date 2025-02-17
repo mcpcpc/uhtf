@@ -18,6 +18,12 @@
     overflow-y: auto;
   }
 }
+@media (max-width: 991.98px) {
+    .custom-sidebar .offcanvas-lg {
+        border-right-color: var(--bs-border-color);
+        box-shadow: var(--bs-box-shadow-lg)
+    }
+}
 .custom-sidebar {grid-area: sidebar}
 .custom-toggle::after {content: none}
 .custom-dropdown {
