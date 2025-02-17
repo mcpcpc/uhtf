@@ -32,8 +32,9 @@ class ProtocolBuilder:
             measurement_name = protocol.get("measurement_name")
             try:
                 with TCP(hostname, port) as tcp:
+                    scpi = protocol["command_scpi"].encode() + b"\n"
                     if isinstance(measurement_name, str):
-                        response = tcp.query(protocol["command_scpi"].encode() + b"\n")
+                        response = tcp.query(scpi)
                         value = float(response.decode().strip())
                         measurement_outcome = self.in_range(protocol, value)
                         measurements.append(
@@ -48,7 +49,7 @@ class ProtocolBuilder:
                         if measurement_outcome != MeasurementOutcome.PASS:
                             phase_outcome = PhaseOutcome.FAIL
                     else:
-                        tcp.send(protocol["command_scpi"].encode() + b"\n")
+                        tcp.send(scpi)
                     if protocol["command_delay"] > 0:
                         sleep(protocol["command_delay"] / 1000)
             except Exception as exception: # caught unknown error
