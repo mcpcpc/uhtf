@@ -26,10 +26,7 @@ async def read() -> tuple:
 
     measurements = get_db().execute(
         """
-        SELECT * FROM
-            measurement
-        ORDER BY
-            name ASC
+        SELECT * FROM measurement
         """
     ).fetchall()
     return await render_template(
