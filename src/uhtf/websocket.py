@@ -104,7 +104,7 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.run_passed = False
                     await broker.publish(dumps([asdict(procedure),"UNKNOWN"]))
                     continue  # restart procedure
-                # Accumulate phases
+                # accumulate phases
                 rows = get_db().execute(
                     """
                     SELECT
