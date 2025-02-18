@@ -24,6 +24,7 @@ protocol = Blueprint("protocol", __name__)
 async def read() -> tuple:
     """Read protocols callback."""
 
+    number = request.args.get("number")
     commands = get_db().execute(
         """
         SELECT * FROM command
@@ -49,8 +50,7 @@ async def read() -> tuple:
         SELECT * FROM phase
         """
     ).fetchall()
-    protocols = get_db().execute(
-        """
+    query = """
         SELECT
             protocol.id AS id,
             part.id AS part_id,
@@ -76,7 +76,10 @@ async def read() -> tuple:
         INNER JOIN
             phase ON phase.id = protocol.phase_id
         """
-    ).fetchall()
+    number = request.args.get("number")
+    if isinstance(number, str):
+        query += f" WHERE part.number = {number}"
+    protocols = get_db().execute(query).fetchall()
     return await render_template(
         "protocol.html",
         commands=commands,
