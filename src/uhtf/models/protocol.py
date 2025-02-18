@@ -41,6 +41,7 @@ class ProtocolBuilder:
                             Measurement(
                                 name=measurement_name,
                                 outcome=measurement_outcome,
+                                measured_value=value,
                                 units=protocol["measurement_units"],
                                 lower_limit=protocol["measurement_lower_limit"],
                                 upper_limit=protocol["measurement_upper_limit"],
