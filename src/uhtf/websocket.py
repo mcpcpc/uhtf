@@ -9,12 +9,9 @@ Websocket endpoint.
 """
 
 from asyncio import ensure_future
-from asyncio import sleep
 from asyncio import Queue
 from collections.abc import AsyncGenerator
 from dataclasses import asdict
-from dataclasses import dataclass
-from dataclasses import field
 from itertools import groupby
 from json import dumps
 from re import Match
