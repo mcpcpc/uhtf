@@ -155,7 +155,7 @@ def init_websocket(app: Quart) -> Quart:
                 #if procedure.run_passed != False:
                 #    procedure.run_passed = True
                 #await broker.publish(dumps(asdict(procedure)))
-                if procedure.run_passed != False
+                if not procedure.run_passed:
                     await broker.publish(dumps([asdict(procedure),"FAIL"]))
                     continue
                 await broker.publish(dumps([asdict(procedure),"PASS"]))
