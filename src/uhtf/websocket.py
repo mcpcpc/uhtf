@@ -93,7 +93,7 @@ def init_websocket(app: Quart) -> Quart:
                     await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 else:
                     procedure.run_passed = False
-                    await broker.publish(dumps([asdict(procedure),"FAIL"]))
+                    await broker.publish(dumps([asdict(procedure),"INVALID"]))
                     continue  # restart procedure
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
@@ -102,7 +102,7 @@ def init_websocket(app: Quart) -> Quart:
                     await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 else:
                     procedure.run_passed = False
-                    await broker.publish(dumps([asdict(procedure),"FAIL"]))
+                    await broker.publish(dumps([asdict(procedure),"UNKNOWN"]))
                     continue  # restart procedure
                 # Accumulate phases
                 rows = get_db().execute(
