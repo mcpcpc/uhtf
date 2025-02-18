@@ -120,7 +120,9 @@
                 html += `<td scope="row" class="w-100 text-nowrap">${phase['name']}</td>`;
                 if (phase["measurements"].length > 0) {
                   html += `<td>${phase['measurements'][0]['measured_value']}</td>`;
+                  html += `<td>${phase['measurements'][0]['units']}</td>`;
                 } else {
+                  html += `<td></td>`;
                   html += `<td></td>`;
                 }
                 html += `<td><span id="${phase['name']}">${phase['outcome']}</span></td>`;
