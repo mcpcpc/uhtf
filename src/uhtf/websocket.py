@@ -81,7 +81,6 @@ def init_websocket(app: Quart) -> Quart:
                 unit_under_test = UnitUnderTest(None)
                 procedure = Procedure("FVT01", "Multi-coil Check")
                 procedure.unit_under_test = unit_under_test
-                #await broker.publish(dumps(asdict(procedure)))
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 match = search(GS1_REGEX, message)
                 if isinstance(match, Match):
@@ -91,22 +90,18 @@ def init_websocket(app: Quart) -> Quart:
                     procedure.unit_under_test.global_trade_item_number = gtin
                     procedure.unit_under_test.manufacture_date = manufacture_date
                     procedure.unit_under_test.serial_number = serial_number
-                    #await broker.publish(dumps(asdict(procedure)))
                     await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 else:
                     procedure.run_passed = False
-                    #await broker.publish(dumps(asdict(procedure)))
                     await broker.publish(dumps([asdict(procedure),"FAIL"]))
                     continue  # restart procedure
                 part = lookup(match.group("global_trade_item_number"))
                 if isinstance(part, dict):
                     procedure.unit_under_test.part_number = part["number"]
                     procedure.unit_under_test.part_name = part["name"]
-                    #await broker.publish(dumps(asdict(procedure)))
                     await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 else:
                     procedure.run_passed = False
-                    #await broker.publish(dumps(asdict(procedure)))
                     await broker.publish(dumps([asdict(procedure),"FAIL"]))
                     continue  # restart procedure
                 # Accumulate phases
@@ -146,15 +141,10 @@ def init_websocket(app: Quart) -> Quart:
                     builder = ProtocolBuilder(protocol_list)
                     phase = builder.run()
                     procedure.phases.append(phase)
-                    #await broker.publish(dumps(asdict(procedure)))
                     await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                     if phase.outcome.value != "PASS":
                         procedure.run_passed = False
-                        #await broker.publish(dumps(asdict(procedure)))
                 # finalize results
-                #if procedure.run_passed != False:
-                #    procedure.run_passed = True
-                #await broker.publish(dumps(asdict(procedure)))
                 if not procedure.run_passed:
                     await broker.publish(dumps([asdict(procedure),"FAIL"]))
                     continue
