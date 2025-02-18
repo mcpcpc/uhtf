@@ -33,10 +33,6 @@ def create_app(test_config: dict = None) -> Quart:
     app.config.from_mapping(
         SECRET_KEY="dev",
         DATABASE=join(app.instance_path, "uhtf.db"),
-        SOURCE_MEASURING_UNIT_HOSTNAME="10.0.0.2",
-        SOURCE_MEASURING_UNIT_PORT=5025,
-        TEST_BOX_CONTROLLER_HOSTNAME="10.0.0.3",
-        TEST_BOX_CONTROLLER_PORT=5025,
     )
     if test_config is None:
         app.config.from_pyfile(
