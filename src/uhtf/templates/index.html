@@ -108,11 +108,6 @@
             const message = JSON.parse(event.data);
             const procedure = message[0];
             const state = message[1];
-            if (state === "Running") {
-              document.getElementById("run").disabled = True;
-            } else {
-              document.getElementById("run").disabled = False;
-            }
             document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
