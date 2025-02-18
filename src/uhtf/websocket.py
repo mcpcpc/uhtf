@@ -147,7 +147,7 @@ def init_websocket(app: Quart) -> Quart:
                 # finalize results
                 if not procedure.run_passed:
                     await broker.publish(dumps([asdict(procedure),"FAIL"]))
-                    continue
+                    continue  # restart procedure
                 await broker.publish(dumps([asdict(procedure),"PASS"]))
 
         try:
