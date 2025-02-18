@@ -101,14 +101,18 @@
           const ws = new WebSocket(`ws://${location.host}/ws`);
 
           ws.addEventListener('message', function (event) {
-            const procedure = JSON.parse(event.data);
+            //const procedure = JSON.parse(event.data);
+            const message = JSON.parse(event.data);
+            const procedure = message[0];
+            const state = message[1];
             document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
-            setBadge("run_status", procedure["run_passed"]);
+            //setBadge("run_status", procedure["run_passed"]);
+            setBadge("run_status", state);
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
                 var html = "";
