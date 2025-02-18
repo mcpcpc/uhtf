@@ -38,7 +38,7 @@
                   <ul class="dropdown-menu">
                     <li><a class="dropdown-item" href="{{ url_for('.read') }}">Reset</a></li>
                     {% for part in parts %}
-                    <li><a class="dropdown-item" href="{{ url_dor('.read', number=part.number) }}">{{ part.name }}</a></li>
+                    <li><a class="dropdown-item" href="{{ url_for('.read', number=part.number) }}">{{ part.name }}</a></li>
                     {% endfor %}
                   </ul>
                 </div>
