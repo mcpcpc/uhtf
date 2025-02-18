@@ -87,6 +87,7 @@
         </div>
         <script type="text/javascript">
           const ws = new WebSocket(`ws://${location.host}/ws`);
+
           ws.addEventListener('message', function (event) {
             const procedure = JSON.parse(event.data);
             document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
