@@ -13,6 +13,16 @@ from dataclasses import field
 from enum import StrEnum
 
 
+class PhaseResult(StrEnum):
+    """Phase result enumerated constants."""
+
+    CONTINUE = "CONTINUE"
+    FAIL_AND_CONTINUE = "FAIL_AND_CONTINUE"
+    REPEAT = "REPEAT"
+    SKIP = "SKIP"
+    STOP = "STOP"
+
+
 class MeasurementOutcome(StrEnum):
     """Measurement enumerated constants."""
  
