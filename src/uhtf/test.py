@@ -8,6 +8,7 @@ SPDX-License-Identifier: BSD-3-Clause
 Websocket endpoint.
 """
 
+from asyncio import ensure_future
 from dataclasses import asdict
 from itertools import groupby
 from json import dumps

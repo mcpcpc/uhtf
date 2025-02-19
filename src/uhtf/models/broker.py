@@ -8,7 +8,6 @@ SPDX-License-Identifier: BSD-3-Clause
 Websocket broker.
 """
 
-from asyncio import ensure_future
 from asyncio import Queue
 from collections.abc import AsyncGenerator
 
