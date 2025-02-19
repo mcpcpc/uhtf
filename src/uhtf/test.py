@@ -14,6 +14,7 @@ from json import dumps
 from re import Match
 from re import search
 
+from quart import Blueprint
 from quart import Quart
 from quart import websocket
 
