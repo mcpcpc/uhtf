@@ -17,6 +17,7 @@ from re import search
 
 from quart import Blueprint
 from quart import Quart
+from quart import render_template
 from quart import websocket
 
 from .models.base import Procedure
@@ -42,6 +43,11 @@ def lookup(global_trade_item_number: str) -> dict | None:
     if not row:
         return None
     return dict(row)
+
+
+@test.get("/")
+async def index():
+    return await render_template("test.html")
 
 
 @test.websocket("/ws") 

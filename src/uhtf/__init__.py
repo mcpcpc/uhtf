@@ -45,10 +45,6 @@ def create_app(test_config: dict = None) -> Quart:
         makedirs(app.instance_path)
     except OSError:
         pass
-  
-    @app.get("/")
-    async def index():
-        return await render_template("index.html")
 
     init_database(app)
     app.register_blueprint(command)
@@ -58,4 +54,5 @@ def create_app(test_config: dict = None) -> Quart:
     app.register_blueprint(phase)
     app.register_blueprint(protocol)
     app.register_blueprint(test)
+    app.add_url_rule("/", endpoint="index")
     return app
