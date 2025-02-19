@@ -20,7 +20,7 @@ from .database import get_db
 manual = Blueprint("manual", __name__)
 
 
-@app.get("/single")
+@manual.get("/manual")
 def read():
     phases = get_db().execute(
         """

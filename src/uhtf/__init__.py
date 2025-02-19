@@ -17,6 +17,7 @@ from quart import render_template
 from .database import init_database
 from .command import command
 from .instrument import instrument
+from .manual import manual
 from .measurement import measurement
 from .part import part
 from .phase import phase
