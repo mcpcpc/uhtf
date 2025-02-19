@@ -22,7 +22,7 @@ from .part import part
 from .phase import phase
 from .protocol import protocol
 #from .websocket import init_websocket
-from test import .test
+from .test import test
 
 __version__ = "0.0.1"
 
