@@ -1,0 +1,26 @@
+{% extends 'base.htm' %}
+{% block title %}Manual{% endblock %}
+{% block container %}
+        <div class="toolbar mb-5">
+          <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
+            <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+              <h1 class="mb-1 fw-bold fs-4">Manual Test</h1>
+              <ul class="breadcrumb fw-semibold fs-base my-1">
+                <li class="breadcrumb-item text-secondary">
+                  <a href="{{ url_for('index') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
+                </li>
+                <li class="breadcrumb-item text-muted">Application</li>
+                <li class="breadcrumb-item text-emphasis">Manual</li>
+              </ul>
+            </div>
+            <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+              <button type="submit" form="evaluate" class="btn btn-primary icon-link" id="run">
+                <svg class="bi">
+                  <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#play-fill">
+                </svg>
+                Run
+              </button>
+            </div>
+          </div>
+        </div>
+{% endblock %}
