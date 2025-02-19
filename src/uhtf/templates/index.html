@@ -112,7 +112,8 @@
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
-            document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
+            //document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
+            setPlaceholder("part_name", procedure["unit_under_test"]["part_name"], 2);
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
@@ -150,6 +151,15 @@
                 break;
               default:
                 badge.className = "badge text-bg-light";
+            }
+          }
+          
+          function setPlaceholder(name, value, span) {
+            var field = document.getElementById(name);
+            if (value) {
+              field.className = "";
+            } else {
+              field.className = `placeholder col-${span}`;
             }
           }
           
