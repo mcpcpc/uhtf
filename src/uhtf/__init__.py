@@ -21,7 +21,8 @@ from .measurement import measurement
 from .part import part
 from .phase import phase
 from .protocol import protocol
-from .websocket import init_websocket
+#from .websocket import init_websocket
+from test import .test
 
 __version__ = "0.0.1"
 
@@ -51,11 +52,12 @@ def create_app(test_config: dict = None) -> Quart:
         return await render_template("index.html")
 
     init_database(app)
-    init_websocket(app)
+    #init_websocket(app)
     app.register_blueprint(command)
     app.register_blueprint(instrument)
     app.register_blueprint(measurement)
     app.register_blueprint(part)
     app.register_blueprint(phase)
     app.register_blueprint(protocol)
+    app.register_blueprint(test)
     return app
