@@ -55,6 +55,7 @@ def create_app(test_config: dict = None) -> Quart:
     init_websocket(app)
     app.register_blueprint(command)
     app.register_blueprint(instrument)
+    app.register_blueprint(manual)
     app.register_blueprint(measurement)
     app.register_blueprint(part)
     app.register_blueprint(phase)
