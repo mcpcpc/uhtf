@@ -14,7 +14,7 @@ from quart import redirect
 from quart import render_template
 from quart import request
 from quart import url_for
-from quart imooet websocket
+from quart import websocket
 
 from .database import get_db
 from .models.broker import Broker
