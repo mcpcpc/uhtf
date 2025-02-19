@@ -21,7 +21,7 @@ manual = Blueprint("manual", __name__)
 
 
 @manual.get("/manual")
-def read():
+async def read():
     phases = get_db().execute(
         """
         SELECT * FROM phase
