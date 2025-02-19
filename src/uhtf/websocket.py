@@ -8,9 +8,6 @@ SPDX-License-Identifier: BSD-3-Clause
 Websocket endpoint.
 """
 
-from asyncio import ensure_future
-from asyncio import Queue
-from collections.abc import AsyncGenerator
 from dataclasses import asdict
 from itertools import groupby
 from json import dumps
@@ -22,6 +19,7 @@ from quart import websocket
 
 from .models.base import Procedure
 from .models.base import UnitUnderTest
+from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
 from .database import get_db
 
@@ -42,30 +40,6 @@ def lookup(global_trade_item_number: str) -> dict | None:
     return dict(row)
 
 
-class Broker:
-    """Websocket broker."""
- 
-    def __init__(self) -> None:
-        self.connections = set()
-
-    async def publish(self, message: str) -> None:
-        """Publish message to websocket."""
- 
-        for connection in self.connections:
-            await connection.put(message)
-
-    async def subscribe(self) -> AsyncGenerator[str, None]:
-        """Subscribe to websocket."""
- 
-        connection = Queue(1)
-        self.connections.add(connection)
-        try:
-            while True:
-                yield await connection.get()
-        finally:
-            self.connections.remove(connection)
-
-
 def init_websocket(app: Quart) -> Quart:
     """Websocket instantiator."""
 
@@ -73,7 +47,7 @@ def init_websocket(app: Quart) -> Quart:
 
     @app.websocket("/ws") 
     async def ws():
-        """Websocket endpoint."""
+        """Websocket callback."""
 
         async def _receive() -> None:
             while True:
