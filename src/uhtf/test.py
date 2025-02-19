@@ -50,7 +50,7 @@ async def index():
     return await render_template("test.html")
 
 
-@test.websocket("/ws") 
+@test.websocket("/test/ws") 
 async def ws():
     """Test websocket callback."""
 
