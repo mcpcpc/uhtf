@@ -47,7 +47,6 @@ class ProtocolBuilder:
     def run(self) -> Phase:
         measurements = []
         phase_outcome = PhaseOutcome.PASS
-        #start_time_millis= datetime.now().timestamp() * 1000
         for protocol in self.protocols:
             hostname = protocol["instrument_hostname"]
             port = protocol["instrument_port"]
@@ -79,13 +78,10 @@ class ProtocolBuilder:
                 print(exception)
                 phase_outcome = PhaseOutcome.ERROR
                 break
-        #end_time_millis= datetime.now().timestamp() * 1000
         return Phase(
            name=self.protocols[0]["phase_name"],
            outcome=phase_outcome,
            measurements=measurements,
            start_time_millis=None,
            end_time_millis=None,
-           #start_time_millis=start_time_millis,
-           #end_time_millis=end_time_millis,
         )
