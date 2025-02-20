@@ -14,6 +14,7 @@ from os.path import join
 from quart import Quart
 from quart import render_template
 
+from .automated import automated
 from .database import init_database
 from .command import command
 from .instrument import instrument
@@ -22,7 +23,6 @@ from .measurement import measurement
 from .part import part
 from .phase import phase
 from .protocol import protocol
-from .test import test
 
 __version__ = "0.0.1"
 
@@ -48,6 +48,7 @@ def create_app(test_config: dict = None) -> Quart:
         pass
 
     init_database(app)
+    app.register_blueprint(automated)
     app.register_blueprint(command)
     app.register_blueprint(instrument)
     app.register_blueprint(manual)
@@ -55,6 +56,5 @@ def create_app(test_config: dict = None) -> Quart:
     app.register_blueprint(part)
     app.register_blueprint(phase)
     app.register_blueprint(protocol)
-    app.register_blueprint(test)
     app.add_url_rule("/", endpoint="index")
     return app

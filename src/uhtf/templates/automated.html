@@ -1,16 +1,16 @@
 {% extends 'base.htm' %}
-{% block title %}Test{% endblock %}
+{% block title %}Automated{% endblock %}
 {% block container %}
         <div class="toolbar mb-5">
           <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-              <h1 class="mb-1 fw-bold fs-4">Test Device</h1>
+              <h1 class="mb-1 fw-bold fs-4">Automated Device Test</h1>
               <ul class="breadcrumb fw-semibold fs-base my-1">
                 <li class="breadcrumb-item text-secondary">
                   <a href="{{ url_for('index') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
                 </li>
-                <li class="breadcrumb-item text-muted">Application</li>
-                <li class="breadcrumb-item text-emphasis">Test</li>
+                <li class="breadcrumb-item text-muted">Test</li>
+                <li class="breadcrumb-item text-emphasis">Automated</li>
               </ul>
             </div>
             <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
@@ -99,7 +99,7 @@
           </div>
         </div>
         <script type="text/javascript">
-          const ws = new WebSocket(`ws://${location.host}/test/ws`);
+          const ws = new WebSocket(`ws://${location.host}/automated/ws`);
 
           ws.addEventListener('message', function (event) {
             const message = JSON.parse(event.data);

@@ -26,7 +26,7 @@ from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
 from .database import get_db
 
-test = Blueprint("test", __name__)
+automated = Blueprint("automated", __name__)
 broker = Broker()
 gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
@@ -45,14 +45,14 @@ def lookup(global_trade_item_number: str) -> dict | None:
     return dict(row)
 
 
-@test.get("/")
+@automated.get("/")
 async def read():
-    return await render_template("test.html")
+    return await render_template("automated.html")
 
 
-@test.websocket("/test/ws") 
+@automated.websocket("/automated/ws") 
 async def ws():
-    """Test websocket callback."""
+    """Automated test websocket callback."""
 
     async def _receive() -> None:
         while True:

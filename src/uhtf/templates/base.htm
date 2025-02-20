@@ -39,10 +39,10 @@
                     <svg class="bi me-2" fill="currentColor" width="1em" height="1em">
                       <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#menu-button-wide-fill"></use>
                     </svg>
-                    Application
+                    Test
                   </strong>
                   <ul class="list-unstyled fw-normal pb-2 small">
-                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'test.read' %} active{% endif %}" href="{{ url_for('test.read') }}">Test</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'automated.read' %} active{% endif %}" href="{{ url_for('automated.read') }}">Automated</a></li>
                     <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'manual.read' %} active{% endif %}" href="{{ url_for('manual.read') }}">Manual</a></li>
                   </ul>
                 </li>
