@@ -122,7 +122,7 @@
           }
           
           function send(event) {
-            const message = (new FormData(event.target)).get("barcode");
+            const message = (new FormData(event.target));
             if (message) {
               ws.send(message);
             }
