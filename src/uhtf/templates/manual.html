@@ -30,7 +30,7 @@
                 <div class="card-body">
                   <form id="evaluate" class="row g-3" onsubmit="return send(event)" method="post">
                     <div class="form-floating mb-3">
-                      <select id="part_id" name="part_id" class="form-select" required>
+                      <select name="part_id" class="form-select" id="part_id" required>
                         <option selected>Choose...</option>
                         {% for part in parts %}
                         <option value={{ part.id }}>{{ part.name }}</option>
@@ -39,7 +39,7 @@
                       <label for="part_id">Part</label>
                     </div>
                     <div class="form-floating">
-                      <select id="phase_id" name="phase_id" class="form-select" required>
+                      <select name="phase_id" class="form-select" id="phase_id" required>
                         <option selected>Choose...</option>
                         {% for phase in phases %}
                         <option value={{ phase.id }}>{{ phase.name }}</option>
