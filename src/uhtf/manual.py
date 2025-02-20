@@ -80,7 +80,7 @@ async def ws():
             protocol_list = list(map(dict, group))
             builder = ProtocolBuilder(protocol_list)
             phase = builder.run()
-            await broker.publish(dumps([asdict(phase),"RUNNING"]))
+            await broker.publish(dumps(asdict(phase)))
  
     try:
         task = ensure_future(_receive())
