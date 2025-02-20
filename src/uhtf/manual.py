@@ -55,7 +55,8 @@ async def ws():
                 measurement.name AS measurement_name,
                 measurement.units AS measurement_units,
                 measurement.lower_limit AS measurement_lower_limit,
-                measurement.upper_limit AS measurement_upper_limit
+                measurement.upper_limit AS measurement_upper_limit,
+                phase.name AS phase_name
             FROM
                 protocol
             INNER JOIN
