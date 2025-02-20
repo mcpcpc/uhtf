@@ -1,5 +1,16 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+SPDX-FileCopyrightText: 2025 Michael Czigler
+SPDX-License-Identifier: BSD-3-Clause
+
+Protocol builder.
+"""
+
 from dataclasses import dataclass
 from datetime import datetime
+from functools import wraps
 from time import sleep
 
 from .tcp import TCP
@@ -9,10 +20,20 @@ from .base import Phase
 from .base import PhaseOutcome
 
 
-class ProtocolBuilder:
-    protocols: list[dict]
+def time_phase(func) -> Phase:
+    @wraps(func)
+    def wrapped(*args, **kwargs) -> Phase:
+        start_time = datetime.now().timestamp() * 1000
+        phase = func(*args, **kwargs)
+        end_time = datetime.now().timestamp() * 1000
+        phase.start_time_millis = start_time
+        phase.end_time_millis = end_time
+        return phase
+    return wrapped
 
-    def __init__(self, protocols):
+
+class ProtocolBuilder:
+    def __init__(self, protocols: list[dict]):
         self.protocols = protocols
 
     def in_range(self, protocol, value: float) -> MeasurementOutcome:
