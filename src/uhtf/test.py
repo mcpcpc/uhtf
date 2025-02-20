@@ -119,6 +119,7 @@ async def ws():
                 protocol_list = list(map(dict, group))
                 builder = ProtocolBuilder(protocol_list)
                 phase = builder.run()
+                print(phase)
                 procedure.phases.append(phase)
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
                 if phase.outcome.value != "PASS":
