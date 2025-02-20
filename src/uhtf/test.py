@@ -5,7 +5,7 @@
 SPDX-FileCopyrightText: 2025 Michael Czigler
 SPDX-License-Identifier: BSD-3-Clause
 
-Websocket endpoint.
+Test endpoints.
 """
 
 from asyncio import ensure_future
