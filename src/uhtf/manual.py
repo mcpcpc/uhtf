@@ -43,6 +43,7 @@ async def ws():
 
     async def _receive() -> None:
         message = await websocket.receive()
+        print(message)
         form = loads(message)
         rows = get_db().execute(
             """
