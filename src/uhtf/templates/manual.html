@@ -122,10 +122,13 @@
           }
           
           function send(event) {
-            const message = (new FormData(event.target));
-            if (message) {
-              ws.send(message);
-            }
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+              data[key] = value;
+            });
+            const jsonString = JSON.stringify(data);
+            ws.send(jsonString);
             event.target.reset();
             return false;
           }
