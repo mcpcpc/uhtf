@@ -17,6 +17,7 @@ from quart import render_template
 from .database import init_database
 from .command import command
 from .instrument import instrument
+from .manual import manual
 from .measurement import measurement
 from .part import part
 from .phase import phase
@@ -49,6 +50,7 @@ def create_app(test_config: dict = None) -> Quart:
     init_database(app)
     app.register_blueprint(command)
     app.register_blueprint(instrument)
+    app.register_blueprint(manual)
     app.register_blueprint(measurement)
     app.register_blueprint(part)
     app.register_blueprint(phase)

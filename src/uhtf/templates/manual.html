@@ -1,0 +1,133 @@
+{% extends 'base.htm' %}
+{% block title %}Manual{% endblock %}
+{% block container %}
+        <div class="toolbar mb-5">
+          <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
+            <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+              <h1 class="mb-1 fw-bold fs-4">Manual Device Testing</h1>
+              <ul class="breadcrumb fw-semibold fs-base my-1">
+                <li class="breadcrumb-item text-secondary">
+                  <a href="{{ url_for('index') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
+                </li>
+                <li class="breadcrumb-item text-muted">Application</li>
+                <li class="breadcrumb-item text-emphasis">Manual</li>
+              </ul>
+            </div>
+            <div class="d-flex align-items-center flex-nowrap text-nowrap py-1">
+              <button type="submit" form="evaluate" class="btn btn-primary icon-link" id="run">
+                <svg class="bi">
+                  <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#play-fill">
+                </svg>
+                Run
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
+          <div class="row g-3">
+            <div class="col-xl-4">
+              <div class="card bg-body shadow-sm border-0 mb-3">
+                <div class="card-body">
+                  <form id="evaluate" class="row g-3" onsubmit="return send(event)" method="post">
+                    <div class="form-floating mb-3">
+                      <select name="part_id" class="form-select" required>
+                        <option selected>Choose...</option>
+                        {% for part in parts %}
+                        <option value={{ part.id }}>{{ part.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="part_id">Part</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                      <select name="phase_id" class="form-select" required>
+                        <option selected>Choose...</option>
+                        {% for phase in phases %}
+                        <option value={{ phase.id }}>{{ phase.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="phase_id">Phase</label>
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="card bg-body shadow-sm border-0 mb-3">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-semibold text-secondary"><small>Phase Status</small></span>
+                    <span id="state"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8">
+              <div class="card bg-body shadow-sm border-0 mb-3" style="height: 100%">
+                <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center" style="border-bottom: 1px solid var(--bs-tertiary-bg)">
+                  <h5 class="card-title m-0">Detailed Results</h5>
+                </div>
+                <div class="card-body p-3">
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                        <th scope="col" class="w-100">Phase</th>
+                        <th scope="col">Measurement</th>
+                        <th scope="col">Units</th>
+                        <th scope="col">Outcome</th>
+                      </thead>
+                      <tbody id="detail"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          const ws = new WebSocket(`ws://${location.host}/manual/ws`);
+
+          ws.addEventListener('message', function (event) {
+            const phase = JSON.parse(event.data);
+            document.getElementById("detail").innerHTML = "";
+            if (phase["measurements"].length > 0) {
+              phase["measurements"].forEach((measurement) => {
+                var html = "";
+                html += `<tr>`;
+                html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
+                html += `<td>${measurement['measured_value']}</td>`;
+                html += `<td>${measurement['units']}</td>`;
+                html += `<td><span id="${measurement['name']}">${measurement['outcome']}</span></td>`;
+                html += `</tr>`;
+                document.getElementById("detail").innerHTML += html;
+                setBadge(measurement['name'], measurement['outcome']);
+              });
+            }
+            setBadge("state", phase["outcome"]);
+          });
+          
+          function setBadge(name, value) { 
+            var badge = document.getElementById(name);
+            badge.textContent = value;
+            switch(value) {
+              case "PASS":
+                badge.className = "badge text-bg-success";
+                break;
+              case "FAIL":
+                badge.className = "badge text-bg-danger";
+                break;
+              case "ERROR":
+                badge.className = "badge text-bg-warning";
+                break;
+              default:
+                badge.className = "badge text-bg-light";
+            }
+          }
+          
+          function send(event) {
+            const message = (new FormData(event.target)).get("barcode");
+            if (message) {
+              ws.send(message);
+            }
+            event.target.reset();
+            return false;
+          }
+        </script> 
+{% endblock %}

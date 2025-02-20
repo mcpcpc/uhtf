@@ -42,7 +42,8 @@
                     Application
                   </strong>
                   <ul class="list-unstyled fw-normal pb-2 small">
-                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'index' %} active{% endif %}" href="{{ url_for('index') }}">Test</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'test.read' %} active{% endif %}" href="{{ url_for('test.read') }}">Test</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'manual.read' %} active{% endif %}" href="{{ url_for('manual.read') }}">Manual</a></li>
                   </ul>
                 </li>
                 <li class="custom-links-group py-2">
