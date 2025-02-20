@@ -43,7 +43,6 @@ async def ws():
 
     async def _receive() -> None:
         message = await websocket.receive()
-        print(message)
         form = loads(message)
         rows = get_db().execute(
             """
@@ -75,13 +74,10 @@ async def ws():
             """,
             form
         ).fetchall()
-        records = list(map(dict, rows))
-        grouped = groupby(records, key=lambda r: r["phase_name"])
-        for key, group in grouped:
-            protocol_list = list(map(dict, group))
-            builder = ProtocolBuilder(protocol_list)
-            phase = builder.run()
-            await broker.publish(dumps(asdict(phase)))
+        protocol_list = list(map(dict, rows))
+        builder = ProtocolBuilder(protocol_list)
+        phase = builder.run()
+        await broker.publish(dumps(asdict(phase)))
  
     try:
         task = ensure_future(_receive())
