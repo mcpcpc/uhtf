@@ -26,6 +26,7 @@ from .database import get_db
 broker = Broker()
 manual = Blueprint("manual", __name__)
 
+
 @manual.get("/manual")
 async def read():
     parts = get_db().execute("SELECT * FROM part").fetchall()
@@ -54,8 +55,7 @@ async def ws():
                 measurement.name AS measurement_name,
                 measurement.units AS measurement_units,
                 measurement.lower_limit AS measurement_lower_limit,
-                measurement.upper_limit AS measurement_upper_limit,
-                phase.name AS phase_name
+                measurement.upper_limit AS measurement_upper_limit
             FROM
                 protocol
             INNER JOIN
