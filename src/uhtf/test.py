@@ -46,7 +46,7 @@ def lookup(global_trade_item_number: str) -> dict | None:
 
 
 @test.get("/")
-async def index():
+async def read():
     return await render_template("test.html")
 
 
