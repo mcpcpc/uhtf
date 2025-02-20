@@ -22,6 +22,7 @@ from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
 from .database import get_db
 
+broker = Broker()
 manual = Blueprint("manual", __name__)
 
 @manual.get("/manual")
@@ -33,3 +34,19 @@ async def read():
         parts=parts,
         phases=phases,
     )
+
+
+@manual.websocket("/manual/ws")
+async def ws():
+    """Manual test websocket callback."""
+
+    async def _receive() -> None:
+        pass
+ 
+    try:
+        task = ensure_future(_receive())
+        async for message in broker.subscribe():
+            await websocket.send(message)
+    finally:
+        task.cancel()
+        await task
