@@ -20,11 +20,12 @@ from quart import Quart
 from quart import render_template
 from quart import websocket
 
+from .database import get_db
 from .models.base import Procedure
 from .models.base import UnitUnderTest
+from .models.client import Tofupilot
 from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
-from .database import get_db
 
 automated = Blueprint("automated", __name__)
 broker = Broker()
@@ -45,8 +46,27 @@ def lookup(global_trade_item_number: str) -> dict | None:
     return dict(row)
 
 
+def run_client(bearer_token: str, procedure: Procedure) -> None:
+    client = Tofupilot(bearer_token=bearer_token)
+    try:
+        client.upload(procedure)
+    except Exception as e:
+        print(e)
+
+
+def get_bearer_token() -> str:
+    bearer_token = get_db().execute(
+        """
+        SELECT access_token FROM setting WHERE id = 1
+        """
+    ).fetchone()["access_token"]
+    return bearer_token
+
+
 @automated.get("/")
 async def read():
+    """Automated test read callback."""
+
     return await render_template("automated.html")
 
 
@@ -124,10 +144,13 @@ async def ws():
                 if phase.outcome.value != "PASS":
                     procedure.run_passed = False
             # finalize results
+            bearer_token = get_bearer_token()
             if not procedure.run_passed:
                 await broker.publish(dumps([asdict(procedure),"FAIL"]))
+                run_client(bearer_token, procedure)
                 continue  # restart procedure
-            await broker.publish(dumps([asdict(procedure),"PASS"]))
+            run_client(bearer_token, procedure)
+            await broker.publish(dumps([asdict(procedure),"PASS"])) 
 
     try:
         task = ensure_future(_receive())
