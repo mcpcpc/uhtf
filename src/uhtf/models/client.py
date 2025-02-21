@@ -11,20 +11,12 @@ Client handlers.
 from dataclasses import asdict
 from enum import auto
 from enum import StrEnum
+from json import dumps
 from urllib.parse import urlencode
 from urllib.request import Request
 from urllib.request import urlopen
 
 from .base import Procedure
-
-
-def factory(data):
-    def convert(obj):
-        if isinstance(obj, StrEnum):
-            return obj.value
-        return obj
-    return dict((k, convert(v)) for k, v in data)
-
 
 class ClientType(StrEnum):
     """Client type enumerated constant."""
@@ -57,7 +49,7 @@ class Client:
         request = Request(
             f"{self.uri}{endpoint}",
             headers=self._headers(),
-            data=urlencode(form).encode(),
+            data=dumps(form).encode(),
             method="POST",
         )
         with urlopen(request) as response:
@@ -81,5 +73,5 @@ class Tofupilot(Client):
     def upload(self, procedure: Procedure) -> None:
         if not isinstance(procedure, Procedure):
             raise TypeError(procedure)
-        form = asdict(procedure, dict_factory=factory)
+        form = asdict(procedure)
         self._post("/api/v1/runs", form)
