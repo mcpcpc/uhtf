@@ -41,16 +41,14 @@ async def update() -> tuple:
     """Update settings callback."""
 
     form = (await request.form).copy().to_dict()
-    print(form)
     settings = get_db().execute(
         """
         SELECT * FROM setting WHERE id = 1
         """
     ).fetchone()
-    print(dict(settings))
     if not isinstance(form.get("access_token"), str):
         form["access_token"] = settings["access_token"]
-    if len(form.get("password")) > 0:
+    if isinstance(form.get("password"), str) and len(form.get("password")) > 0:
         form["password"] = generate_password_hash(form["password"])
     else:
         form["password"] = settings["password"]
