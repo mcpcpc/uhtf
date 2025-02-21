@@ -38,6 +38,7 @@ async def read() -> tuple:
 
 
 @command.post("/command")
+@login_required
 async def create() -> tuple:
     """Create command callback."""
 

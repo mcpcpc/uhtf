@@ -38,6 +38,7 @@ async def read() -> tuple:
 
 
 @measurement.post("/measurement")
+@login_required
 async def create() -> tuple:
     """Create measurement callback."""
 

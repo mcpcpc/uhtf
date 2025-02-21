@@ -38,6 +38,7 @@ async def read() -> tuple:
 
 
 @instrument.post("/instrument")
+@login_required
 async def create() -> tuple:
     """Create instrument callback."""
 
