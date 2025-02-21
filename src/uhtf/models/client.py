@@ -33,7 +33,7 @@ class Client:
         }
 
     def _post(self, endpoint: str, form: dict) -> None:
-        request = Request(f
+        request = Request(
             f"{self.uri}{endpoint}",
             method="POST",
         )
