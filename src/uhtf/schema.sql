@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS measurement;
 DROP TABLE IF EXISTS part;
 DROP TABLE IF EXISTS phase;
 DROP TABLE IF EXISTS protocol;
+DROP TABLE IF EXISTS setting;
 
 CREATE TABLE command (
     id INTEGER PRIMARY KEY,
@@ -68,3 +69,14 @@ CREATE TABLE protocol (
     FOREIGN KEY(part_id) REFERENCES part(id) ON DELETE CASCADE ON UPDATE NO ACTION
     FOREIGN KEY(phase_id) REFERENCES phase(id) ON DELETE CASCADE ON UPDATE NO ACTION
 );
+
+CREATE TABLE setting (
+    id INTEGER PRIMARY KEY,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT NULL,
+    access_token TEXT DEFAULT NULL,
+    password TEXT NOT NULL
+);
+
+INSERT INTO setting (access_token, password) VALUES
+    (NULL, "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5");
