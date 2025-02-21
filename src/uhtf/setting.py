@@ -50,7 +50,7 @@ async def update() -> tuple:
     print(dict(settings))
     if not isinstance(form.get("access_token"), str):
         form["access_token"] = settings["access_token"]
-    if isinstance(form.get("password"), str):
+    if len(form.get("password")) > 0:
         form["password"] = generate_password_hash(form["password"])
     else:
         form["password"] = settings["password"]
