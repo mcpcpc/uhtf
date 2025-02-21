@@ -74,4 +74,4 @@ class Tofupilot(Client):
         if not isinstance(procedure, Procedure):
             raise TypeError(procedure)
         form = asdict(procedure)
-        self._post("/app/v1/runs", form)
+        self._post("/api/v1/runs", form)
