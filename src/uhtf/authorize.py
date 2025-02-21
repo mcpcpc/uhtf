@@ -30,7 +30,7 @@ def login_required(view):
     @wraps(view)
     async def wrapped(*args, **kwargs):
         if not session.get("unlocked"):
-            return redirect(url_for(".login"))
+            return redirect(url_for("authorize.login"))
         return await view(*args, **kwargs)
 
     return wrapped
