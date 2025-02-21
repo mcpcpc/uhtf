@@ -134,3 +134,32 @@ async def delete_part(id: int) -> tuple:
 async def delete_phase(id: int) -> tuple:
     query = "DELETE FROM phase WHERE id = ?"
     get_db().execute(query, (id,)).commit()
+
+
+@api.post("/command")
+@token_required
+async def create_command() -> tuple:
+    form = (await request.form).copy().to_dict()
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            """
+            INSERT INTO command (
+                name,
+                scpi,
+                delay
+            ) VALUES (
+                :name,
+                :scpi,
+                :delay
+            )
+            """,
+            form,
+        )
+        db.commit()
+    except db.ProgrammingError:
+        return "Missing parameter(s).", 400
+    except db.IntegrityError:
+        return "Invalid parameter(s).", 400
+    return "Instrument successfully created.", 201
