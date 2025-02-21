@@ -5,7 +5,7 @@
 SPDX-FileCopyrightText: 2024 Gossamer Technologies
 SPDX-License-Identifier: BSD-3-Clause
 
-Lucent database management.
+Database initializer.
 """
 
 from datetime import datetime

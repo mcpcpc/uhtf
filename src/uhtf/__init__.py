@@ -25,6 +25,7 @@ from .part import part
 from .phase import phase
 from .protocol import protocol
 from .setting import setting
+from .token import init_token
 
 __version__ = "0.0.1"
 
@@ -50,6 +51,7 @@ def create_app(test_config: dict = None) -> Quart:
         pass
 
     init_database(app)
+    init_token(app)
     app.register_blueprint(authorize)
     app.register_blueprint(automated)
     app.register_blueprint(command)
