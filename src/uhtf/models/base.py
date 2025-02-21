@@ -87,5 +87,4 @@ class Procedure:
     procedure_name: str
     unit_under_test: UnitUnderTest | None = None
     phases: list[Phase] = field(default_factory=list)
-    #run_passed: bool | None = None
     run_passed: bool = True
