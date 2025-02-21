@@ -71,4 +71,6 @@ async def update() -> tuple:
         await flash("Missing parameter(s).", "warning")
     except db.IntegrityError:
         await flash("Invalid parameter(s).", "warning")
+    else:
+        await flash("Settings updated.", "success")
     return redirect(url_for(".read"))
