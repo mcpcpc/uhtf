@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from enum import auto
 from enum import StrEnum
 from urllib.request import Request
