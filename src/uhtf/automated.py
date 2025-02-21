@@ -24,7 +24,6 @@ from .models.base import Procedure
 from .models.base import UnitUnderTest
 from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
-from .authorize import login_required
 from .database import get_db
 
 automated = Blueprint("automated", __name__)
@@ -47,13 +46,11 @@ def lookup(global_trade_item_number: str) -> dict | None:
 
 
 @automated.get("/")
-@login_required
 async def read():
     return await render_template("automated.html")
 
 
 @automated.websocket("/automated/ws")
-@login_required
 async def ws():
     """Automated test websocket callback."""
 

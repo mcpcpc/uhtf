@@ -15,12 +15,14 @@ from quart import render_template
 from quart import request
 from quart import url_for
 
+from .authorize import login_required
 from .database import get_db
 
 phase = Blueprint("phase", __name__)
 
 
 @phase.get("/phase")
+@login_required
 async def read() -> tuple:
     """Read phases callback."""
 
@@ -36,6 +38,7 @@ async def read() -> tuple:
 
 
 @phase.post("/phase")
+@login_required
 async def create() -> tuple:
     """Create phase callback."""
 
@@ -64,6 +67,7 @@ async def create() -> tuple:
 
 
 @phase.post("/phase/delete")
+@login_required
 async def delete():
     """Delete phases callback."""
 
@@ -77,6 +81,7 @@ async def delete():
 
 
 @phase.post("/phase/update")
+@login_required
 async def update() -> tuple:
     """Update phase callback."""
 

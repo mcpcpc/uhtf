@@ -16,12 +16,14 @@ from quart import request
 from quart import url_for
 from werkzeug.security import generate_password_hash
 
+from .authorize import login_required
 from .database import get_db
 
 setting = Blueprint("setting", __name__)
 
 
 @setting.get("/setting")
+@login_required
 async def read() -> tuple:
     """Read settings callback."""
 
@@ -37,6 +39,7 @@ async def read() -> tuple:
 
 
 @setting.post("/setting")
+@login_required
 async def update() -> tuple:
     """Update settings callback."""
 

@@ -15,12 +15,14 @@ from quart import render_template
 from quart import request
 from quart import url_for
 
+from .authorize import login_required
 from .database import get_db
 
 instrument = Blueprint("instrument", __name__)
 
 
 @instrument.get("/instrument")
+@login_required
 async def read() -> tuple:
     """Read instruments callback."""
 
@@ -36,6 +38,7 @@ async def read() -> tuple:
 
 
 @instrument.post("/instrument")
+@login_required
 async def create() -> tuple:
     """Create instrument callback."""
 
@@ -66,6 +69,7 @@ async def create() -> tuple:
 
 
 @instrument.post("/instrument/delete")
+@login_required
 async def delete():
     """Delete instruments callback."""
 
@@ -83,6 +87,7 @@ async def delete():
 
 
 @instrument.post("/instrument/update")
+@login_required
 async def update() -> tuple:
     """Update instrument endpoint."""
 

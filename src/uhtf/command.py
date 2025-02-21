@@ -15,12 +15,14 @@ from quart import render_template
 from quart import request
 from quart import url_for
 
+from .authorize import login_required
 from .database import get_db
 
 command = Blueprint("command", __name__)
 
 
 @command.get("/command")
+@login_required
 async def read() -> tuple:
     """Read commands callback."""
 
@@ -36,6 +38,7 @@ async def read() -> tuple:
 
 
 @command.post("/command")
+@login_required
 async def create() -> tuple:
     """Create command callback."""
 
@@ -66,6 +69,7 @@ async def create() -> tuple:
 
 
 @command.post("/command/delete")
+@login_required
 async def delete():
     """Delete commands callback."""
 
@@ -84,6 +88,7 @@ async def delete():
 
 
 @command.post("/command/update")
+@login_required
 async def update() -> tuple:
     """Update command callback."""
 
