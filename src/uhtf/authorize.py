@@ -8,6 +8,8 @@ SPDX-License-Identifier: BSD-3-Clause
 Authorize endpoints.
 """
 
+from functools import wraps
+
 from quart import Blueprint
 from quart import flash
 from quart import redirect
@@ -20,6 +22,18 @@ from werkzeug.security import check_password_hash
 from .database import get_db
 
 authorize = Blueprint("authorize", __name__)
+
+
+def login_required(view):
+    """Login required decorator."""
+
+    @wraps(view)
+    async def wrapped(*args, **kwargs):
+        if not session.get("unlocked"):
+            return redirect(url_for(".login"))
+        return await view(*args, **kwargs)
+
+    return wrapped
 
 
 @authorize.get("/authorize/login")
