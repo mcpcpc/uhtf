@@ -18,7 +18,7 @@ from urllib.request import urlopen
 from .base import Procedure
 
 
-def custom_asdict_factory(data):
+def factory(data):
     def convert_value(obj):
         if isinstance(obj, StrEnum):
             return obj.value
@@ -81,5 +81,5 @@ class Tofupilot(Client):
     def upload(self, procedure: Procedure) -> None:
         if not isinstance(procedure, Procedure):
             raise TypeError(procedure)
-        form = asdict(procedure, dict_factory=custom_asdict_factory)
+        form = asdict(procedure, dict_factory=factory)
         self._post("/api/v1/runs", form)
