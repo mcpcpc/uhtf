@@ -11,6 +11,7 @@ Client handlers.
 from dataclasses import asdict
 from enum import auto
 from enum import StrEnum
+from urllib.parse import urlencode
 from urllib.request import Request
 from urllib.request import urlopen
 
