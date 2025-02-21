@@ -48,9 +48,9 @@ class Client:
     def _post(self, endpoint: str, form: dict) -> None:
         request = Request(
             f"{self.uri}{endpoint}",
+            headers=self._headers(),
             method="POST",
         )
-        request.headers = self._headers()
         data = urlencode(form).encode()
         with urlopen(request) as response:
             print(response.data)
