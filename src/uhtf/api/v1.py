@@ -162,4 +162,33 @@ async def create_command() -> tuple:
         return "Missing parameter(s).", 400
     except db.IntegrityError:
         return "Invalid parameter(s).", 400
+    return "Command successfully created.", 201
+
+
+@api.post("/instrument")
+@token_required
+async def create_instrument() -> tuple:
+    form = (await request.form).copy().to_dict()
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            """
+            INSERT INTO instrument (
+                name,
+                hostname,
+                port
+            ) VALUES (
+                :name,
+                :hostname,
+                :port
+            )
+            """,
+            form,
+        )
+        db.commit()
+    except db.ProgrammingError:
+        return "Missing parameter(s).", 400
+    except db.IntegrityError:
+        return "Invalid parameter(s).", 400
     return "Instrument successfully created.", 201
