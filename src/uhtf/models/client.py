@@ -49,9 +49,9 @@ class Client:
         request = Request(
             f"{self.uri}{endpoint}",
             headers=self._headers(),
+            data=urlencode(form).encode(),
             method="POST",
         )
-        data = urlencode(form).encode()
         with urlopen(request) as response:
             print(response.data)
 
