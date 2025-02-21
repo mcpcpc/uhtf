@@ -15,12 +15,14 @@ from quart import render_template
 from quart import request
 from quart import url_for
 
+from .authorize import login_required
 from .database import get_db
 
 protocol = Blueprint("protocol", __name__)
 
 
 @protocol.get("/protocol")
+@login_required
 async def read() -> tuple:
     """Read protocols callback."""
 
@@ -92,6 +94,7 @@ async def read() -> tuple:
 
 
 @protocol.post("/protocol")
+@login_required
 async def create() -> tuple:
     """Create protocol callback."""
 
@@ -129,6 +132,7 @@ async def create() -> tuple:
 
 
 @protocol.post("/protocol/delete")
+@login_required
 async def delete():
     """Delete protocols callback."""
 
@@ -145,6 +149,7 @@ async def delete():
 
 
 @protocol.post("/protocol/update")
+@login_required
 async def update():
     """Update protocol endpoint."""
 
