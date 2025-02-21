@@ -34,15 +34,15 @@ async def validate() -> tuple:
     """Validate callback."""
 
     form = await request.form
+    if not isinstance(form.get("password"), str):
+        await flash("Missing password.", "warning")
+        return redirect(url_for(".login"))
     password = get_db().execute(
         """
         SELECT password FROM setting WHERE id = 1
         """
     ).fetchone()
     print(password)
-    if not isinstance(form.get("password"), str):
-        await flash("Missing password.", "warning")
-        return redirect(url_for(".login"))
     if not check_password_hash(password, form["password"]):
         await flash("Invalid password.", "warning")
         return redirect(url_for(".login"))
