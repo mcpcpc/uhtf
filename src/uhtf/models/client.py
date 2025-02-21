@@ -53,7 +53,7 @@ class Client:
         request.headers = self._headers()
         data = urlencode(form).encode()
         with urlopen(request) as response:
-            pass
+            print(response.data)
 
     def upload(self, procedure: Procedure) -> None:
         raise NotImplemented
