@@ -38,7 +38,6 @@ async def read() -> tuple:
 
 
 @phase.post("/phase")
-@login_required
 async def create() -> tuple:
     """Create phase callback."""
 

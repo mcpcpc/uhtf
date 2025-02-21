@@ -38,7 +38,6 @@ async def read() -> tuple:
 
 
 @part.post("/part")
-@login_required
 async def create() -> tuple:
     """Create part callback."""
 

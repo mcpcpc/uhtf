@@ -94,7 +94,6 @@ async def read() -> tuple:
 
 
 @protocol.post("/protocol")
-@login_required
 async def create() -> tuple:
     """Create protocol callback."""
 
