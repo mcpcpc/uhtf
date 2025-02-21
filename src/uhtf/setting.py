@@ -37,7 +37,7 @@ async def read() -> tuple:
 
 
 @setting.post("/setting")
-async def update() -> 
+async def update() -> tuple:
     """Update settings callback."""
 
     form = (await request.form).copy().to_dict()
