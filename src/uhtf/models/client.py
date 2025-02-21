@@ -41,7 +41,8 @@ class Client:
     def _headers(self) -> dict:
         token = self.bearer_token
         return {
-           "Authorization": f"Bearer {token}"
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {token}",
         }
 
     def _post(self, endpoint: str, form: dict) -> None:
