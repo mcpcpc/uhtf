@@ -53,7 +53,8 @@ async def update() -> tuple:
     else:
         form["password"] = settings["password"]
     try:
-        get_db().execute(
+        db = get_db()
+        db.execute(
             """
             UPDATE setting SET
                 updated_at = CURRENT_TIMESTAMP,
