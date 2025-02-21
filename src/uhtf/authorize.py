@@ -46,7 +46,7 @@ async def validate() -> tuple:
         await flash("Invalid password.", "warning")
         return redirect(url_for(".login"))
     session.clear()
-    session["user_id"] = user["id"]
+    session["unlocked"] = True
     return redirect(url_for("index"))
 
 
