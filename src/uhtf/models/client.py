@@ -53,7 +53,8 @@ class Client:
             method="POST",
         )
         with urlopen(request) as response:
-            print(response.data)
+            message = response.read()
+            print(message.decode())
 
     def upload(self, procedure: Procedure) -> None:
         raise NotImplemented
