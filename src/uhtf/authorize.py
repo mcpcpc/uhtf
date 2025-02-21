@@ -9,10 +9,9 @@ Authorize endpoints.
 """
 
 from quart import Blueprint
-from quart import flash
 from quart import redirect
 from quart import render_template
-from quart import request
+from quart import session
 from quart import url_for
 
 from .database import get_db
@@ -25,4 +24,11 @@ async def login() -> tuple:
     """Login callback."""
 
     return await render_template("login.html")
-    
+
+
+@authorize.get("/authorize/logout")
+async def logout() -> tuple:
+    """Logout callback."""
+
+    session.clear()
+    return redirect(url_for("index"))
