@@ -41,6 +41,7 @@ async def update() -> tuple:
     """Update settings callback."""
 
     form = (await request.form).copy().to_dict()
+    print(form)
     settings = get_db().execute(
         """
         SELECT * FROM setting WHERE id = 1
