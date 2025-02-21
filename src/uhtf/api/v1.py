@@ -66,6 +66,8 @@ async def list_phases() -> tuple:
 async def read_command(id: int) -> tuple:
     query = "SELECT * FROM command WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Command does not exist.", 404
     return dict(row), 201
 
 
@@ -74,6 +76,8 @@ async def read_command(id: int) -> tuple:
 async def read_instrument(id: int) -> tuple:
     query = "SELECT * FROM instrument WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Instrument does not exist.", 404
     return dict(row), 201
 
 
@@ -82,6 +86,8 @@ async def read_instrument(id: int) -> tuple:
 async def read_measurement(id: int) -> tuple:
     query = "SELECT * FROM measurement WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Measurement does not exist.", 404
     return dict(row), 201
 
 
@@ -90,6 +96,8 @@ async def read_measurement(id: int) -> tuple:
 async def read_part(id: int) -> tuple:
     query = "SELECT * FROM part WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Part does not exist.", 404
     return dict(row), 201
 
 
@@ -98,6 +106,8 @@ async def read_part(id: int) -> tuple:
 async def read_phase(id: int) -> tuple:
     query = "SELECT * FROM phase WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Phase does not exist.", 404
     return dict(row), 201
 
 
