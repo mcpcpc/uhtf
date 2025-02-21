@@ -23,13 +23,13 @@
        </a>
        <div class="d-flex">
          {% if locked %}
-         <a class="btn icon-link" href="{{ authorize.login }}">
+         <a class="btn icon-link" href="#">
            <svg class="bi">
              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#unlock-fill">
            </svg>
          </a>
          {% else %}
-         <a class="btn icon-link" href="#">
+         <a class="btn icon-link" href="{{ authorize.login }}">
            <svg class="bi">
              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#lock-fill">
            </svg>
