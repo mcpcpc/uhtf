@@ -80,7 +80,7 @@ async def read() -> tuple:
         """
     number = request.args.get("number")
     if isinstance(number, str):
-        query += f" WHERE part.number = {number}"
+        query += f" WHERE part.number = '{number}'"
     protocols = get_db().execute(query).fetchall()
     return await render_template(
         "protocol.html",
