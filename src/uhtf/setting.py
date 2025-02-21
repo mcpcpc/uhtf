@@ -46,6 +46,7 @@ async def update() -> tuple:
         SELECT * FROM setting WHERE id = 1
         """
     ).fetchone()
+    print(dict(settings))
     if not isinstance(form.get("access_token"), str):
         form["access_token"] = settings["access_token"]
     if isinstance(form.get("password"), str):
