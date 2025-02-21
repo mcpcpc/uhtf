@@ -1,6 +1,6 @@
 # uhtf
 
-A micro hardware test framework (HTF).
+A lightweight hardware test framework (HTF).
 
 ## Install
 
