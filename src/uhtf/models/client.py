@@ -65,7 +65,7 @@ class Tofupilot(Client):
     def __init__(self, *args, **kwargs) -> None:
         super().__init__(
             ClientType.TOFUPILOT,
-            "https://tofupilot.app",
+            "https://www.tofupilot.app",
             *args, 
             **kwargs,
         )
