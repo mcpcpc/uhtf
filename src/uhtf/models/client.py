@@ -19,11 +19,11 @@ from .base import Procedure
 
 
 def factory(data):
-    def convert_value(obj):
+    def convert(obj):
         if isinstance(obj, StrEnum):
             return obj.value
         return obj
-    return dict((k, convert_value(v)) for k, v in data)
+    return dict((k, convert(v)) for k, v in data)
 
 
 class ClientType(StrEnum):
