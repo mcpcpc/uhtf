@@ -1,3 +1,13 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+SPDX-FileCopyrightText: 2025 Michael Czigler
+SPDX-License-Identifier: BSD-3-Clause
+
+Client handlers.
+"""
+
 from dataclasses import asdict
 from enum import auto
 from enum import StrEnum
