@@ -69,7 +69,7 @@ async def read_command(id: int) -> tuple:
     return dict(row), 201
 
 
-@api.get("/instrument/<indt:id>")
+@api.get("/instrument/<int:id>")
 @token_required
 async def read_instrument(id: int) -> tuple:
     query = "SELECT * FROM instrument WHERE id = ?"
