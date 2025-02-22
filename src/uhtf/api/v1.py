@@ -203,6 +203,7 @@ async def create_instrument() -> tuple:
         return "Invalid parameter(s).", 400
     return "Instrument successfully created.", 201
 
+
 @api.post("/measurement")
 @token_required
 async def create_measurement() -> tuple:
@@ -233,3 +234,32 @@ async def create_measurement() -> tuple:
     except db.IntegrityError:
         return "Invalid parameter(s).", 400
     return "Measurement successfully created.", 201
+ 
+
+@api.post("/part")
+@token_required
+async def create_part() -> tuple:
+    form = (await request.form).copy().to_dict()
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            """
+            INSERT INTO part (
+                global_trade_item_number,
+                number,
+                name
+            ) VALUES (
+                :global_trade_item_number,
+                :number,
+                :name
+            )
+            """,
+            form,
+        )
+        db.commit()
+    except db.ProgrammingError:
+        return "Missing parameter(s).", 400
+    except db.IntegrityError:
+        return "Invalid parameter(s).", 400
+    return "Part successfully created.", 201
