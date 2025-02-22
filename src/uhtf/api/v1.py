@@ -111,6 +111,16 @@ async def read_phase(id: int) -> tuple:
     return dict(row), 201
 
 
+@api.get("/protocol/<int:id>")
+@token_required
+async def read_protocol(id: int) -> tuple:
+    query = "SELECT * FROM protocol WHERE id = ?"
+    row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Protocol does not exist.", 404
+    return dict(row), 201
+
+
 @api.delete("/command/<int:id>")
 @token_required
 async def delete_command(id: int) -> tuple:
@@ -143,6 +153,13 @@ async def delete_part(id: int) -> tuple:
 @token_required
 async def delete_phase(id: int) -> tuple:
     query = "DELETE FROM phase WHERE id = ?"
+    get_db().execute(query, (id,)).commit()
+
+
+@api.delete("/protocol/<int:id>")
+@token_required
+async def delete_protocol(id: int) -> tuple:
+    query = "DELETE FROM protocol WHERE id = ?"
     get_db().execute(query, (id,)).commit()
 
 
