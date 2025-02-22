@@ -101,7 +101,7 @@ async def read_part(id: int) -> tuple:
     return dict(row), 201
 
 
-@api.get("/phase")
+@api.get("/phase/<int:id>")
 @token_required
 async def read_phase(id: int) -> tuple:
     query = "SELECT * FROM phase WHERE id = ?"
