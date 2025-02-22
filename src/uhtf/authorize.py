@@ -49,7 +49,7 @@ async def validate() -> tuple:
 
     form = await request.form
     if not isinstance(form.get("password"), str):
-        await flash("Missing password.", "warning")
+        await flash("Missing password.")
         return redirect(url_for(".login"))
     password = get_db().execute(
         """
@@ -57,7 +57,7 @@ async def validate() -> tuple:
         """
     ).fetchone()["password"]
     if not check_password_hash(password, form["password"]):
-        await flash("Invalid password.", "warning")
+        await flash("Invalid password.")
         return redirect(url_for(".login"))
     session.clear()
     session["unlocked"] = True
