@@ -263,3 +263,30 @@ async def create_part() -> tuple:
     except db.IntegrityError:
         return "Invalid parameter(s).", 400
     return "Part successfully created.", 201
+
+
+@api.post("/phase")
+@token_required
+async def create_phase() -> tuple:
+    form = (await request.form).copy().to_dict()
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            """
+            INSERT INTO phase (
+                name,
+                retry
+            ) VALUES (
+                :name,
+                :retry
+            )
+            """,
+            form,
+        )
+        db.commit()
+    except db.ProgrammingError:
+        return "Missing parameter(s).", 400
+    except db.IntegrityError:
+        return "Invalid parameter(s).", 400
+    return "Phase successfully created.", 201
