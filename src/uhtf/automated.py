@@ -47,6 +47,8 @@ def lookup(global_trade_item_number: str) -> dict | None:
 
 
 def run_client(bearer_token: str, procedure: Procedure) -> None:
+    if not isinstance(str, bearer_token) or bearer_token == "":
+        return
     client = Tofupilot(bearer_token=bearer_token)
     try:
         client.upload(procedure)
