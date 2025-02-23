@@ -313,6 +313,7 @@ async def create_phase() -> tuple:
 @token_required
 async def create_protocol() -> tuple:
     form = (await request.form).copy().to_dict()
+    form["measurement_id"] = form.get("measurement_id")
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
