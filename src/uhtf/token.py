@@ -30,13 +30,11 @@ def token_required(view):
 
     @wraps(view)
     async def wrapper(*args, **kwargs):
-        #if not request.args.get("token", None):
         headers = request.headers
         if not headers.get("Authorization"):
             return "Token required.", 401
         try:
             decode(
-                #request.args["token"],
                 headers.get("Authorization").split()[1],
                 current_app.config["SECRET_KEY"],
                 algorithms=["HS256"],
