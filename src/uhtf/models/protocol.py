@@ -10,6 +10,9 @@ Protocol builder.
 
 from dataclasses import dataclass
 from datetime import datetime
+from decimal import Decimal
+from decimal import getcontext
+from decimal import ROUND_HALF_EVEN
 from functools import wraps
 from time import sleep
 
@@ -36,10 +39,18 @@ class ProtocolBuilder:
     def __init__(self, protocols: list[dict]):
         self.protocols = protocols
 
+    #def in_range(self, protocol, value: float) -> MeasurementOutcome:
+    #    ll = protocol["measurement_lower_limit"]
+    #    ul = protocol["measurement_upper_limit"]
+    #    if value > ll and value < ul:
+    #        return MeasurementOutcome.PASS
+    #    return MeasurementOutcome.FAIL
     def in_range(self, protocol, value: float) -> MeasurementOutcome:
-        ll = protocol["measurement_lower_limit"]
-        ul = protocol["measurement_upper_limit"]
-        if value > ll and value < ul:
+        getcontext().rounding = ROUND_HALF_EVEN  # per ISO 80000-1
+        ll = Decimal(protocol["measurement_lower_limit"])
+        ul = Decimal(protocol["measurement_upper_limit"])
+        rounded = round(Decimal(value), 3)  # temporary
+        if ll < rounded < ul:
             return MeasurementOutcome.PASS
         return MeasurementOutcome.FAIL
 
