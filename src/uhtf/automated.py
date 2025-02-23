@@ -47,7 +47,7 @@ def lookup(global_trade_item_number: str) -> dict | None:
 
 
 def run_client(token: str, procedure: Procedure) -> None:
-    if not isinstance(str, token) or token == "":
+    if not isinstance(token, str) or token == "":
         return
     url = "https://www.tofupilot.app/api/v1/runs"  # temporary
     try:
