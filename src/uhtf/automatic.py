@@ -27,7 +27,7 @@ from .models.base import UnitUnderTest
 from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
 
-automated = Blueprint("automated", __name__)
+automatic = Blueprint("automatic", __name__)
 broker = Broker()
 gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
@@ -66,16 +66,16 @@ def get_bearer_token() -> str:
     return bearer_token
 
 
-@automated.get("/")
+@automatic.get("/")
 async def read():
-    """Automated test read callback."""
+    """Automatic test read callback."""
 
-    return await render_template("automated.html")
+    return await render_template("automatic.html")
 
 
-@automated.websocket("/automated/ws")
+@automatic.websocket("/automatic/ws")
 async def ws():
-    """Automated test websocket callback."""
+    """Automatic test websocket callback."""
 
     async def _receive() -> None:
         while True:

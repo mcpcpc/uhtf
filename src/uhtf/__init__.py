@@ -16,7 +16,7 @@ from quart import render_template
 
 from .api.v1 import api
 from .authorize import authorize
-from .automated import automated
+from .automatic import automatic
 from .database import init_database
 from .command import command
 from .instrument import instrument
@@ -55,7 +55,7 @@ def create_app(test_config: dict = None) -> Quart:
     init_token(app)
     app.register_blueprint(api)
     app.register_blueprint(authorize)
-    app.register_blueprint(automated)
+    app.register_blueprint(automatic)
     app.register_blueprint(command)
     app.register_blueprint(instrument)
     app.register_blueprint(manual)
