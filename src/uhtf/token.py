@@ -19,8 +19,9 @@ from click import echo
 from jwt import decode
 from jwt import encode
 from quart import current_app
-from quart import request
+#from quart import request
 from quart.cli import with_appcontext
+from quart.request import headers
 
 
 def token_required(view):
@@ -30,11 +31,13 @@ def token_required(view):
 
     @wraps(view)
     async def wrapper(*args, **kwargs):
-        if not request.args.get("token", None):
+        #if not request.args.get("token", None):
+        if not headers.get("Authorization"):
             return "Token required.", 401
         try:
             decode(
-                request.args["token"],
+                #request.args["token"],
+                headers.get("Authorization").split()[1],
                 current_app.config["SECRET_KEY"],
                 algorithms=["HS256"],
             ).get("confirm")
