@@ -21,9 +21,9 @@ from quart import render_template
 from quart import websocket
 
 from .database import get_db
+from .models.archive import ArchiveClient
 from .models.base import Procedure
 from .models.base import UnitUnderTest
-from .models.client import Tofupilot
 from .models.broker import Broker
 from .models.protocol import ProtocolBuilder
 
@@ -46,12 +46,13 @@ def lookup(global_trade_item_number: str) -> dict | None:
     return dict(row)
 
 
-def run_client(bearer_token: str, procedure: Procedure) -> None:
-    if not isinstance(str, bearer_token) or bearer_token == "":
+def run_client(token: str, procedure: Procedure) -> None:
+    if not isinstance(str, token) or token == "":
         return
-    client = Tofupilot(bearer_token=bearer_token)
+    url = "https://www.tofupilot.app/api/v1/runs"  # temporary
     try:
-        client.upload(procedure)
+        client = ArchiveClient(url, token)
+        client.post(procedure)
     except Exception as e:
         print(e)
 
