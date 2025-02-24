@@ -50,6 +50,7 @@
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
                         <th scope="col" class="text-nowrap">Measurement Name</th>
+                        <th scope="col">Precision</th>
                         <th scope="col">Units</th>
                         <th scope="col" class="text-nowrap">Lower Limit</th>
                         <th scope="col" class="text-nowrap">Upper Limit</th>
@@ -61,11 +62,12 @@
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="measurement_id" value="{{ measurement.id }}" /></td>
                         <td class="text-nowrap">{{ measurement.name }}</td>
+                        <td>{{ measurement.precision }}</td>
                         <td>{{ measurement.units }}</td>
                         <td>{{ measurement.lower_limit }}</td>
                         <td>{{ measurement.upper_limit }}</td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ measurement.id }}', '{{ measurement.name }}', '{{ measurement.precision }}', '{{ measurement.units }}', '{{ measurement.lower_limit }}', '{{ measurement.upper_limit }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
                             </svg>
@@ -92,6 +94,10 @@
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Measurement Name</label>
                     <input type="text" class="form-control" name="name" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="precision" class="col-form-label">Precision</label>
+                    <input type="number" class="form-control" name="precision" min="0" max="12" step="1">
                   </div>
                   <div class="mb-3">
                     <label for="units" class="col-form-label">Units</label>
@@ -132,6 +138,10 @@
                     <input type="text" class="form-control" id="name" name="name" required>
                   </div>
                   <div class="mb-3">
+                    <label for="precision" class="col-form-label">Precision</label>
+                    <input type="number" class="form-control" id="precision" name="precision" min="0" max="12" step="1">
+                  </div>
+                  <div class="mb-3">
                     <label for="units" class="col-form-label">Units</label>
                     <input type="text" class="form-control" id="units" name="units">
                   </div>
@@ -158,9 +168,10 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          function populateUpdateModal(id, name, units, lower_limit, upper_limit) {
+          function populateUpdateModal(id, name, precision, units, lower_limit, upper_limit) {
             document.getElementById("id").value = id;
             document.getElementById("name").value = name;
+            document.getElementById("precision").value = precision;
             document.getElementById("units").value = units;
             document.getElementById("lower_limit").value = lower_limit;
             document.getElementById("upper_limit").value = upper_limit;

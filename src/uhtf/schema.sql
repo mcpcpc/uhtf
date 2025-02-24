@@ -32,6 +32,7 @@ CREATE TABLE measurement (
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT NULL,
     name TEXT UNIQUE NOT NULL,
+    precision INTEGER NOT NULL,
     units TEXT DEFAULT NULL,
     lower_limit REAL DEFAULT NULL,
     upper_limit REAL DEFAULT NULL

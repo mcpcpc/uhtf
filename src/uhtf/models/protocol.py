@@ -39,17 +39,12 @@ class ProtocolBuilder:
     def __init__(self, protocols: list[dict]):
         self.protocols = protocols
 
-    #def in_range(self, protocol, value: float) -> MeasurementOutcome:
-    #    ll = protocol["measurement_lower_limit"]
-    #    ul = protocol["measurement_upper_limit"]
-    #    if value > ll and value < ul:
-    #        return MeasurementOutcome.PASS
-    #    return MeasurementOutcome.FAIL
     def in_range(self, protocol, value: float) -> MeasurementOutcome:
         getcontext().rounding = ROUND_HALF_EVEN  # per ISO 80000-1
         ll = Decimal(protocol["measurement_lower_limit"])
         ul = Decimal(protocol["measurement_upper_limit"])
-        rounded = round(Decimal(value), 3)  # temporary
+        prec = int(protocol["measurement_precision"])
+        rounded = round(Decimal(value), prec)
         if ll < rounded < ul:
             return MeasurementOutcome.PASS
         return MeasurementOutcome.FAIL

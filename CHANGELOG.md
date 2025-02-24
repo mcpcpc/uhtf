@@ -9,8 +9,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- Missing API for protocol LIST.
+- Missing API (v1) command for protocol LIST.
 - Archive URL parameter in settings endpoint. 
+- Precision parameter for measurements.
 
 ## Removed
 

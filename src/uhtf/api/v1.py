@@ -240,12 +240,14 @@ async def create_measurement() -> tuple:
             """
             INSERT INTO measurement (
                 name,
+                precision,
                 units,
                 lower_limit,
                 upper_limit
                 
             ) VALUES (
                 :name,
+                :precision,
                 :units,
                 :lower_limit,
                 :upper_limit
