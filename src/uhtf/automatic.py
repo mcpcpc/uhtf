@@ -52,7 +52,7 @@ def archive(procedure: Procedure) -> None:
         SELECT value FROM setting WHERE key = 'archive_url'
         """
     ).fetchone()["value"]
-    if not isinstance(url, str) or token == "":
+    if not isinstance(url, str) or url == "":
         return  # not a valid archive URL
     token = get_db().execute(
         """
