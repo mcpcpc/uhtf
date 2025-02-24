@@ -63,18 +63,18 @@
     </div>
     <main class="form-signin w-100 m-auto">
       <h1 class="h3 mb-3 fw-normal">Sign In</h1>
+      {% with messages = get_flashed_messages() %}
       <form class="mb-1" id="validate" action="{{ url_for('.validate') }}" method="post">
         <div class="form-floating">
-          <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+          <input type="password" class="form-control{% if messages %} is-invalid{% endif %}" id="password" name="password" placeholder="Password" required>
           <label for="password">Password</label>
+          {% if messages %}
+          {% for message in messages %}
+          <div id="invalidFeedback" class="invalid-feedback">{{ message }}</div>
+          {% endfor %}
+          {% endif %} 
         </div>
       </form>
-      {% with messages = get_flashed_messages() %}
-      {% if messages %}
-      {% for message in messages %}
-      <span class="text-danger d-flex"><small>{{ message }}</small></span>
-      {% endfor %}
-      {% endif %} 
       {% endwith %}
       <div class="d-flex justify-content-center mt-5">
         <a class="link icon-link" href="{{ url_for('index') }}">
