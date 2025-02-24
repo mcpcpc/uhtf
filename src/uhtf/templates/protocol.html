@@ -38,7 +38,7 @@
                   <ul class="dropdown-menu custom-dropdown">
                     <li><a class="dropdown-item" href="{{ url_for('.read') }}">Clear Filter</a></li>
                     {% for part in parts %}
-                    <li><a class="dropdown-item" href="{{ url_for('.read', number=part.number) }}">{{ part.name }}</a></li>
+                    <li><a class="dropdown-item{% if number == part.number %} active{% endif %}" href="{{ url_for('.read', number=part.number) }}">{{ part.name }}</a></li>
                     {% endfor %}
                   </ul>
                 </div>
