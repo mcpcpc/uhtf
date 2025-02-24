@@ -292,11 +292,9 @@ async def create_phase() -> tuple:
         db.execute(
             """
             INSERT INTO phase (
-                name,
-                retry
+                name
             ) VALUES (
-                :name,
-                :retry
+                :name
             )
             """,
             form,

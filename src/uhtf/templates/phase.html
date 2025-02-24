@@ -50,7 +50,6 @@
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
                         <th scope="col" class="w-100">Name</th>
-                        <th scope="col" class="text-nowrap">Retry Attempts</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -59,7 +58,6 @@
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
                         <td class="text-nowrap">{{ phase.name }}</td>
-                        <td>{{ phase.retry }}</td>
                         <td>
                           <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.retry }}')">
                             <svg class="bi">
@@ -89,10 +87,6 @@
                     <label for="name" class="col-form-label">Phase Name</label>
                     <input type="text" class="form-control" name="name" placeholder="i.e. Setup" required>
                   </div>
-                  <div class="mb-3">
-                    <label for="retry" class="col-form-label">Retry Attempts</label>
-                    <input type="number" class="form-control" name="retry" value="0" required>
-                  </div>
                 </form>
               </div>
               <div class="modal-footer border-0">
@@ -119,10 +113,6 @@
                     <label for="name" class="col-form-label">Phase Name</label>
                     <input type="text" class="form-control" id="name" name="name" placeholder="i.e. Setup" required>
                   </div>
-                  <div class="mb-3">
-                    <label for="retry" class="col-form-label">Retry Attempts</label>
-                    <input type="number" class="form-control" id="priority" name="retry" value="0" required>
-                  </div>
                 </form>
               </div>
               <div class="modal-footer border-0">
@@ -138,7 +128,7 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          function populateUpdateModal(id, name, retry) {
+          function populateUpdateModal(id, name) {
             document.getElementById("id").value = id;
             document.getElementById("name").value = name;
             document.getElementById("retry").value = retry;
