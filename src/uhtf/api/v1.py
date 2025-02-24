@@ -61,6 +61,14 @@ async def list_phases() -> tuple:
     return list(map(dict, rows)), 201
 
 
+@api.get("/protocol")
+@token_required
+async def list_protocols() -> tuple:
+    query = "SELECT * FROM protocol"
+    rows = get_db().execute(query).fetchall()
+    return list(map(dict, rows)), 201
+
+
 @api.get("/command/<int:id>")
 @token_required
 async def read_command(id: int) -> tuple:
