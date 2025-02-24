@@ -27,15 +27,8 @@ setting = Blueprint("setting", __name__)
 async def read() -> tuple:
     """Read settings callback."""
 
-    settings = get_db().execute(
-        """
-        SELECT * FROM setting WHERE id = 1
-        """
-    ).fetchone()
-    return await render_template(
-        "setting.html",
-        settings=settings,
-    )
+    settings = get_db().execute("SELECT * FROM setting").fetchall()
+    return await render_template("setting.html", settings=settings)
 
 
 @setting.post("/setting")
@@ -44,29 +37,25 @@ async def update() -> tuple:
     """Update settings callback."""
 
     form = (await request.form).copy().to_dict()
-    settings = get_db().execute(
-        """
-        SELECT * FROM setting WHERE id = 1
-        """
+    row = get_db().execute(
+        "SELECT * FROM setting WHERE key = 'password'"
     ).fetchone()
-    if not isinstance(form.get("access_token"), str):
-        form["access_token"] = settings["access_token"]
-    if isinstance(form.get("password"), str) and len(form.get("password")) > 0:
+    if isinstance(form.get("password"), str) and len(form["password"]) > 0:
         form["password"] = generate_password_hash(form["password"])
     else:
-        form["password"] = settings["password"]
+        form["password"] = row['value']
     try:
         db = get_db()
-        db.execute(
-            """
-            UPDATE setting SET
-                updated_at = CURRENT_TIMESTAMP,
-                access_token = :access_token,
-                password = :password
-            WHERE id = 1
-            """,
-            form,
-        )
+        for key, value in form.items():
+            db.execute(
+                """
+                UPDATE setting SET
+                    updated_at = CURRENT_TIMESTAMP,
+                    value = ?
+                WHERE key = ?
+                """,
+                (value, key),
+            )
         db.commit()
     except db.ProgrammingError:
         await flash("Missing parameter(s).", "warning")
@@ -75,3 +64,4 @@ async def update() -> tuple:
     else:
         await flash("Settings updated.", "success")
     return redirect(url_for(".read"))
+

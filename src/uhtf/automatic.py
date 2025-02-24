@@ -46,24 +46,26 @@ def lookup(global_trade_item_number: str) -> dict | None:
     return dict(row)
 
 
-def run_client(token: str, procedure: Procedure) -> None:
+def archive(procedure: Procedure) -> None:
+    url = get_db().execute(
+        """
+        SELECT value FROM setting WHERE key = 'archive_url'
+        """
+    ).fetchone()["value"]
+    if not isinstance(url, str) or token == "":
+        return  # not a valid archive URL
+    token = get_db().execute(
+        """
+        SELECT value FROM setting WHERE key = 'archive_access_token'
+        """
+    ).fetchone()["value"]
     if not isinstance(token, str) or token == "":
-        return
-    url = "https://www.tofupilot.app/api/v1/runs"  # temporary
+        return  # not a valid archive token
     try:
         client = ArchiveClient(url, token)
         client.post(procedure)
     except Exception as e:
         print(e)
-
-
-def get_bearer_token() -> str:
-    bearer_token = get_db().execute(
-        """
-        SELECT access_token FROM setting WHERE id = 1
-        """
-    ).fetchone()["access_token"]
-    return bearer_token
 
 
 @automatic.get("/")
@@ -147,12 +149,11 @@ async def ws():
                 if phase.outcome.value != "PASS":
                     procedure.run_passed = False
             # finalize results
-            bearer_token = get_bearer_token()
             if not procedure.run_passed:
                 await broker.publish(dumps([asdict(procedure),"FAIL"]))
-                run_client(bearer_token, procedure)
+                archive(procedure)
                 continue  # restart procedure
-            run_client(bearer_token, procedure)
+            archive(procedure)
             await broker.publish(dumps([asdict(procedure),"PASS"])) 
 
     try:
