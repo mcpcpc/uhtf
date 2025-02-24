@@ -86,3 +86,76 @@
 .custom-dropdown .active {font-weight: 600}
 .custom-dropdown .active .bi {display: block !important}
 .dropdown-menu-end {--bs-dropdown-min-width: 8rem}
+
+.custom-main {
+    grid-area: main
+}
+
+@media (max-width: 991.98px) {
+    .custom-main {
+        max-width:760px;
+        margin-inline:auto}
+}
+
+@media (min-width: 768px) {
+    .custom-main {
+        display:grid;
+        grid-template-areas: "intro" "toc" "content";
+        grid-template-rows: auto auto 1fr;
+        gap: inherit
+    }
+}
+
+@media (min-width: 992px) {
+    .custom-main {
+        grid-template-areas:"intro   toc" "content toc";
+        grid-template-rows: auto 1fr;
+        grid-template-columns: 4fr 1fr
+    }
+}
+
+.custom-content {
+    grid-area: content;
+    min-width: 1px
+}
+
+.custom-content>.table,.custom-content>.table-responsive .table {
+    --bs-table-border-color: var(--bs-border-color);
+    max-width: 100%;
+    margin-bottom: 1.5rem;
+    font-size: .875rem
+}
+
+@media (max-width: 991.98px) {
+    .custom-content>.table.table-bordered,.bd-content>.table-responsive .table.table-bordered {
+        border:0
+    }
+}
+
+.custom-content>.table thead,.bd-content>.table-responsive .table thead {
+    border-bottom: 2px solid currentcolor
+}
+
+.custom-content>.table tbody:not(:first-child),.custom-content>.table-responsive .table tbody:not(:first-child) {
+    border-top: 2px solid currentcolor
+}
+
+.custom-content>.table th:first-child,.custom-content>.table td:first-child,.custom-content>.table-responsive .table th:first-child,.custom-content>.table-responsive .table td:first-child {
+    padding-left: 0
+}
+
+.custom-content>.table th:not(:last-child),.custom-content>.table td:not(:last-child),.custom-content>.table-responsive .table th:not(:last-child),.custom-content>.table-responsive .table td:not(:last-child) {
+    padding-right: 1.5rem
+}
+
+.custom-content>.table th,.custom-content>.table-responsive .table th {
+    color: var(--bs-emphasis-color)
+}
+
+.custom-content>.table strong,.custom-content>.table-responsive .table strong {
+    color: var(--bs-emphasis-color)
+}
+
+.custom-content>.table th,.custom-content>.table td:first-child>code,.custom-content>.table-responsive .table th,.custom-content>.table-responsive .table td:first-child>code {
+    white-space: nowrap
+}
