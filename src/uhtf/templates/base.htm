@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="author" content="Michael Czigler">
+    <meta name="description" content="Lightweight hardware test framework">
+    <title>{% block title %}{% endblock %} · HTF</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.svg') }}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="{{ url_for('static', filename='main.css') }}" rel="stylesheet">
+  </head>
+  <body>
+    <header class="navbar navbar-expand-lg sticky-top bg-body-tertiary" style="padding: .75rem 0">
+      <nav class="container-xxl flex-wrap flex-lg-nowrap" style="--bs-gutter-x: 3rem" aria-label="Main navigation">
+        <button class="navbar-toggler p-2" style="border: 0; padding: 0; margin-right: -.5rem" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar" aria-controls="bdSidebar" aria-label="Toggle navigation">
+          <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" class="bi" fill="currentColor" viewBox="0 0 16 16">
+            <use xlink:href="{{ url_for('static', filename='bootstrap-icons.svg') }}#list"></use>
+          </svg>
+        </button>
+        <a class="navbar-brand p-0 me-0 me-lg-2" href="{{ url_for('index') }}" aria-label="HTF">
+          <svg width="1.5em" height="1.5em" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><defs><mask id="logo" maskUnits="userSpaceOnUse"><rect x="0" y="0" width="100" height="100" fill="white"/><text x="50" y="70" font-family="sans-serif" font-size="35" text-anchor="middle" dominant-baseline="middle">HTF</text></mask></defs><rect x="5" y="5" width="90" height="90" rx="15" ry="15" fill="currentColor" fill-rule="evenodd" mask="url(#logo)" /></svg>
+       </a>
+       <div class="d-flex">
+         {% if session["unlocked"] %}
+         <a class="btn icon-link" href="{{ url_for('authorize.logout') }}">
+           <svg class="bi">
+             <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#unlock-fill">
+           </svg>
+         </a>
+         {% else %}
+         <a class="btn icon-link" href="{{ url_for('authorize.login') }}">
+           <svg class="bi">
+             <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#lock-fill">
+           </svg>
+         </a>
+         {% endif %}
+       </div>
+      </nav>
+    </header>
+    <div class="container-xxl mt-3 my-md-4 custom-layout" style="--bs-gutter-x: 3rem">
+      <aside class="custom-sidebar">
+        <div class="offcanvas-lg offcanvas-start" tabindex="-1" id="bdSidebar" aria-labelledby="bdSidebarOffcanvasLabel">
+          <div class="offcanvas-header border-bottom px-4">
+            <h5 class="offcanvas-title" id="bdSidebarOffcanvasLabel">Navigation</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close" data-bs-target="#bdSidebar">
+          </div>
+          <div class="offcanvas-body px-4">
+            <nav class="custom-links w-100" aria-label="Navigation">
+              <ul class="custom-links-nav list-unstyled mb-0 pb-3 pb-md-2 pe-lg-2">
+                <li class="custom-links-group py-2">
+                  <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
+                    <svg class="bi me-2" fill="currentColor" width="1em" height="1em">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#menu-button-wide-fill"></use>
+                    </svg>
+                    Test
+                  </strong>
+                  <ul class="list-unstyled fw-normal pb-2 small">
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'automatic.read' %} active{% endif %}" href="{{ url_for('automatic.read') }}">Automatic</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'manual.read' %} active{% endif %}" href="{{ url_for('manual.read') }}">Manual</a></li>
+                  </ul>
+                </li>
+                <li class="custom-links-group py-2">
+                  <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
+                    <svg class="bi me-2" fill="currentColor" width="1em" height="1em">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#app"></use>
+                    </svg>
+                    Application
+                  </strong>
+                  <ul class="list-unstyled fw-normal pb-2 small">
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'setting.read' %} active{% endif %}" href="{{ url_for('setting.read') }}">Settings</a></li>
+                    {% if session["unlocked"] %}
+                    <li><a class="custom-links-link d-inline-block rounded" href="{{ url_for('authorize.logout') }}">Logout</a></li>
+                    {% else %}
+                    <li><a class="custom-links-link d-inline-block rounded" href="{{ url_for('authorize.login') }}">Login</a></li>
+                    {% endif %}
+                  </ul>
+                </li>
+                <li class="custom-links-group py-2">
+                  <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
+                    <svg class="bi me-2" fill="currentColor" width="1em" height="1em">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sliders2"></use>
+                    </svg>
+                    Manage
+                  </strong>
+                  <ul class="list-unstyled fw-normal pb-2 small">
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'command.read' %} active{% endif %}" href="{{ url_for('command.read') }}">Commands</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'instrument.read' %} active{% endif %}" href="{{ url_for('instrument.read') }}">Instruments</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'measurement.read' %} active{% endif %}" href="{{ url_for('measurement.read') }}">Measurements</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'part.read' %} active{% endif %}" href="{{ url_for('part.read') }}">Parts</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'phase.read' %} active{% endif %}" href="{{ url_for('phase.read') }}">Phases</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'protocol.read' %} active{% endif %}" href="{{ url_for('protocol.read') }}">Protocols</a></li>
+                  </ul>
+                </li>
+              </ul>
+              <ul class="navbar-nav justify-content-end flex-grow-1">
+                <li class="nav-item dropdown">
+                  <button class="btn btn-link nav-link icon-link dropdown-toggle" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
+                    <svg class="bi theme-icon-active">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill">
+                    </svg>
+                    <span id="bd-theme-text">Theme</span>
+                  </button>
+                  <ul class="dropdown-menu custom-dropdown dropdown-menu-end" aria-labelledby="bd-theme-text">
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sun-fill"></use>
+                        </svg>
+                        Light
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill"></use>
+                        </svg>
+                        Dark
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#circle-half"></use>
+                        </svg>
+                        Auto
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </li>
+              </ul> 
+            </nav>
+          </div>
+        </div>
+      </aside>
+      <main class="order-1" style="grid-area: main">
+        {% block container %}{% endblock %}
+      </main>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> 
+    <script src="{{ url_for('static', filename='color-modes.js') }}"></script>
+  </body>
+</html>

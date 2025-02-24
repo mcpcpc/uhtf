@@ -1,0 +1,158 @@
+{% extends 'base.htm' %}
+{% block title %}Parts{% endblock %}
+{% block container %}
+        <div class="toolbar mb-5">
+          <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
+            <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
+              <h1 class="mb-1 fw-bold fs-4">Part Management</h1>
+              <ul class="breadcrumb fw-semibold fs-base my-1">
+                <li class="breadcrumb-item text-secondary">
+                  <a href="{{ url_for('index') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
+                </li>
+                <li class="breadcrumb-item text-muted">Manage</li>
+                <li class="breadcrumb-item text-emphasis">Parts</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        {% for category, message in messages %}
+        <div class="alert alert-{{ category }} border-0" role="alert">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="container-xl p-3 rounded-3 bg-body-tertiary mb-5">
+          <div class="card bg-body shadow-sm border-0">
+            <div class="card-header bg-body border-0 p-3 d-flex justify-content-end align-items-center">
+              <div class="d-flex">
+                <button class="btn btn-secondary btn-sm icon-link me-2" form="delete">
+                  <svg class="bi">
+                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#trash2-fill">
+                  </svg>
+                  Delete
+                </button>
+                <button class="btn btn-primary btn-sm icon-link" data-bs-toggle="modal" data-bs-target="#createModal">
+                  <svg class="bi">
+                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#plus">
+                  </svg>
+                  New
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              <form id="delete" action="{{ url_for('.delete') }}" method="post">
+                <div class="table-responsive">
+                  <table class="table table-borderless">
+                    <thead>
+                      <tr>
+                        <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
+                        <th scope="col" class="w-100">Name</th>
+                        <th scope="col" class="text-nowrap">Part Number</th>
+                        <th scope="col">GTIN</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {% for part in parts %}
+                      <tr>
+                        <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
+                        <td class="text-nowrap">{{ part.name }}</td>
+                        <td>{{ part.number }}</td>
+                        <td><code>{{ part.global_trade_item_number }}</code></td>
+                        <td>
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">
+                            <svg class="bi">
+                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
+                            </svg>
+                          </a>
+                        </td>
+                      </tr>
+                      {% endfor %}
+                    </tbody>
+                  </table>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Part</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="create" action="{{ url_for('.create') }}" method="post">
+                  <div class="mb-3">
+                    <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
+                    <input type="text" class="form-control" name="global_trade_item_number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="number" class="col-form-label">Part Number</label>
+                    <input type="text" class="form-control" name="number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="col-form-label">Part Name</label>
+                    <input type="text" class="form-control" name="name" required>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="reset" form="create" class="btn btn-secondary">Clear</button>
+                <button type="submit" form="create" class="btn btn-primary">Create</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Part</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form id="update" action="{{ url_for('.update') }}" method="post">
+                  <div class="mb-3">
+                    <label for="id" class="col-form-label">ID</label>
+                    <input type="number" class="form-control" id="id" name="id" readonly>
+                  </div>
+                  <div class="mb-3">
+                    <label for="global_trade_item_number" class="col-form-label">Global Trade Item Number (GTIN)</label>
+                    <input type="text" class="form-control" id="global_trade_item_number" name="global_trade_item_number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="number" class="col-form-label">Part Number</label>
+                    <input type="text" class="form-control" id="number" name="number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="name" class="col-form-label">Part Name</label>
+                    <input type="text" class="form-control" id="name" name="name" required>
+                  </div>
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="submit" form="update" class="btn btn-primary">Update</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <script type="text/javascript">
+          function selectAll(source) {
+            checkboxes = document.getElementsByName('part_id');
+            for(var i=0, n=checkboxes.length;i<n;i++) {
+              checkboxes[i].checked = source.checked;
+            }
+          }
+          function populateUpdateModal(id, gtin, number, name) {
+            document.getElementById("id").value = id;
+            document.getElementById("global_trade_item_number").value = gtin;
+            document.getElementById("number").value = number;
+            document.getElementById("name").value = name;
+          }
+        </script>
+{% endblock %}

@@ -1,0 +1,15 @@
+[project]
+name = "uhtf"
+description = "Lightweight hardware test framework"
+readme = "README.md"
+license = {file = "LICENSE"}
+dynamic = ["version"]
+dependencies = ["pyjwt", "quart"]
+requires-python = ">=3.11"
+classifiers = ["Private :: Do Not Upload"]
+
+[project.optional-dependencies]
+prod = ["uvicorn"]
+
+[tool.setuptools.dynamic]
+version = {attr = "uhtf.__version__"}
