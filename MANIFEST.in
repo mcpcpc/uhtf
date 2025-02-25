@@ -1,6 +1,6 @@
 include LICENSE
-include uhtf/schema.sql
-graft uhtf/api
-graft uhtf/static
-graft uhtf/templates
+include src/uhtf/schema.sql
+graft src/uhtf/api
+graft src/uhtf/static
+graft src/uhtf/templates
 global-exclude *.pyc
