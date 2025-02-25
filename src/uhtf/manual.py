@@ -53,6 +53,7 @@ async def ws():
                 instrument.hostname AS instrument_hostname,
                 instrument.port AS instrument_port,
                 measurement.name AS measurement_name,
+                measurement.precision AS measurement_precision,
                 measurement.units AS measurement_units,
                 measurement.lower_limit AS measurement_lower_limit,
                 measurement.upper_limit AS measurement_upper_limit,

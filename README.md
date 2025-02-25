@@ -50,6 +50,23 @@ podman pull ghcr.io/mcpcpc/uhtf:latest
 
 ### Service
 
+Stop and/or remove any existing running instances.
+
+```sh
+podman stop uhtf
+podman rm uhtf
+```
+
+Pull the latest container image and start an instance. Replace `/home/pi/instance/` with the appropriate user home directory and instance path.
+
+```sh
+podman pull pull ghcr.io/mcpcpc/uhtf:latest
+podman run -dt -p 8080:8080 \
+  --name uhtf \
+  --volume /home/pi/instance/:/app/instance \
+  uhtf
+```
+
 Replace `pi` with the appropriate user home directory.
 
 ```sh

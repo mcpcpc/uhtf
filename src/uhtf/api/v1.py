@@ -61,6 +61,14 @@ async def list_phases() -> tuple:
     return list(map(dict, rows)), 201
 
 
+@api.get("/protocol")
+@token_required
+async def list_protocols() -> tuple:
+    query = "SELECT * FROM protocol"
+    rows = get_db().execute(query).fetchall()
+    return list(map(dict, rows)), 201
+
+
 @api.get("/command/<int:id>")
 @token_required
 async def read_command(id: int) -> tuple:
@@ -232,12 +240,14 @@ async def create_measurement() -> tuple:
             """
             INSERT INTO measurement (
                 name,
+                precision,
                 units,
                 lower_limit,
                 upper_limit
                 
             ) VALUES (
                 :name,
+                :precision,
                 :units,
                 :lower_limit,
                 :upper_limit
@@ -292,11 +302,9 @@ async def create_phase() -> tuple:
         db.execute(
             """
             INSERT INTO phase (
-                name,
-                retry
+                name
             ) VALUES (
-                :name,
-                :retry
+                :name
             )
             """,
             form,

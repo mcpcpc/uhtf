@@ -50,12 +50,14 @@ async def create() -> tuple:
             """
             INSERT INTO measurement (
                 name,
+                precision,
                 units,
                 lower_limit,
                 upper_limit
                 
             ) VALUES (
                 :name,
+                :precision,
                 :units,
                 :lower_limit,
                 :upper_limit
@@ -102,6 +104,7 @@ async def update() -> tuple:
             UPDATE measurement SET
                 updated_at = CURRENT_TIMESTAMP,
                 name = :name,
+                precision = :precision,
                 units = :units,
                 lower_limit = :lower_limit,
                 upper_limit = :upper_limit 

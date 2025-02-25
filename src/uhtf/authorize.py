@@ -53,9 +53,9 @@ async def validate() -> tuple:
         return redirect(url_for(".login"))
     password = get_db().execute(
         """
-        SELECT password FROM setting WHERE id = 1
+        SELECT value FROM setting WHERE key = 'password'
         """
-    ).fetchone()["password"]
+    ).fetchone()["value"]
     if not check_password_hash(password, form["password"]):
         await flash("Invalid password.")
         return redirect(url_for(".login"))

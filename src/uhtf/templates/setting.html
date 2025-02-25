@@ -39,14 +39,26 @@
             </div>
             <div class="card-body p-3 mb-3">
               <form id="update" action="{{ url_for('.update') }}" method="post">
+		{% for setting in settings %}
+		{% if setting.key == "archive_url" %}
                 <div class="mb-3">
-                  <label for="access_token" class="col-form-label">Access Token</label>
-                  <input type="text" class="form-control" name="access_token" value="{{ settings.access_token }}">
+                  <label for="archive_url" class="col-form-label">Archive URL</label>
+                  <input type="text" class="form-control" name="archive_url" value="{{ setting.value }}">
                 </div>
+		{% endif %}
+		{% if setting.key == "archive_access_token" %}
+                <div class="mb-3">
+                  <label for="archive_access_token" class="col-form-label">Archive Access Token</label>
+                  <input type="text" class="form-control" name="archive_access_token" value="{{ setting.value }}">
+                </div>
+		{% endif %}
+		{% if setting.key == "password" %}
                 <div>
                   <label for="password" class="col-form-label">Application Password</label>
                   <input type="password" class="form-control" name="password">
                 </div>
+		{% endif %}
+		{% endfor %}
               </form>
             </div>
           </div>

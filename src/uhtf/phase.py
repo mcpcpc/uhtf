@@ -49,11 +49,9 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO phase (
-                name,
-                retry
+                name
             ) VALUES (
-                :name,
-                :retry
+                :name
             )
             """,
             form,
@@ -93,8 +91,7 @@ async def update() -> tuple:
             """
             UPDATE phase SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = :name,
-                retry = :retry
+                name = :name
             WHERE id = :id
             """,
             form,
