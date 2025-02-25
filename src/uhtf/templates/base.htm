@@ -34,6 +34,51 @@
             </svg>
           </a>
           {% endif %}
+          <!-- start -->
+                <div class="dropdown">
+                  <button class="btn icon-link dropdown-toggle" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
+                    <svg class="bi theme-icon-active">
+                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill">
+                    </svg>
+                    <span class="visually-hidden" id="bd-theme-text">Theme</span>
+                  </button>
+                  <ul class="dropdown-menu custom-dropdown dropdown-menu-end" aria-labelledby="bd-theme-text">
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sun-fill"></use>
+                        </svg>
+                        Light
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill"></use>
+                        </svg>
+                        Dark
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
+                        <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#circle-half"></use>
+                        </svg>
+                        Auto
+                        <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
+                          <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
+                        </svg>
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+          <!-- end -->
         </div>
       </nav>
     </header>
@@ -82,6 +127,7 @@
                   </ul>
                 </li>
               </ul>
+              <!--
               <ul class="navbar-nav justify-content-end flex-grow-1">
                 <li class="nav-item dropdown">
                   <button class="btn btn-link nav-link icon-link dropdown-toggle" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
@@ -126,7 +172,8 @@
                     </li>
                   </ul>
                 </li>
-              </ul> 
+              </ul>
+              -->
             </nav>
           </div>
         </div>
