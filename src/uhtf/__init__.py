@@ -28,7 +28,7 @@ from .protocol import protocol
 from .setting import setting
 from .token import init_token
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 def create_app(test_config: dict = None) -> Quart:

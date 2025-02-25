@@ -273,13 +273,15 @@ async def create_part() -> tuple:
         db.execute(
             """
             INSERT INTO part (
+                name,
                 global_trade_item_number,
                 number,
-                name
+                revision
             ) VALUES (
+                :name,
                 :global_trade_item_number,
                 :number,
-                :name
+                :revision
             )
             """,
             form,

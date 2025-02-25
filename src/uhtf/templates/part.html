@@ -51,6 +51,7 @@
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
                         <th scope="col" class="w-100">Name</th>
                         <th scope="col" class="text-nowrap">Part Number</th>
+                        <th scope="col">Revision</th>
                         <th scope="col">GTIN</th>
                         <th scope="col"></th>
                       </tr>
@@ -61,9 +62,10 @@
                         <td scope="row"><input class="form-check-input" type="checkbox" name="part_id" value="{{ part.id }}" /></td>
                         <td class="text-nowrap">{{ part.name }}</td>
                         <td>{{ part.number }}</td>
+                          <td>{{ part.revision }}</td>
                         <td><code>{{ part.global_trade_item_number }}</code></td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.name }}')">
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', {{ part['revision'] }}, '{{ part.name }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
                             </svg>
@@ -94,6 +96,10 @@
                   <div class="mb-3">
                     <label for="number" class="col-form-label">Part Number</label>
                     <input type="text" class="form-control" name="number" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="revision" class="col-form-label">Revision</label>
+                    <input type="text" class="form-control" name="revision" required>
                   </div>
                   <div class="mb-3">
                     <label for="name" class="col-form-label">Part Name</label>
@@ -130,6 +136,10 @@
                     <input type="text" class="form-control" id="number" name="number" required>
                   </div>
                   <div class="mb-3">
+                    <label for="revision" class="col-form-label">Revision</label>
+                    <input type="text" class="form-control" id="revision" name="revision" required>
+                  </div>
+                  <div class="mb-3">
                     <label for="name" class="col-form-label">Part Name</label>
                     <input type="text" class="form-control" id="name" name="name" required>
                   </div>
@@ -148,10 +158,11 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          function populateUpdateModal(id, gtin, number, name) {
+          function populateUpdateModal(id, gtin, number, revision, name) {
             document.getElementById("id").value = id;
             document.getElementById("global_trade_item_number").value = gtin;
             document.getElementById("number").value = number;
+            document.getElementById("revision").value = number;
             document.getElementById("name").value = name;
           }
         </script>

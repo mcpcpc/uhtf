@@ -102,6 +102,7 @@ async def ws():
             part = lookup(match.group("global_trade_item_number"))
             if isinstance(part, dict):
                 procedure.unit_under_test.part_number = part["number"]
+                procedure.unit_under_test.revision = part["revision"]
                 procedure.unit_under_test.part_name = part["name"]
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             else:
