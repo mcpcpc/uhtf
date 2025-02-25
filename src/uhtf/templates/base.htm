@@ -24,13 +24,13 @@
           {% if session["unlocked"] %}
           <a class="btn icon-link" href="{{ url_for('authorize.logout') }}">
             <svg class="bi">
-              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-slash">
+              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-slash-fill">
             </svg>
           </a>
           {% else %}
           <a class="btn icon-link" href="{{ url_for('authorize.login') }}">
             <svg class="bi">
-              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-check">
+              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-fill-check">
             </svg>
           </a>
           {% endif %}
