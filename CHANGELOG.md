@@ -12,6 +12,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Missing API (v1) command for protocol LIST.
 - Archive URL parameter in settings endpoint. 
 - Precision parameter for measurements.
+- Missing MANIFEST file, resulting in broken a Docker
+  image.
+
+### Fixed
+
+- Dynamic page resizing for tables with many columns.
 
 ## Removed
 
