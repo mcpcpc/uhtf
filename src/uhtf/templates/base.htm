@@ -76,6 +76,7 @@
                     {% endif %}
                   </ul>
                 </li>
+                {% if session["unlocked"] %}
                 <li class="custom-links-group py-2">
                   <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
                     <svg class="bi me-2" fill="currentColor" width="1em" height="1em">
@@ -92,6 +93,7 @@
                     <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'protocol.read' %} active{% endif %}" href="{{ url_for('protocol.read') }}">Protocols</a></li>
                   </ul>
                 </li>
+                {% endif %}
               </ul>
               <ul class="navbar-nav justify-content-end flex-grow-1">
                 <li class="nav-item dropdown">
