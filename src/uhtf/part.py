@@ -49,7 +49,7 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO part (
-                name 
+                name,
                 global_trade_item_number,
                 number,
                 revision
