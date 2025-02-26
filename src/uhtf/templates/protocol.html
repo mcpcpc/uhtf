@@ -41,7 +41,7 @@
                     <!--
                     <li><a class="dropdown-item{% if number == part.number %} active{% endif %}" href="{{ url_for('.read', number=part.number) }}">{{ part.name }}</a></li>
                     -->
-                    <li><a class="dropdown-item{% if name == part.name %} active{% endif %}" href="{{ url_for('.read', number=part.name) }}">{{ part.name }}</a></li>
+                    <li><a class="dropdown-item{% if name == part.name %} active{% endif %}" href="{{ url_for('.read', name=part.name) }}">{{ part.name }}</a></li>
                     {% endfor %}
                   </ul>
                 </div>
