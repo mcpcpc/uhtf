@@ -41,11 +41,11 @@ class ProtocolBuilder:
 
     def in_range(self, protocol, value: float) -> MeasurementOutcome:
         getcontext().rounding = ROUND_HALF_EVEN  # per ISO 80000-1
-        ll = Decimal(protocol["measurement_lower_limit"])
-        ul = Decimal(protocol["measurement_upper_limit"])
-        prec = int(protocol["measurement_precision"])
-        rounded = round(Decimal(value), prec)
-        if ll < rounded < ul:
+        lower_limit = Decimal(protocol["measurement_lower_limit"])
+        upper_limit = Decimal(protocol["measurement_upper_limit"])
+        precision = int(protocol["measurement_precision"])
+        rounded = round(Decimal(value), precision)
+        if lower_limit < rounded < upper_limit:
             return MeasurementOutcome.PASS
         return MeasurementOutcome.FAIL
 
