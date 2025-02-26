@@ -65,7 +65,7 @@
                           <td>{{ part.revision }}</td>
                         <td><code>{{ part.global_trade_item_number }}</code></td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', {{ part.revision }}, '{{ part.name }}')">
+                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ part.id }}', '{{ part.global_trade_item_number }}', '{{ part.number }}', '{{ part.revision }}', '{{ part.name }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
                             </svg>
