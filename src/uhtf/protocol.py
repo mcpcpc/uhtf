@@ -78,9 +78,12 @@ async def read() -> tuple:
         INNER JOIN
             phase ON phase.id = protocol.phase_id
         """
-    number = request.args.get("number")
-    if isinstance(number, str):
-        query += f" WHERE part.number = '{number}'"
+    #number = request.args.get("number")
+    #if isinstance(number, str):
+    #    query += f" WHERE part.number = '{number}'"
+    name = request.args.get("name")
+    if isinstance(name, str):
+        query += f" WHERE part.name = '{name}'"
     protocols = get_db().execute(query).fetchall()
     return await render_template(
         "protocol.html",
@@ -90,7 +93,8 @@ async def read() -> tuple:
         parts=parts,
         phases=phases,
         protocols=protocols,
-        number=number,
+        #number=number,
+        name=name,
     )
 
 
