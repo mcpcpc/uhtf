@@ -33,14 +33,15 @@
                     <svg class="bi">
                       <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#filter">
                     </svg>
+                    {% if name %}
+                    {{ name }}
+                    {% else %}
                     Filter
+                    {% endif %}
                   </button>
                   <ul class="dropdown-menu custom-dropdown">
                     <li><a class="dropdown-item" href="{{ url_for('.read') }}">Clear Filter</a></li>
                     {% for part in parts %}
-                    <!--
-                    <li><a class="dropdown-item{% if number == part.number %} active{% endif %}" href="{{ url_for('.read', number=part.number) }}">{{ part.name }}</a></li>
-                    -->
                     <li><a class="dropdown-item{% if name == part.name %} active{% endif %}" href="{{ url_for('.read', name=part.name) }}">{{ part.name }}</a></li>
                     {% endfor %}
                   </ul>

@@ -78,9 +78,6 @@ async def read() -> tuple:
         INNER JOIN
             phase ON phase.id = protocol.phase_id
         """
-    #number = request.args.get("number")
-    #if isinstance(number, str):
-    #    query += f" WHERE part.number = '{number}'"
     name = request.args.get("name")
     if isinstance(name, str):
         query += f" WHERE part.name = '{name}'"
@@ -93,7 +90,6 @@ async def read() -> tuple:
         parts=parts,
         phases=phases,
         protocols=protocols,
-        #number=number,
         name=name,
     )
 
