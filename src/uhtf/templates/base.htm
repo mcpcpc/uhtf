@@ -13,12 +13,9 @@
     <header class="navbar navbar-expand-lg sticky-top bg-body-tertiary" style="padding: .75rem 0">
       <nav class="container-xxl flex-wrap flex-lg-nowrap" style="--bs-gutter-x: 3rem" aria-label="Main navigation">
         <button class="navbar-toggler p-2" style="border: 0; padding: 0; margin-right: -.5rem" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar" aria-controls="bdSidebar" aria-label="Toggle navigation">
-          <!--
           <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" class="bi" fill="currentColor" viewBox="0 0 16 16">
             <use xlink:href="{{ url_for('static', filename='bootstrap-icons.svg') }}#list"></use>
           </svg>
-          -->
-          <svg width="1.5rem" height="1.5rem" class="bi" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g id="burger-menu"><g id="burger-menu-4"><path d="M19.86,14.23H4.26a.75.75,0,0,1,0-1.5h15.6a.75.75,0,0,1,0,1.5Z"/><path d="M19.86,21H4.26a.75.75,0,1,1,0-1.5h15.6a.75.75,0,0,1,0,1.5Z"/><path d="M19.86,7.42H4.26a.75.75,0,0,1,0-1.5h15.6a.75.75,0,0,1,0,1.5Z"/><path d="M17.34,9.94a.73.73,0,0,1-.53-.22.75.75,0,0,1,0-1.06l2-2-2-2a.75.75,0,0,1,1.06-1.06l2.52,2.52a.75.75,0,0,1,0,1.06L17.87,9.72A.74.74,0,0,1,17.34,9.94Z"/></g></g></svg>
         </button>
         <a class="navbar-brand p-0 me-0 me-lg-2" href="{{ url_for('index') }}" aria-label="OpenHTI">
           OpenHTI
@@ -26,21 +23,15 @@
         <div class="d-flex">
           {% if session["unlocked"] %}
           <a class="btn icon-link" href="{{ url_for('authorize.logout') }}">
-            <!--
             <svg class="bi">
               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-slash-fill">
             </svg>
-            -->
-            <svg class="bi" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{opacity:0.3;}</style></defs><g id="security"><g id="shield-slash"><path d="M3.32,21.59a.73.73,0,0,1-.53-.22.75.75,0,0,1,0-1.06L20.24,2.93A.75.75,0,1,1,21.3,4L3.85,21.37A.74.74,0,0,1,3.32,21.59Z"/><path class="cls-1" d="M7.74,19.45,9.9,21.21a3.39,3.39,0,0,0,4.29,0l4.59-3.75A3.39,3.39,0,0,0,20,14.83V7.49a2.11,2.11,0,0,0,0-.25Z"/><path class="cls-1" d="M6.63,18.54,19.52,5.71a3.38,3.38,0,0,0-1.47-1.3l-4.59-2.1a3.41,3.41,0,0,0-2.83,0L6.05,4.41a3.39,3.39,0,0,0-2,3.08v7.34a3.39,3.39,0,0,0,1.25,2.63Z"/></g></g></svg>
           </a>
           {% else %}
           <a class="btn icon-link" href="{{ url_for('authorize.login') }}">
-            <!--
             <svg class="bi">
               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-fill-check">
             </svg>
-            -->
-            <svg class="bi" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><defs><style>.cls-1{opacity:0.3;}</style></defs><g id="security"><g id="shield-tick"><path class="cls-1" d="M9.85,21.23,5.26,17.48A3.39,3.39,0,0,1,4,14.85V7.5A3.39,3.39,0,0,1,6,4.41l4.6-2.1a3.39,3.39,0,0,1,2.82,0L18,4.41A3.39,3.39,0,0,1,20,7.5v7.35a3.39,3.39,0,0,1-1.25,2.63l-4.59,3.75A3.38,3.38,0,0,1,9.85,21.23Z"/><path d="M10.68,14.79a.76.76,0,0,1-.54-.23L8.61,13a.75.75,0,1,1,1.07-1.05l1,1,3.65-3.55a.75.75,0,1,1,1,1.07L11.2,14.57A.7.7,0,0,1,10.68,14.79Z"/></g></g></svg>
           </a>
           {% endif %}
           <div class="dropdown">
