@@ -26,7 +26,7 @@ from .database import get_db
 
 broker = Broker()
 manual = Blueprint("manual", __name__)
-recipe_query = """
+recipe_select_query = """
 SELECT
     command.scpi AS command_scpi,
     command.delay AS command_delay,
@@ -74,7 +74,7 @@ async def ws():
     async def _receive() -> None:
         message = await websocket.receive()
         form = loads(message)
-        rows = get_db().execute(recipe_query, form).fetchall()
+        rows = get_db().execute(recipe_select_query, form).fetchall()
         procedure = Procedure("MAN01", "Manual Test")
         await broker.publish(dumps([asdict(procedure),"RUNNING"]))
         for temp in builder(rows, procedure):
