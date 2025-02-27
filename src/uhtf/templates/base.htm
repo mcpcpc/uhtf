@@ -34,7 +34,10 @@
           {% else %}
           <a class="btn icon-link" href="{{ url_for('authorize.login') }}">
             <svg class="bi">
+              <!--
               <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-fill-check">
+              -->
+              <use href="{{ url_for('static', filename='keen-icons.svg') }}#shield-check">
             </svg>
           </a>
           {% endif %}
