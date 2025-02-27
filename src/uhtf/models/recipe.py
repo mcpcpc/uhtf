@@ -42,8 +42,8 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
         with TCP(recipe["command_hostname"], recipe["command_port"]) as tcp:
             scpi = recipe["command_scpi"].encode() + b"\n"
             if b"?" in scpi:
-                if not procedure.phases[-1:].measurements:
-                    procedure.phases[-1:].measurements = list()
+                if not procedure.phases[-1].measurements:
+                    procedure.phases[-1].measurements = list()
                 response = tcp.query(scpi)
                 measured_value = float(response.decode().strip())
                 measurement_outcome = in_range(
@@ -60,9 +60,9 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
                     lower_limit=recipe["measurement_lower_limit"],
                     upper_limit=recipe["measurement_upper_limit"],
                 )
-                procedure.phases[-1:].measurements.append(measurement)
+                procedure.phases[-1].measurements.append(measurement)
                 if measurement_outcome != MeasurementOutcome.PASS:
-                    procedure.phases[-1:].outcome = PhaseOutcome.FAIL
+                    procedure.phases[-1].outcome = PhaseOutcome.FAIL
                     procedure.run_passed = False
             else:
                 tcp.send(scpi)
@@ -70,8 +70,7 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
             sleep(recipe["command_delay"] / 1000)
     except Exception as exception: # caught unknown error
         print(exception)
-        print(procedure.phases)
-        procedure.phases[-1:].outcome = PhaseOutcome.ERROR
+        procedure.phases[-1].outcome = PhaseOutcome.ERROR
         procedure.run_passed = False
     return procedure
 
@@ -91,5 +90,5 @@ def builder(recipes: list, procedure: Procedure) -> Procedure:
         for recipe in phase_recipes:
             run(procedure, recipe)
             yield procedure
-        procedure.phases[-1:].end_time_millis = get_millis()
+        procedure.phases[-1].end_time_millis = get_millis()
         yield procedure
