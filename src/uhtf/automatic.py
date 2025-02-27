@@ -141,7 +141,6 @@ async def ws():
             ).fetchall()
             for temp in builder(rows, procedure):
                 procedure = temp
-                print(temp)
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             # finalize results
             if not procedure.run_passed:
