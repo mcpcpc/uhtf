@@ -39,8 +39,8 @@ def in_range(value: float, ll: float, ul: float, prec: int):
 
 def run(procedure: Procedure, recipe: list) -> Procedure:
     try:
-        hostname = recipe["command_hostname"]
-        port = recipe["command_port"]
+        hostname = recipe["instrument_hostname"]
+        port = recipe["instrument_port"]
         with TCP(hostname, port) as tcp:
             scpi = recipe["command_scpi"].encode() + b"\n"
             if b"?" in scpi:
