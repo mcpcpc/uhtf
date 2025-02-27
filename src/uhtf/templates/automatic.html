@@ -89,8 +89,8 @@
                   <div class="table-responsive">
                     <table class="table table-borderless">
                       <thead>
-                        <th scope="col" class="w-100">Phase</th>
-                        <th scope="col">Measurement</th>
+                        <th scope="col" class="w-100">Measurement</th>
+                        <th scope="col">Value</th>
                         <th scope="col">Units</th>
                         <th scope="col">Outcome</th>
                       </thead>
@@ -108,6 +108,7 @@
           ws.addEventListener('message', function (event) {
             const message = JSON.parse(event.data);
             const procedure = message[0];
+            console.log(procedure)
             const state = message[1];
             document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
             document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
@@ -119,7 +120,7 @@
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
                 if (phase["measurements"].length > 0) {
-                  procedure["measurements"].forEach((measurement) => {
+                  phase["measurements"].forEach((measurement) => {
                     var html = "";
                     html += `<tr>`;
                     html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
