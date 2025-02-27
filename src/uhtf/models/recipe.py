@@ -58,7 +58,7 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
                     measured_value=measured_value,
                     units=recipe["measurement_units"],
                     lower_limit=recipe["measurement_lower_limit"],
-                    lower_limit=recipe["measurement_upper_limit"],
+                    upper_limit=recipe["measurement_upper_limit"],
                 )
                 procedure.phases[-1:].measurements.append(measurement)
                 if measurement_outcome != MeasurementOutcome.PASS:
