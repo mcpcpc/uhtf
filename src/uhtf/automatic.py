@@ -10,7 +10,6 @@ Test endpoints.
 
 from asyncio import ensure_future
 from dataclasses import asdict
-from itertools import groupby
 from json import dumps
 from re import Match
 from re import search
@@ -25,7 +24,7 @@ from .models.archive import ArchiveClient
 from .models.base import Procedure
 from .models.base import UnitUnderTest
 from .models.broker import Broker
-from .models.protocol import ProtocolBuilder
+from .models.recipe import builder
 
 automatic = Blueprint("automatic", __name__)
 broker = Broker()
@@ -140,23 +139,17 @@ async def ws():
                 """,
                 (part["id"],),
             ).fetchall()
-            records = list(map(dict, rows))
-            grouped = groupby(records, key=lambda r: r["phase_name"])
-            for key, group in grouped:
-                protocol_list = list(map(dict, group))
-                builder = ProtocolBuilder(protocol_list)
-                phase = builder.run()
-                procedure.phases.append(phase)
+            for temp in builder(rows, procedure):
+                procedure = temp
+                print(temp)
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-                if phase.outcome.value != "PASS":
-                    procedure.run_passed = False
             # finalize results
             if not procedure.run_passed:
                 await broker.publish(dumps([asdict(procedure),"FAIL"]))
-                archive(procedure)
-                continue  # restart procedure
+            else:
+                await broker.publish(dumps([asdict(procedure),"PASS"])) 
             archive(procedure)
-            await broker.publish(dumps([asdict(procedure),"PASS"])) 
+            
 
     try:
         task = ensure_future(_receive())
