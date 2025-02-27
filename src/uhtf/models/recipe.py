@@ -69,6 +69,8 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
         if recipe["command_delay"] > 0:
             sleep(recipe["command_delay"] / 1000)
     except Exception as exception: # caught unknown error
+        print(exception)
+        print(procedure.phases)
         procedure.phases[-1:].outcome = PhaseOutcome.ERROR
         procedure.run_passed = False
     return procedure
