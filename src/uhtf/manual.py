@@ -78,6 +78,7 @@ async def ws():
             form
         ).fetchall()
         procedure = Procedure("MAN01", "Manual Test")
+        await broker.publish(dumps([asdict(procedure),"RUNNING"]))
         for temp in builder(rows, procedure):
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
         if not procedure.run_passed:
