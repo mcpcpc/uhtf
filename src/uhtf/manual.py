@@ -78,7 +78,8 @@ async def ws():
         procedure = Procedure("MAN01", "Manual Test")
         await broker.publish(dumps([asdict(procedure),"RUNNING"]))
         for temp in builder(rows, procedure):
-            await broker.publish(dumps([asdict(procedure),"RUNNING"]))
+            procedure = temp
+            await broker.publish(dumps([asdict(temp),"RUNNING"]))
         if not procedure.run_passed:
             await broker.publish(dumps([asdict(procedure),"FAIL"]))
         else:
