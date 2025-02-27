@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Location of theme switcher to top navbar.
 - Available navigation menu items when in locked state.
 - Changed results in both Manual and Automatic modes to
-  only show the measurment results,
+  only show the measurement results.
 
 ## [0.0.2] - 2025-02-25
 
