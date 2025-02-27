@@ -118,20 +118,19 @@
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
-                var html = "";
-                html += `<tr>`;
-                html += `<td scope="row" class="w-100 text-nowrap">${phase['name']}</td>`;
                 if (phase["measurements"].length > 0) {
-                  html += `<td>${phase['measurements'][0]['measured_value']}</td>`;
-                  html += `<td>${phase['measurements'][0]['units']}</td>`;
-                } else {
-                  html += `<td></td>`;
-                  html += `<td></td>`;
+                  procedure["measurements"].forEach((measurement) => {
+                    var html = "";
+                    html += `<tr>`;
+                    html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
+                    html += `<td>${measurement['measured_value']}</td>`;
+                    html += `<td>${measurement['units']}</td>`;
+                    html += `<td><span id="${measurement['name']}">${measurement['outcome']}</span></td>`;
+                    html += `</tr>`;
+                    document.getElementById("detail").innerHTML += html;
+                    setBadge(measurement['name'], measurement['outcome']);
+                  });
                 }
-                html += `<td><span id="${phase['name']}">${phase['outcome']}</span></td>`;
-                html += `</tr>`;
-                document.getElementById("detail").innerHTML += html;
-                setBadge(phase['name'], phase['outcome']);
               });
             }
             setBadge("state", state);
