@@ -26,6 +26,34 @@ from .database import get_db
 
 broker = Broker()
 manual = Blueprint("manual", __name__)
+recipe_query = """
+SELECT
+    command.scpi AS command_scpi,
+    command.delay AS command_delay,
+    instrument.hostname AS instrument_hostname,
+    instrument.port AS instrument_port,
+    measurement.name AS measurement_name,
+    measurement.precision AS measurement_precision,
+    measurement.units AS measurement_units,
+    measurement.lower_limit AS measurement_lower_limit,
+    measurement.upper_limit AS measurement_upper_limit,
+    phase.name AS phase_name
+FROM
+    protocol
+INNER JOIN
+    command ON command.id = protocol.command_id
+INNER JOIN
+    instrument ON instrument.id = protocol.instrument_id
+OUTER LEFT JOIN
+    measurement ON measurement.id = protocol.measurement_id
+INNER JOIN
+    part ON part.id = protocol.part_id
+INNER JOIN
+    phase ON phase.id = protocol.phase_id
+WHERE
+    part.id = :part_id AND
+    phase.id = phase_id 
+"""
 
 
 @manual.get("/manual")
@@ -46,37 +74,7 @@ async def ws():
     async def _receive() -> None:
         message = await websocket.receive()
         form = loads(message)
-        rows = get_db().execute(
-            """
-            SELECT
-                command.scpi AS command_scpi,
-                command.delay AS command_delay,
-                instrument.hostname AS instrument_hostname,
-                instrument.port AS instrument_port,
-                measurement.name AS measurement_name,
-                measurement.precision AS measurement_precision,
-                measurement.units AS measurement_units,
-                measurement.lower_limit AS measurement_lower_limit,
-                measurement.upper_limit AS measurement_upper_limit,
-                phase.name AS phase_name
-            FROM
-                protocol
-            INNER JOIN
-                command ON command.id = protocol.command_id
-            INNER JOIN
-                instrument ON instrument.id = protocol.instrument_id
-            OUTER LEFT JOIN
-                measurement ON measurement.id = protocol.measurement_id
-            INNER JOIN
-                part ON part.id = protocol.part_id
-            INNER JOIN
-                phase ON phase.id = protocol.phase_id
-            WHERE
-                part.id = :part_id AND
-                phase.id = phase_id 
-            """,
-            form
-        ).fetchall()
+        rows = get_db().execute(recipe_query, form).fetchall()
         procedure = Procedure("MAN01", "Manual Test")
         await broker.publish(dumps([asdict(procedure),"RUNNING"]))
         for temp in builder(rows, procedure):
@@ -85,7 +83,6 @@ async def ws():
             await broker.publish(dumps([asdict(procedure),"FAIL"]))
         else:
             await broker.publish(dumps([asdict(procedure),"PASS"]))
-
 
     try:
         task = ensure_future(_receive())
