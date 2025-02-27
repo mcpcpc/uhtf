@@ -19,8 +19,9 @@ from quart import Quart
 from quart import render_template
 from quart import websocket
 
+from .models.base import Procedure
 from .models.broker import Broker
-from .models.protocol import ProtocolBuilder
+from .models.recipe import builder
 from .database import get_db
 
 broker = Broker()
@@ -76,12 +77,15 @@ async def ws():
             """,
             form
         ).fetchall()
-        protocol_list = list(map(dict, rows))
-        builder = ProtocolBuilder(protocol_list)
-        phase = builder.run()
-        response = dumps(asdict(phase))
-        await broker.publish(response)
- 
+        procedure = Procedure("MAN01", "Manual Test")
+        for temp in builder(rows, procedure):
+            await broker.publish(dumps([asdict(procedure),"RUNNING"]))
+        if not procedure.run_passed:
+            await broker.publish(dumps([asdict(procedure),"FAIL"]))
+        else:
+            await broker.publish(dumps([asdict(procedure),"PASS"]))
+
+
     try:
         task = ensure_future(_receive())
         async for message in broker.subscribe():

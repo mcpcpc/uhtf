@@ -85,24 +85,30 @@
           const ws = new WebSocket(`ws://${location.host}/manual/ws`);
 
           ws.addEventListener('message', function (event) {
-            const phase = JSON.parse(event.data);
+            const message = JSON.parse(event.data);
+            const procedure = message[0];
+            const state = message[1];
             document.getElementById("detail").innerHTML = "";
-            if (phase["measurements"].length > 0) {
-              phase["measurements"].forEach((measurement) => {
-                var html = "";
-                html += `<tr>`;
-                html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
-                html += `<td>${measurement['measured_value']}</td>`;
-                html += `<td>${measurement['units']}</td>`;
-                html += `<td><span id="${measurement['name']}">${measurement['outcome']}</span></td>`;
-                html += `</tr>`;
-                document.getElementById("detail").innerHTML += html;
-                setBadge(measurement['name'], measurement['outcome']);
+            if (procedure["phases"].length > 0) {
+              procedure["phases"].forEach((phase) => {
+                if (phase["measurements"].length > 0) {
+                  phase["measurements"].forEach((measurement) => {
+                    var html = "";
+                    html += `<tr>`;
+                    html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
+                    html += `<td>${measurement['measured_value']}</td>`;
+                    html += `<td>${measurement['units']}</td>`;
+                    html += `<td><span id="${measurement['name']}">${measurement['outcome']}</span></td>`;
+                    html += `</tr>`;
+                    document.getElementById("detail").innerHTML += html;
+                    setBadge(measurement['name'], measurement['outcome']);
+                  });
+                }
               });
             }
-            setBadge("state", phase["outcome"]);
+            setBadge("state", state);
           });
-          
+
           function setBadge(name, value) { 
             var badge = document.getElementById(name);
             badge.textContent = value;
