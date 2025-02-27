@@ -44,8 +44,6 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
         with TCP(hostname, port) as tcp:
             scpi = recipe["command_scpi"].encode() + b"\n"
             if b"?" in scpi:
-                if not procedure.phases[-1].measurements:
-                    procedure.phases[-1].measurements = list()
                 response = tcp.query(scpi)
                 measured_value = float(response.decode().strip())
                 measurement_outcome = in_range(
@@ -85,8 +83,9 @@ def builder(recipes: list, procedure: Procedure) -> Procedure:
         phase = Phase(
             name=phase_name,
             outcome=PhaseOutcome.PASS,  # assumed at start
+            measurements=list(),
             start_time_millis=get_millis(),
-            end_time_millis=None,
+            end_time_millis=None, 
         )
         procedure.phases.append(phase)
         for recipe in phase_recipes:
