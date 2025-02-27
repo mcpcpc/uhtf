@@ -68,8 +68,8 @@ def run(procedure: Procedure, recipe: list) -> Procedure:
                 tcp.send(scpi)
         if recipe["command_delay"] > 0:
             sleep(recipe["command_delay"] / 1000)
-    except Exception as exception: # caught unknown error
-        print(exception)
+    except Exception as exception:  # caught unknown error
+        print(exception)  # temporary
         procedure.phases[-1].outcome = PhaseOutcome.ERROR
         procedure.run_passed = False
     return procedure
