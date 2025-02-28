@@ -28,7 +28,7 @@ from .protocol import protocol
 from .setting import setting
 from .token import init_token
 
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 def create_app(test_config: dict = None) -> Quart:
@@ -64,5 +64,9 @@ def create_app(test_config: dict = None) -> Quart:
     app.register_blueprint(phase)
     app.register_blueprint(protocol)
     app.register_blueprint(setting)
-    app.add_url_rule("/", endpoint="index")
+    
+    @app.get("/")
+    async def home():
+        return await render_template("home.html")
+    
     return app

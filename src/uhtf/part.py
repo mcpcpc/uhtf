@@ -49,13 +49,15 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO part (
+                name,
                 global_trade_item_number,
                 number,
-                name
+                revision
             ) VALUES (
+                :name,
                 :global_trade_item_number,
                 :number,
-                :name
+                :revision
             )
             """,
             form,
@@ -95,9 +97,10 @@ async def update() -> tuple:
             """
             UPDATE part SET
                 updated_at = CURRENT_TIMESTAMP,
+                name = :name,
                 global_trade_item_number = :global_trade_item_number,
                 number = :number,
-                name = :name
+                revision = :revision
             WHERE id = :id
             """,
             form,

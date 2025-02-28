@@ -42,9 +42,10 @@ CREATE TABLE part (
     id INTEGER PRIMARY KEY,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT NULL,
+    name TEXT UNIQUE NOT NULL,
     global_trade_item_number TEXT UNIQUE NOT NULL,
     number TEXT UNIQUE NOT NULL,
-    name TEXT UNIQUE NOT NULL
+    revision TEXT NOT NULL
 );
 
 CREATE TABLE phase (

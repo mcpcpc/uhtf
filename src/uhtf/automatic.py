@@ -10,7 +10,6 @@ Test endpoints.
 
 from asyncio import ensure_future
 from dataclasses import asdict
-from itertools import groupby
 from json import dumps
 from re import Match
 from re import search
@@ -25,13 +24,40 @@ from .models.archive import ArchiveClient
 from .models.base import Procedure
 from .models.base import UnitUnderTest
 from .models.broker import Broker
-from .models.protocol import ProtocolBuilder
+from .models.recipe import builder
 
 automatic = Blueprint("automatic", __name__)
 broker = Broker()
 gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
           + r"(11)(?P<manufacture_date>\d{6})" \
           + r"(21)(?P<serial_number>\d{5})"
+recipe_select_query = """
+SELECT
+    command.scpi AS command_scpi,
+    command.delay AS command_delay,
+    instrument.hostname AS instrument_hostname,
+    instrument.port AS instrument_port,
+    measurement.name AS measurement_name,
+    measurement.precision AS measurement_precision,
+    measurement.units AS measurement_units,
+    measurement.lower_limit AS measurement_lower_limit,
+    measurement.upper_limit AS measurement_upper_limit,
+    phase.name AS phase_name
+FROM
+    protocol
+INNER JOIN
+    command ON command.id = protocol.command_id
+INNER JOIN
+    instrument ON instrument.id = protocol.instrument_id
+OUTER LEFT JOIN
+    measurement ON measurement.id = protocol.measurement_id
+INNER JOIN
+    part ON part.id = protocol.part_id
+INNER JOIN
+    phase ON phase.id = protocol.phase_id
+WHERE
+    part.id = ?
+"""
 
 
 def lookup(global_trade_item_number: str) -> dict | None:
@@ -68,7 +94,7 @@ def archive(procedure: Procedure) -> None:
         print(e)
 
 
-@automatic.get("/")
+@automatic.get("/automatic")
 async def read():
     """Automatic test read callback."""
 
@@ -102,6 +128,7 @@ async def ws():
             part = lookup(match.group("global_trade_item_number"))
             if isinstance(part, dict):
                 procedure.unit_under_test.part_number = part["number"]
+                procedure.unit_under_test.revision = part["revision"]
                 procedure.unit_under_test.part_name = part["name"]
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             else:
@@ -109,53 +136,17 @@ async def ws():
                 await broker.publish(dumps([asdict(procedure),"UNKNOWN"]))
                 continue  # restart procedure
             # accumulate phases
-            rows = get_db().execute(
-                """
-                SELECT
-                    command.scpi AS command_scpi,
-                    command.delay AS command_delay,
-                    instrument.hostname AS instrument_hostname,
-                    instrument.port AS instrument_port,
-                    measurement.name AS measurement_name,
-                    measurement.precision AS measurement_precision,
-                    measurement.units AS measurement_units,
-                    measurement.lower_limit AS measurement_lower_limit,
-                    measurement.upper_limit AS measurement_upper_limit,
-                    phase.name AS phase_name
-                FROM
-                    protocol
-                INNER JOIN
-                    command ON command.id = protocol.command_id
-                INNER JOIN
-                    instrument ON instrument.id = protocol.instrument_id
-                OUTER LEFT JOIN
-                    measurement ON measurement.id = protocol.measurement_id
-                INNER JOIN
-                    part ON part.id = protocol.part_id
-                INNER JOIN
-                    phase ON phase.id = protocol.phase_id
-                WHERE
-                    part.id = ?
-                """,
-                (part["id"],),
-            ).fetchall()
-            records = list(map(dict, rows))
-            grouped = groupby(records, key=lambda r: r["phase_name"])
-            for key, group in grouped:
-                protocol_list = list(map(dict, group))
-                builder = ProtocolBuilder(protocol_list)
-                phase = builder.run()
-                procedure.phases.append(phase)
+            rows = get_db().execute(recipe_select_query, (part["id"],)).fetchall()
+            for temp in builder(rows, procedure):
+                procedure = temp
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-                if phase.outcome.value != "PASS":
-                    procedure.run_passed = False
             # finalize results
             if not procedure.run_passed:
                 await broker.publish(dumps([asdict(procedure),"FAIL"]))
-                archive(procedure)
-                continue  # restart procedure
+            else:
+                await broker.publish(dumps([asdict(procedure),"PASS"])) 
             archive(procedure)
-            await broker.publish(dumps([asdict(procedure),"PASS"])) 
+            
 
     try:
         task = ensure_future(_receive())
