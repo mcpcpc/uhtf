@@ -14,9 +14,6 @@
       <nav class="container-xxl flex-wrap flex-lg-nowrap" style="--bs-gutter-x: 3rem" aria-label="Main navigation">
         <button class="navbar-toggler p-2" style="border: 0; padding: 0; margin-right: -.5rem" type="button" data-bs-toggle="offcanvas" data-bs-target="#bdSidebar" aria-controls="bdSidebar" aria-label="Toggle navigation">
           <svg xmlns="http://www.w3.org/2000/svg" width="1.5rem" height="1.5rem" class="bi" fill="currentColor" viewBox="0 0 16 16">
-            <!--
-            <use xlink:href="{{ url_for('static', filename='bootstrap-icons.svg') }}#list"></use>
-            -->
             <use xlink:href="{{ url_for('static', filename='keen-icons.svg') }}#burger-menu-4"></use>
           </svg>
         </button>
@@ -30,18 +27,12 @@
           {% if session["unlocked"] %}
           <a class="btn icon-link" href="{{ url_for('authorize.logout') }}">
             <svg class="bi">
-              <!--
-              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-slash-fill">
-              -->
               <use href="{{ url_for('static', filename='keen-icons.svg') }}#shield-slash">
             </svg>
           </a>
           {% else %}
           <a class="btn icon-link" href="{{ url_for('authorize.login') }}">
             <svg class="bi">
-              <!--
-              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#shield-fill-check">
-              -->
               <use href="{{ url_for('static', filename='keen-icons.svg') }}#shield-tick">
             </svg>
           </a>
@@ -52,9 +43,6 @@
             -->
             <button class="btn icon-link" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
               <svg class="bi theme-icon-active">
-                <!--
-                <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill">
-                -->
                 <use href="{{ url_for('static', filename='keen-icons.svg') }}#night-day">
               </svg>
               <span class="visually-hidden" id="bd-theme-text">Theme</span>
@@ -63,16 +51,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sun-fill"></use>
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#sun"></use>
                   </svg>
                   Light
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#check">
                   </svg>
                 </button>
@@ -80,16 +62,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill"></use>
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#moon">
                   </svg>
                   Dark
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#check">
                   </svg>
                 </button>
@@ -97,16 +73,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#circle-half"></use>
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#night-day"></use>
                   </svg>
                   Auto
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
-                    <!--
-                    <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#check2">
-                    -->
                     <use href="{{ url_for('static', filename='keen-icons.svg') }}#check">
                   </svg>
                 </button>
@@ -129,9 +99,6 @@
                 <li class="custom-links-group py-2">
                   <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
                     <svg class="bi me-2" fill="var(--bs-primary)" width="1em" height="1em">
-                      <!--
-                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#menu-button-wide-fill"></use>
-                      -->
                       <use href="{{ url_for('static', filename='keen-icons.svg') }}#abstract-26"></use>
                     </svg>
                     Test
@@ -144,9 +111,6 @@
                 <li class="custom-links-group py-2">
                   <strong class="custom-links-heading d-flex w-100 align-items-center fw-semibold">
                     <svg class="bi me-2" fill="var(--bs-primary)" width="1em" height="1em">
-                      <!--
-                      <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sliders2"></use>
-                      -->
                       <use href="{{ url_for('static', filename='keen-icons.svg') }}#setting-4"></use>
                     </svg>
                     Manage
