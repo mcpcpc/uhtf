@@ -47,7 +47,10 @@
             -->
             <button class="btn icon-link" id="bd-theme" type="button" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle Theme">
               <svg class="bi theme-icon-active">
+                <!--
                 <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill">
+                -->
+                <use href="{{ url_for('static', filename='keen-icons.svg') }}#moon">
               </svg>
               <span class="visually-hidden" id="bd-theme-text">Theme</span>
             </button>
@@ -55,7 +58,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="light">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                    <!--
                     <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#sun-fill"></use>
+                    -->
+                    <use href="{{ url_for('static', filename='keen-icons.svg') }}#sun"></use>
                   </svg>
                   Light
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
@@ -66,7 +72,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                    <!--
                     <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#moon-stars-fill"></use>
+                    -->
+                    <use href="{{ url_for('static', filename='keen-icons.svg') }}#moon">
                   </svg>
                   Dark
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
@@ -77,7 +86,10 @@
               <li>
                 <button type="button" class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto">
                   <svg class="bi me-2 opacity-50" width="1em" height="1em" fill="currentColor">
+                    <!--
                     <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#circle-half"></use>
+                    -->
+                    <use href="{{ url_for('static', filename='keen-icons.svg') }}#night-day"></use>
                   </svg>
                   Auto
                   <svg class="bi ms-auto d-none" width="1em" height="1em" fill="currentColor">
