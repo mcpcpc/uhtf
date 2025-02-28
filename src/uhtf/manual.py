@@ -72,18 +72,19 @@ async def ws():
     """Manual test websocket callback."""
 
     async def _receive() -> None:
-        message = await websocket.receive()
-        form = loads(message)
-        rows = get_db().execute(recipe_select_query, form).fetchall()
-        procedure = Procedure("MAN01", "Manual Test")
-        await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-        for temp in builder(rows, procedure):
-            procedure = temp
-            await broker.publish(dumps([asdict(temp),"RUNNING"]))
-        if not procedure.run_passed:
-            await broker.publish(dumps([asdict(procedure),"FAIL"]))
-        else:
-            await broker.publish(dumps([asdict(procedure),"PASS"]))
+        while True:
+            message = await websocket.receive()
+            form = loads(message)
+            rows = get_db().execute(recipe_select_query, form).fetchall()
+            procedure = Procedure("MAN01", "Manual Test")
+            await broker.publish(dumps([asdict(procedure),"RUNNING"]))
+            for temp in builder(rows, procedure):
+                procedure = temp
+                await broker.publish(dumps([asdict(temp),"RUNNING"]))
+            if not procedure.run_passed:
+                await broker.publish(dumps([asdict(procedure),"FAIL"]))
+            else:
+                await broker.publish(dumps([asdict(procedure),"PASS"]))
 
     try:
         task = ensure_future(_receive())
