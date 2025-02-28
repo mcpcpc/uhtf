@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Broken commands and settings page.
+- Broken commands and settings pages.
 
 ## [0.0.3] - 2025-02-28
 
