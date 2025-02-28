@@ -94,7 +94,7 @@ def archive(procedure: Procedure) -> None:
         print(e)
 
 
-@automatic.get("/")
+@automatic.get("/automatic")
 async def read():
     """Automatic test read callback."""
 
