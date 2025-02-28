@@ -59,9 +59,9 @@
                         <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
                         <td class="text-nowrap">{{ phase.name }}</td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.retry }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}', '{{ phase.retry }}')">
                             <svg class="bi">
-                              <use href="{{ url_for('static', filename='bootstrap-icons.svg') }}#pen-fill">
+                              <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
                           </a>
                         </td>
