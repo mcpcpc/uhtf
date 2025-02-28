@@ -63,7 +63,7 @@
                         <td class="text-nowrap"><code>{{ command.scpi }}</code></td>
                         <td>{{ command.delay }}</td>
                         <td>
-                          <a class="icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ command.id }}', '{{ command.name }}', '{{ command.scpi }}', '{{ command.delay }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ command.id }}', '{{ command.name }}', '{{ command.scpi }}', '{{ command.delay }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
