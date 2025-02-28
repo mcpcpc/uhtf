@@ -61,7 +61,7 @@ async def validate() -> tuple:
         return redirect(url_for(".login"))
     session.clear()
     session["unlocked"] = True
-    return redirect(url_for("index"))
+    return redirect(url_for("home"))
 
 
 @authorize.get("/authorize/logout")
@@ -69,4 +69,4 @@ async def logout() -> tuple:
     """Logout callback."""
 
     session.clear()
-    return redirect(url_for("index"))
+    return redirect(url_for("home"))
