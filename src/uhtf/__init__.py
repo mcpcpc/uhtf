@@ -64,5 +64,10 @@ def create_app(test_config: dict = None) -> Quart:
     app.register_blueprint(phase)
     app.register_blueprint(protocol)
     app.register_blueprint(setting)
+    
+    @app.get("/home")
+    async def home():
+        return await render_template("home.html")
+    
     app.add_url_rule("/", endpoint="index")
     return app
