@@ -45,7 +45,6 @@ async def create() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO procedure (
@@ -88,7 +87,6 @@ async def update() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             UPDATE procedure SET
