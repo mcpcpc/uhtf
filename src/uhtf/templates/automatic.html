@@ -65,10 +65,6 @@
                     <span><code id="global_trade_item_number"></code></span>
                   </div>
                   <div class="d-flex justify-content-between align-items-center mb-1">
-	                <span class="fw-semibold text-secondary"><small>Manufacture Date</small></span>
-                    <span id="manufacture_date"></span>
-                  </div>
-                  <div class="d-flex justify-content-between align-items-center mb-1">
                     <span class="fw-semibold text-secondary"><small>Serial Number</small></span>
                     <span id="serial_number"></span>
                   </div>
@@ -118,7 +114,6 @@
             const procedure = message[0];
             const state = message[1];
             document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
-            document.getElementById("manufacture_date").textContent = procedure["unit_under_test"]["manufacture_date"];
             document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
             document.getElementById("revision").textContent = procedure["unit_under_test"]["revision"];

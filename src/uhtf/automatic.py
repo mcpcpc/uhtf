@@ -129,10 +129,8 @@ async def ws():
             match = search(gs1_regex, form["label"])
             if isinstance(match, Match):
                 gtin = match.group("global_trade_item_number")
-                manufacture_date = match.group("manufacture_date")
                 serial_number = match.group("serial_number")
                 procedure.unit_under_test.global_trade_item_number = gtin
-                procedure.unit_under_test.manufacture_date = manufacture_date
                 procedure.unit_under_test.serial_number = serial_number
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             else:
