@@ -50,6 +50,8 @@ INNER JOIN
     part ON part.id = protocol.part_id
 INNER JOIN
     phase ON phase.id = protocol.phase_id
+INNER JOIN
+    procedure ON procedure.id = protocol.procedure_id
 WHERE
     part.id = :part_id AND
     phase.id = :phase_id AND
