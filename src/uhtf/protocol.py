@@ -52,19 +52,26 @@ async def read() -> tuple:
         SELECT * FROM phase
         """
     ).fetchall()
+    procedures = get_db().execute(
+        """
+        SELECT * FROM procedure
+        """
+    ).fetchall()
     query = """
         SELECT
             protocol.id AS id,
             part.id AS part_id,
             part.name AS part,
-            phase.id AS phase_id,
-            phase.name AS phase,
             instrument.id AS instrument_id,
             instrument.name AS instrument,
             command.id AS command_id,
             command.name AS command,
             measurement.id AS measurement_id,
-            measurement.name AS measurement
+            measurement.name AS measurement,
+            phase.id AS phase_id,
+            phase.name AS phase,
+            procedure.id AS procedure_id,
+            procedure.name AS procedure
         FROM
             protocol
         INNER JOIN
@@ -77,6 +84,8 @@ async def read() -> tuple:
             part ON part.id = protocol.part_id
         INNER JOIN
             phase ON phase.id = protocol.phase_id
+        INNER JOIN
+            procedure ON procedure.id = protocol.procedure_id 
         """
     name = request.args.get("name")
     if isinstance(name, str):
@@ -89,6 +98,7 @@ async def read() -> tuple:
         measurements=measurements,
         parts=parts,
         phases=phases,
+        procedures=procedures,
         protocols=protocols,
         name=name,
     )
@@ -111,13 +121,15 @@ async def create() -> tuple:
                 command_id,
                 measurement_id,
                 part_id,
-                phase_id
+                phase_id,
+                procedure_id
             ) VALUES (
                 :instrument_id,
                 :command_id,
                 :measurement_id,
                 :part_id,
-                :phase_id
+                :phase_id,
+                :procedure_id
             )
             """,
             form
@@ -167,7 +179,8 @@ async def update():
                 instrument_id = :instrument_id,
                 measurement_id = :measurement_id,
                 part_id = :part_id,
-                phase_id = :phase_id
+                phase_id = :phase_id,
+                procedure_id = :procedure_id
             WHERE id = :id
             """,
             form,

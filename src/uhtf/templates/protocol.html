@@ -67,6 +67,7 @@
                     <thead>
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
+                        <th scope="col">Procedure</th>
                         <th scope="col">Part</th>
                         <th scope="col">Phase</th>
                         <th scope="col">Instrument</th>
@@ -78,13 +79,14 @@
                       {% for protocol in protocols %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="protocol_id" value="{{ protocol.id }}" /></td>
+                        <td class="text-nowrap">{{ protocol.procedure }}</td>
                         <td class="text-nowrap">{{ protocol.part }}</td>
                         <td class="text-nowrap">{{ protocol.phase }}</td>
                         <td class="text-nowrap">{{ protocol.instrument }}</td>
                         <td class="text-nowrap">{{ protocol.command }}</td>
                         <td class="text-nowrap">{{ protocol.measurement }}</td>
                         <td>
-                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ protocol.id }}', '{{ protocol.part_id }}', '{{ protocol.phase_id }}', '{{ protocol.instrument_id }}', '{{ protocol.command_id }}', '{{ protocol.measurement_id }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ protocol.id }}', '{{ protocol.procedure_id }}', '{{ protocol.part_id }}', '{{ protocol.phase_id }}', '{{ protocol.instrument_id }}', '{{ protocol.command_id }}', '{{ protocol.measurement_id }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
@@ -108,6 +110,15 @@
               </div>
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
+                  <div class="form-floating mb-3">
+                    <select name="procedure_id" class="form-select" required>
+                      <option selected>Choose...</option>
+                      {% for procedure in procedures %}
+                      <option value={{ procedure.id }}>{{ procedure.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="procedure_id">Procedure</label>
+                  </div>
                   <div class="form-floating mb-3">
                     <select name="part_id" class="form-select" required>
                       <option selected>Choose...</option>
@@ -176,6 +187,15 @@
                     <input type="number" class="form-control" id="id" name="id" readonly>
                   </div>
                   <div class="form-floating mb-3">
+                    <select name="procedure_id" class="form-select" id="procedure_id" required>
+                      <option selected>Choose...</option>
+                      {% for procedure in procedures %}
+                      <option value={{ procedure.id }}>{{ procedure.name }}</option>
+                      {% endfor %}
+                    </select>
+                    <label for="procedure_id">Procedure</label>
+                  </div>
+                  <div class="form-floating mb-3">
                     <select name="part_id" class="form-select" id="part_id" required>
                       <option selected>Choose...</option>
                       {% for part in parts %}
@@ -235,8 +255,9 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          function populateUpdateModal(id, part_id, phase_id, instrument_id, command_id, measurement_id) {
+          function populateUpdateModal(id, procedure_id, part_id, phase_id, instrument_id, command_id, measurement_id) {
             document.getElementById("id").value = id;
+            document.getElementById("procedure_id").value = procedure_id;
             document.getElementById("part_id").value = part_id;
             document.getElementById("phase_id").value = phase_id;
             document.getElementById("instrument_id").value = instrument_id;

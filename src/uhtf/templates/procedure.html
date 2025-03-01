@@ -1,16 +1,16 @@
 {% extends 'base.htm' %}
-{% block title %}Phases{% endblock %}
+{% block title %}Procedures{% endblock %}
 {% block container %}
         <div class="toolbar mb-5">
           <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-              <h1 class="mb-1 fw-bold fs-4">Phase Management</h1>
+              <h1 class="mb-1 fw-bold fs-4">Procedure Management</h1>
               <ul class="breadcrumb fw-semibold fs-base my-1">
                 <li class="breadcrumb-item text-secondary">
                   <a href="{{ url_for('home') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
                 </li>
                 <li class="breadcrumb-item text-muted">Manage</li>
-                <li class="breadcrumb-item text-emphasis">Phases</li>
+                <li class="breadcrumb-item text-emphasis">Procedures</li>
               </ul>
             </div>
           </div>
@@ -54,12 +54,12 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for phase in phases %}
+                      {% for procedure in procedures %}
                       <tr>
-                        <td scope="row"><input class="form-check-input" type="checkbox" name="phase_id" value="{{ phase.id }}" /></td>
-                        <td class="text-nowrap">{{ phase.name }}</td>
+                        <td scope="row"><input class="form-check-input" type="checkbox" name="procedure_id" value="{{ procedure.id }}" /></td>
+                        <td class="text-nowrap">{{ procedure.name }}</td>
                         <td>
-                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ phase.id }}', '{{ phase.name }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ procedure.id }}', '{{ procedure.name }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
@@ -78,14 +78,14 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h1 class="modal-title fs-5" id="createModalLabel">Create Phase</h1>
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Procedure</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
-                    <label for="name" class="col-form-label">Phase Name</label>
-                    <input type="text" class="form-control" name="name" placeholder="i.e. Setup" required>
+                    <label for="name" class="col-form-label">Procedure Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="i.e. FVT01" required>
                   </div>
                 </form>
               </div>
@@ -100,7 +100,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h1 class="modal-title fs-5" id="updateModalLabel">Update Phase</h1>
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Procedure</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -110,8 +110,8 @@
                     <input type="number" class="form-control" id="id" name="id" readonly>
                   </div>
                   <div class="mb-3">
-                    <label for="name" class="col-form-label">Phase Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="i.e. Setup" required>
+                    <label for="name" class="col-form-label">Procedure Name</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="i.e. FVT01" required>
                   </div>
                 </form>
               </div>
@@ -123,7 +123,7 @@
         </div>
         <script type="text/javascript">
           function selectAll(source) {
-            checkboxes = document.getElementsByName('phase_id');
+            checkboxes = document.getElementsByName('procedure_id');
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
             }
