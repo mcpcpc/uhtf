@@ -30,6 +30,14 @@
                 <div class="card-body">
                   <form id="evaluate" onsubmit="return send(event)" method="post">
                     <div class="form-floating mb-3">
+                      <select name="procedure_id" class="form-select" required>
+                        {% for procedure in procedures %}
+                        <option value={{ procedure.id }}>{{ procedure.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="procedure_id">Procedure</label>
+                    </div>
+                    <div class="form-floating mb-3">
                       <select name="part_id" class="form-select" id="part_id" required>
                         <option selected>Choose...</option>
                         {% for part in parts %}

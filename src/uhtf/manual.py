@@ -52,7 +52,8 @@ INNER JOIN
     phase ON phase.id = protocol.phase_id
 WHERE
     part.id = :part_id AND
-    phase.id = phase_id 
+    phase.id = :phase_id AND
+    procedure.id = :procedure_id
 """
 
 
@@ -60,10 +61,12 @@ WHERE
 async def read():
     parts = get_db().execute("SELECT * FROM part").fetchall()
     phases = get_db().execute("SELECT * FROM phase").fetchall()
+    procedures = get_db().execute("SELECT * FROM procedure").fetchall()
     return await render_template(
         "manual.html",
         parts=parts,
         phases=phases,
+        procedures=procedures,
     )
 
 
