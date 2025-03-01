@@ -106,10 +106,7 @@ def get_serial_label(value: str) -> tuple:
         SELECT value FROM setting WHERE key = 'regex'
         """
     ).fetchone()["value"]
-    match = search(pattern, value)
-    gtin = match.group("gtin")
-    sn = match.group("sn")
-    return (gtin, sn)
+    return search(pattern, value)
 
 
 @automatic.get("/automatic")
@@ -141,10 +138,12 @@ async def ws():
             procedure.unit_under_test = unit_under_test
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             #match = search(gs1_regex, form["label"])
-            gtin, serial_number = get_serial_label(form["label"])
+            match = get_serial_label(form["label"])
             if isinstance(match, Match):
                 #gtin = match.group("global_trade_item_number")
                 #serial_number = match.group("serial_number")
+                gtin = match.group("gtin")
+                serial_number = match.group("snr")
                 procedure.unit_under_test.global_trade_item_number = gtin
                 procedure.unit_under_test.serial_number = serial_number
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
@@ -153,7 +152,7 @@ async def ws():
                 await broker.publish(dumps([asdict(procedure),"INVALID"]))
                 continue  # restart procedure
             #part = lookup(match.group("global_trade_item_number"))
-            part = lookup(gtin)
+            part = lookup(match.group("gtin"))
             if isinstance(part, dict):
                 procedure.unit_under_test.part_number = part["number"]
                 procedure.unit_under_test.revision = part["revision"]
