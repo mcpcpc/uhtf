@@ -71,9 +71,9 @@ async def delete():
 
     db = get_db()
     form = await request.form
-    phase_ids = form.getlist("phase_id")
-    for id in phase_ids:
-        db.execute("DELETE FROM phase WHERE id = ?", (id,))
+    procedure_ids = form.getlist("procedure_id")
+    for id in procedure_ids:
+        db.execute("DELETE FROM procedure WHERE id = ?", (id,))
         db.commit()
     return redirect(url_for(".read"))
 
