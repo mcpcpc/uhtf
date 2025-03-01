@@ -60,7 +60,8 @@ CREATE TABLE procedure (
     id INTEGER PRIMARY KEY,
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at DATETIME DEFAULT NULL,
-    name TEXT UNIQUE NOT NULL
+    name TEXT UNIQUE NOT NULL,
+    pid TEXT UNIQUE NOT NULL
 );
 
 CREATE TABLE protocol (
@@ -89,11 +90,7 @@ CREATE TABLE setting (
     value TEXT NOT NULL
 );
 
-
-
 INSERT INTO setting (key, value) VALUES
     ("archive_url", "https://www.tofupilot.app/api/v1/runs"),
     ("archive_access_token", ""),
     ("password", "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5");
-
-

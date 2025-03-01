@@ -49,9 +49,11 @@ async def create() -> tuple:
         db.execute(
             """
             INSERT INTO procedure (
-                name
+                name,
+                pid
             ) VALUES (
-                :name
+                :name,
+                :pid
             )
             """,
             form,
@@ -91,7 +93,8 @@ async def update() -> tuple:
             """
             UPDATE procedure SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = :name
+                name = :name,
+                pid = :pid
             WHERE id = :id
             """,
             form,

@@ -354,9 +354,11 @@ async def create_procedure() -> tuple:
         db.execute(
             """
             INSERT INTO procedure (
-                name
+                name,
+                pid
             ) VALUES (
-                :name
+                :name,
+                :pid
             )
             """,
             form,

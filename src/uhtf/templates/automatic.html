@@ -37,9 +37,6 @@
                   <form id="evaluate" onsubmit="return send(event)" method="post">
                     <div class="form-floating mb-3">
                       <select name="procedure_id" class="form-select" required>
-                        <!--
-                        <option selected>Choose...</option>
-                        -->
                         {% for procedure in procedures %}
                         <option value={{ procedure.id }}>{{ procedure.name }}</option>
                         {% endfor %}

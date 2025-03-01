@@ -43,9 +43,7 @@ SELECT
     measurement.units AS measurement_units,
     measurement.lower_limit AS measurement_lower_limit,
     measurement.upper_limit AS measurement_upper_limit,
-    phase.name AS phase_name,
-    procedure.id AS procedure_id,
-    procedure.name AS procedure_name
+    phase.name AS phase_name
 FROM
     protocol
 INNER JOIN
@@ -121,7 +119,11 @@ async def ws():
             message = await websocket.receive()
             form = loads(message)
             unit_under_test = UnitUnderTest(None)
-            procedure = Procedure("FVT01", "Multi-coil Check")
+            p = get_db().execute(
+                "SELECT * FROM procedure WHERE id = ?",
+                (form["procedure_id"],),
+            ).fetchone()
+            procedure = Procedure(p["pid"], p["name"])
             procedure.unit_under_test = unit_under_test
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             match = search(gs1_regex, form["label"])
@@ -148,11 +150,11 @@ async def ws():
                 await broker.publish(dumps([asdict(procedure),"UNKNOWN"]))
                 continue  # restart procedure
             # accumulate phases
-            rows = get_db().execute(
+            recipes = get_db().execute(
                 recipe_select_query,
                 (part["id"], form["procedure_id"])
             ).fetchall()
-            for temp in builder(rows, procedure):
+            for temp in builder(recipes, procedure):
                 procedure = temp
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             # finalize results

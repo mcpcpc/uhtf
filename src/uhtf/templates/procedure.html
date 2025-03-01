@@ -49,6 +49,7 @@
                     <thead>
                       <tr>
                         <th scope="col"><input class="form-check-input" type="checkbox" onClick="selectAll(this)" /></th>
+                        <th scope="col" class="w-100">PID</th>
                         <th scope="col" class="w-100">Name</th>
                         <th scope="col"></th>
                       </tr>
@@ -57,9 +58,10 @@
                       {% for procedure in procedures %}
                       <tr>
                         <td scope="row"><input class="form-check-input" type="checkbox" name="procedure_id" value="{{ procedure.id }}" /></td>
+                        <td class="text-nowrap">{{ procedure.pid }}</td>
                         <td class="text-nowrap">{{ procedure.name }}</td>
                         <td>
-                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ procedure.id }}', '{{ procedure.name }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ procedure.id }}', '{{ procedure.name }}', '{{ procedure.pid }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
@@ -84,8 +86,12 @@
               <div class="modal-body">
                 <form id="create" action="{{ url_for('.create') }}" method="post">
                   <div class="mb-3">
+                    <label for="pid" class="col-form-label">Procedure ID</label>
+                    <input type="text" class="form-control" name="pid" placeholder="i.e. FVT01" required>
+                  </div>
+                  <div class="mb-3">
                     <label for="name" class="col-form-label">Procedure Name</label>
-                    <input type="text" class="form-control" name="name" placeholder="i.e. FVT01" required>
+                    <input type="text" class="form-control" name="name" placeholder="i.e. Final Verification Test" required>
                   </div>
                 </form>
               </div>
@@ -110,8 +116,12 @@
                     <input type="number" class="form-control" id="id" name="id" readonly>
                   </div>
                   <div class="mb-3">
+                    <label for="pid" class="col-form-label">Procedure ID</label>
+                    <input type="text" class="form-control" id="pid" name="pid" placeholder="i.e. FVT01" required>
+                  </div>
+                  <div class="mb-3">
                     <label for="name" class="col-form-label">Procedure Name</label>
-                    <input type="text" class="form-control" id="name" name="name" placeholder="i.e. FVT01" required>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="i.e. Final Verification Test" required>
                   </div>
                 </form>
               </div>
@@ -128,9 +138,10 @@
               checkboxes[i].checked = source.checked;
             }
           }
-          function populateUpdateModal(id, name) {
+          function populateUpdateModal(id, name, pid) {
             document.getElementById("id").value = id;
             document.getElementById("name").value = name;
+            document.getElementById("pid").value = pid;
           }
         </script>
 {% endblock %}
