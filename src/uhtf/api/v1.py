@@ -343,7 +343,6 @@ async def create_phase() -> tuple:
 @token_required
 async def create_procedure() -> tuple:
     form = (await request.form).copy().to_dict()
-    print(dict(form))
     try:
         db = get_db()
         db.execute(
@@ -361,8 +360,7 @@ async def create_procedure() -> tuple:
         db.commit()
     except db.ProgrammingError:
         return "Missing parameter(s).", 400
-    except db.IntegrityError as e:
-        print(e)
+    except db.IntegrityError:
         return "Invalid parameter(s).", 400
     return "Procedure successfully created.", 201
 
@@ -382,13 +380,15 @@ async def create_protocol() -> tuple:
                 instrument_id,
                 measurement_id,
                 part_id,
-                phase_id
+                phase_id,
+                procedure_id
             ) VALUES (
                 :command_id,
                 :instrument_id,
                 :measurement_id,
                 :part_id,
-                :phase_id
+                :phase_id,
+                :procedure_id
             )
             """,
             form,
