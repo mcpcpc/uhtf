@@ -61,6 +61,14 @@ async def list_phases() -> tuple:
     return list(map(dict, rows)), 201
 
 
+@api.get("/procedure")
+@token_required
+async def list_procedures() -> tuple:
+    query = "SELECT * FROM procedure"
+    rows = get_db().execute(query).fetchall()
+    return list(map(dict, rows)), 201
+
+
 @api.get("/protocol")
 @token_required
 async def list_protocols() -> tuple:
@@ -119,6 +127,16 @@ async def read_phase(id: int) -> tuple:
     return dict(row), 201
 
 
+@api.get("/procedure/<int:id>")
+@token_required
+async def read_procedure(id: int) -> tuple:
+    query = "SELECT * FROM procedure WHERE id = ?"
+    row = get_db().execute(query, (id,)).fetchone()
+    if not row:
+        return "Procedure does not exist.", 404
+    return dict(row), 201
+
+
 @api.get("/protocol/<int:id>")
 @token_required
 async def read_protocol(id: int) -> tuple:
@@ -161,6 +179,13 @@ async def delete_part(id: int) -> tuple:
 @token_required
 async def delete_phase(id: int) -> tuple:
     query = "DELETE FROM phase WHERE id = ?"
+    get_db().execute(query, (id,)).commit()
+
+
+@api.delete("/procedure/<int:id>")
+@token_required
+async def delete_procedure(id: int) -> tuple:
+    query = "DELETE FROM procedure WHERE id = ?"
     get_db().execute(query, (id,)).commit()
 
 
@@ -317,6 +342,31 @@ async def create_phase() -> tuple:
     except db.IntegrityError:
         return "Invalid parameter(s).", 400
     return "Phase successfully created.", 201
+
+
+@api.post("/procedure")
+@token_required
+async def create_procedure() -> tuple:
+    form = (await request.form).copy().to_dict()
+    try:
+        db = get_db()
+        db.execute("PRAGMA foreign_keys = ON")
+        db.execute(
+            """
+            INSERT INTO procedure (
+                name
+            ) VALUES (
+                :name
+            )
+            """,
+            form,
+        )
+        db.commit()
+    except db.ProgrammingError:
+        return "Missing parameter(s).", 400
+    except db.IntegrityError:
+        return "Invalid parameter(s).", 400
+    return "Procedure successfully created.", 201
 
 
 @api.post("/protocol")
