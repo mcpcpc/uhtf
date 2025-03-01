@@ -62,7 +62,7 @@
                 <div>
                   <label for="regex" class="col-form-label">Barcode Pattern</label>
                   <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
-                  <small id="regexHelp" class="form-text text-muted">A barcode pattern is a regular expression containing "serial_number" and "gtin" matching group name <i>names</i>.</small>
+                  <small id="regexHelp" class="form-text text-muted">A barcode pattern is a regular expression containing "serial_number" and "gtin" matching group name <i>names</i>. This is required for all Automatic Test procedures.</small>
                 </div>
 		{% endif %}
 		{% endfor %}
