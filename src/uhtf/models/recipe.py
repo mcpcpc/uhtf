@@ -91,7 +91,7 @@ def builder(recipes: list, procedure: Procedure) -> Procedure:
         for recipe in phase_recipes:
             run(procedure, recipe)
             yield procedure
-            if procedure.phases[-1].outcome == PhaseOutcome.ERROR:
-                return
+            #if procedure.phases[-1].outcome == PhaseOutcome.ERROR:
+            #    return
         procedure.phases[-1].end_time_millis = get_millis()
         yield procedure

@@ -158,7 +158,6 @@ async def ws():
                 procedure = temp
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             # finalize results
-            print(asdict(procedure))
             if not procedure.run_passed:
                 await broker.publish(dumps([asdict(procedure),"FAIL"]))
             else:
