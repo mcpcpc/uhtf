@@ -24,6 +24,7 @@ from .manual import manual
 from .measurement import measurement
 from .part import part
 from .phase import phase
+from .procedure import procedure
 from .protocol import protocol
 from .setting import setting
 from .token import init_token
@@ -62,6 +63,7 @@ def create_app(test_config: dict = None) -> Quart:
     app.register_blueprint(measurement)
     app.register_blueprint(part)
     app.register_blueprint(phase)
+    app.register_blueprint(procedure)
     app.register_blueprint(protocol)
     app.register_blueprint(setting)
     
