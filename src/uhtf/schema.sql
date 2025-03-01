@@ -93,4 +93,5 @@ CREATE TABLE setting (
 INSERT INTO setting (key, value) VALUES
     ("archive_url", "https://www.tofupilot.app/api/v1/runs"),
     ("archive_access_token", ""),
-    ("password", "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5");
+    ("password", "pbkdf2:sha256:260000$gtvpYNx6qtTuY8rt$2e2a4172758fee088e20d915ac4fdef3bdb07f792e42ecb2a77aa5a72bedd5f5"),
+    ("regex", "");

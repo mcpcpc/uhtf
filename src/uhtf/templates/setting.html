@@ -58,6 +58,12 @@
                   <input type="password" class="form-control" name="password">
                 </div>
 		{% endif %}
+		{% if setting.key == "regex" %}
+                <div>
+                  <label for="regex" class="col-form-label">Barcode Pattern (Regular Expression)</label>
+                  <input type="text" class="form-control" name="regex">
+                </div>
+		{% endif %}
 		{% endfor %}
               </form>
             </div>
