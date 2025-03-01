@@ -41,7 +41,7 @@
               <form id="update" action="{{ url_for('.update') }}" method="post">
 		{% for setting in settings %}
 		{% if setting.key == "regex" %}
-                <div>
+                <div class="mb-3">
                   <label for="regex" class="col-form-label">Serial Label Pattern</label>
                   <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
                   <small id="regexHelp" class="form-text text-muted">A regular expression containing "sn" and "gtin" matching group name <i>names</i>.</small>
@@ -60,7 +60,7 @@
                 </div>
 		{% endif %}
 		{% if setting.key == "password" %}
-                <div class="mb-3">
+                <div>
                   <label for="password" class="col-form-label">Application Password</label>
                   <input type="password" class="form-control" name="password">
                 </div>
