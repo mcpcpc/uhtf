@@ -60,8 +60,9 @@
 		{% endif %}
 		{% if setting.key == "regex" %}
                 <div>
-                  <label for="regex" class="col-form-label">Barcode Pattern (Regular Expression)</label>
+                  <label for="regex" class="col-form-label">Barcode Pattern</label>
                   <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
+                  <small id="regexHelp" class="form-text text-muted">A regular expression strung containing a serial_number and global_trade_item_number matching group name names.</small>
                 </div>
 		{% endif %}
 		{% endfor %}
