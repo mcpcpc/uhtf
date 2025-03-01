@@ -143,7 +143,7 @@ async def ws():
                 #gtin = match.group("global_trade_item_number")
                 #serial_number = match.group("serial_number")
                 gtin = match.group("gtin")
-                serial_number = match.group("snr")
+                serial_number = match.group("sn")
                 procedure.unit_under_test.global_trade_item_number = gtin
                 procedure.unit_under_test.serial_number = serial_number
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
