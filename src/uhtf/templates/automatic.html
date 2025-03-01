@@ -35,8 +35,23 @@
               <div class="card bg-body shadow-sm border-0 mb-3">
                 <div class="card-body">
                   <form id="evaluate" class="row g-3" onsubmit="return send(event)" method="post">
+                    <!--
                     <div class="col-12">
                       <label for="uut" class="form-label fw-semibold text-secondary">Unit Under Test (UUT)</label>
+                      <input name="uut" type="text" class="form-control" id="uut" autocomplete="off" autofocus required>
+                    </div>
+                    -->
+                    <div class="form-floating mb-3">
+                      <select name="procedure_id" class="form-select" required>
+                        <option selected>Choose...</option>
+                        {% for procedure in procedures %}
+                        <option value={{ procedure.id }}>{{ procedure.name }}</option>
+                        {% endfor %}
+                      </select>
+                      <label for="procedure_id">Procedure</label>
+                    </div>
+                    <div>
+                      <label for="uut" class="col-form-label">Unit Under Test</label>
                       <input name="uut" type="text" class="form-control" id="uut" autocomplete="off" autofocus required>
                     </div>
                   </form>
