@@ -367,7 +367,7 @@ async def create_procedure() -> tuple:
     except db.ProgrammingError:
         return "Missing parameter(s).", 400
     except db.IntegrityError:
-        return "Invalid parameter(s).", 400
+        return "Invalid parameter(s).", 403
     return "Procedure successfully created.", 201
 
 
