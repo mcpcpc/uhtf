@@ -11,6 +11,7 @@ Test endpoints.
 from asyncio import ensure_future
 from dataclasses import asdict
 from json import dumps
+from json import loads
 from re import Match
 from re import search
 
@@ -42,7 +43,9 @@ SELECT
     measurement.units AS measurement_units,
     measurement.lower_limit AS measurement_lower_limit,
     measurement.upper_limit AS measurement_upper_limit,
-    phase.name AS phase_name
+    phase.name AS phase_name,
+    procedure.id AS procedure_id,
+    procedure.name AS procedure_name
 FROM
     protocol
 INNER JOIN
@@ -55,8 +58,11 @@ INNER JOIN
     part ON part.id = protocol.part_id
 INNER JOIN
     phase ON phase.id = protocol.phase_id
+INNER JOIN
+    procedure ON procedure.id = protocol.procedure_id
 WHERE
-    part.id = ?
+    part.id = ? AND
+    procedure.id = ?
 """
 
 
@@ -108,11 +114,12 @@ async def ws():
     async def _receive() -> None:
         while True:
             message = await websocket.receive()
+            form = loads(message)
             unit_under_test = UnitUnderTest(None)
             procedure = Procedure("FVT01", "Multi-coil Check")
             procedure.unit_under_test = unit_under_test
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-            match = search(gs1_regex, message)
+            match = search(gs1_regex, form["label"])
             if isinstance(match, Match):
                 gtin = match.group("global_trade_item_number")
                 manufacture_date = match.group("manufacture_date")
@@ -136,7 +143,10 @@ async def ws():
                 await broker.publish(dumps([asdict(procedure),"UNKNOWN"]))
                 continue  # restart procedure
             # accumulate phases
-            rows = get_db().execute(recipe_select_query, (part["id"],)).fetchall()
+            rows = get_db().execute(
+                recipe_select_query,
+                (part["id"], form["procedure_id"])
+            ).fetchall()
             for temp in builder(rows, procedure):
                 procedure = temp
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))

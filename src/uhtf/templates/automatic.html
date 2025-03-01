@@ -52,8 +52,8 @@
                       <label for="procedure_id">Procedure</label>
                     </div>
                     <div>
-                      <label for="uut" class="col-form-label">Unit Under Test</label>
-                      <input name="uut" type="text" class="form-control" id="uut" autocomplete="off" autofocus required>
+                      <label for="label" class="col-form-label">Serial Label</label>
+                      <input name="label" type="text" class="form-control" id="label" autocomplete="off" autofocus required>
                     </div>
                   </form>
                 </div>
@@ -171,10 +171,13 @@
           }
           
           function send(event) {
-            const message = (new FormData(event.target)).get("uut");
-            if (message) {
-              ws.send(message);
-            }
+            const formData = new FormData(event.target);
+            const data = {};
+            formData.forEach((value, key) => {
+              data[key] = value;
+            });
+            const jsonString = JSON.stringify(data);
+            ws.send(jsonString);
             event.target.reset();
             return false;
           }
