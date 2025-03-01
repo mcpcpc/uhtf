@@ -71,4 +71,5 @@ def create_app(test_config: dict = None) -> Quart:
     async def home():
         return await render_template("home.html")
     
+    app.jinja_env.globals["version"] = __version__
     return app

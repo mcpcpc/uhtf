@@ -127,8 +127,12 @@
                     <li><a class="custom-links-link d-inline-block rounded" href="{{ url_for('authorize.logout') }}">Logout</a></li>
                     {% else %}
                     <li><a class="custom-links-link d-inline-block rounded" href="{{ url_for('authorize.login') }}">Login</a></li>
-                    {% endif %}
+                    {% endif %} 
                   </ul>
+                </li>
+                <li class="custom-links-span-all mt-1 mb-3 mx-4 border-top">
+                <li class="custom-links-span-all">
+                    <span><small>Application v0.0.1</small></span>
                 </li>
               </ul>
             </nav>
