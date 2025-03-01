@@ -29,9 +29,9 @@ from .models.recipe import builder
 
 automatic = Blueprint("automatic", __name__)
 broker = Broker()
-gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
-          + r"(11)(?P<manufacture_date>\d{6})" \
-          + r"(21)(?P<serial_number>\d{5})"
+#gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
+#          + r"(11)(?P<manufacture_date>\d{6})" \
+#          + r"(21)(?P<serial_number>\d{5})"
 recipe_select_query = """
 SELECT
     command.scpi AS command_scpi,
@@ -98,6 +98,20 @@ def archive(procedure: Procedure) -> None:
         print(e)
 
 
+def get_serial_label(value: str) -> tuple:
+    """Get serial label information."""
+
+    pattern = get_db().execute(
+        """
+        SELECT value FROM setting WHERE key = 'regex'
+        """
+    ).fetchone()["value"]
+    match = search(pattern, value)
+    gtin = match.group("gtin")
+    sn = match.group("sn")
+    return (gtin, sn)
+
+
 @automatic.get("/automatic")
 async def read():
     """Automatic test read callback."""
@@ -126,10 +140,11 @@ async def ws():
             procedure = Procedure(p["pid"], p["name"])
             procedure.unit_under_test = unit_under_test
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-            match = search(gs1_regex, form["label"])
+            #match = search(gs1_regex, form["label"])
+            gtin, serial_number = get_serial_label(form["label"])
             if isinstance(match, Match):
-                gtin = match.group("global_trade_item_number")
-                serial_number = match.group("serial_number")
+                #gtin = match.group("global_trade_item_number")
+                #serial_number = match.group("serial_number")
                 procedure.unit_under_test.global_trade_item_number = gtin
                 procedure.unit_under_test.serial_number = serial_number
                 await broker.publish(dumps([asdict(procedure),"RUNNING"]))
@@ -137,7 +152,8 @@ async def ws():
                 procedure.run_passed = False
                 await broker.publish(dumps([asdict(procedure),"INVALID"]))
                 continue  # restart procedure
-            part = lookup(match.group("global_trade_item_number"))
+            #part = lookup(match.group("global_trade_item_number"))
+            part = lookup(gtin)
             if isinstance(part, dict):
                 procedure.unit_under_test.part_number = part["number"]
                 procedure.unit_under_test.revision = part["revision"]
