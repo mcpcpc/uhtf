@@ -202,7 +202,6 @@ async def create_command() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO command (
@@ -231,7 +230,6 @@ async def create_instrument() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO instrument (
@@ -260,7 +258,6 @@ async def create_measurement() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO measurement (
@@ -294,7 +291,6 @@ async def create_part() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO part (
@@ -325,7 +321,6 @@ async def create_phase() -> tuple:
     form = (await request.form).copy().to_dict()
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO phase (
@@ -351,7 +346,6 @@ async def create_procedure() -> tuple:
     print(dict(form))
     try:
         db = get_db()
-        db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO procedure (
