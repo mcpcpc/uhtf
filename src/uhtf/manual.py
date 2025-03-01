@@ -81,7 +81,7 @@ async def ws():
             message = await websocket.receive()
             form = loads(message)
             rows = get_db().execute(recipe_select_query, form).fetchall()
-            procedure = Procedure("MAN01", "Manual Test")
+            procedure = Procedure(None, None)
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
             for temp in builder(rows, procedure):
                 procedure = temp
