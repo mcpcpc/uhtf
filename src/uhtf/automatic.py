@@ -98,7 +98,7 @@ def archive(procedure: Procedure) -> None:
         print(e)
 
 
-def get_serial_label(value: str) -> tuple:
+def get_serial_label(value: str) -> Match:
     """Get serial label information."""
 
     pattern = get_db().execute(
