@@ -40,6 +40,13 @@
             <div class="card-body p-3 mb-3">
               <form id="update" action="{{ url_for('.update') }}" method="post">
 		{% for setting in settings %}
+		{% if setting.key == "regex" %}
+                <div>
+                  <label for="regex" class="col-form-label">Barcode Pattern</label>
+                  <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
+                  <small id="regexHelp" class="form-text text-muted">A barcode pattern is a regular expression containing "serial_number" and "gtin" matching group name <i>names</i>. This is required for all Automatic Test procedures.</small>
+                </div>
+		{% endif %}
 		{% if setting.key == "archive_url" %}
                 <div class="mb-3">
                   <label for="archive_url" class="col-form-label">Archive URL</label>
@@ -56,13 +63,6 @@
                 <div class="mb-3">
                   <label for="password" class="col-form-label">Application Password</label>
                   <input type="password" class="form-control" name="password">
-                </div>
-		{% endif %}
-		{% if setting.key == "regex" %}
-                <div>
-                  <label for="regex" class="col-form-label">Barcode Pattern</label>
-                  <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
-                  <small id="regexHelp" class="form-text text-muted">A barcode pattern is a regular expression containing "serial_number" and "gtin" matching group name <i>names</i>. This is required for all Automatic Test procedures.</small>
                 </div>
 		{% endif %}
 		{% endfor %}
