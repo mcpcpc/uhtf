@@ -137,11 +137,8 @@ async def ws():
             procedure = Procedure(p["pid"], p["name"])
             procedure.unit_under_test = unit_under_test
             await broker.publish(dumps([asdict(procedure),"RUNNING"]))
-            #match = search(gs1_regex, form["label"])
             match = get_serial_label(form["label"])
             if isinstance(match, Match):
-                #gtin = match.group("global_trade_item_number")
-                #serial_number = match.group("serial_number")
                 gtin = match.group("gtin")
                 serial_number = match.group("sn")
                 procedure.unit_under_test.global_trade_item_number = gtin
@@ -151,7 +148,6 @@ async def ws():
                 procedure.run_passed = False
                 await broker.publish(dumps([asdict(procedure),"INVALID"]))
                 continue  # restart procedure
-            #part = lookup(match.group("global_trade_item_number"))
             part = lookup(match.group("gtin"))
             if isinstance(part, dict):
                 procedure.unit_under_test.part_number = part["number"]
