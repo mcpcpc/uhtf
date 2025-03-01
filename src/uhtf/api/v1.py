@@ -348,6 +348,7 @@ async def create_phase() -> tuple:
 @token_required
 async def create_procedure() -> tuple:
     form = (await request.form).copy().to_dict()
+    print(dict(form))
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
