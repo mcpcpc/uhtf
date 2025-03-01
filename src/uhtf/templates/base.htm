@@ -102,7 +102,7 @@
                     Mode
                   </strong>
                   <ul class="list-unstyled fw-normal pb-2 small">
-                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'home' %} active{% endif %}" href="{{ url_for('home') }}">Mode Select</a></li>
+                    <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'home' %} active{% endif %}" href="{{ url_for('home') }}">Select</a></li>
                     <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'automatic.read' %} active{% endif %}" href="{{ url_for('automatic.read') }}">Automatic</a></li>
                     <li><a class="custom-links-link d-inline-block rounded{% if request.url_rule.endpoint == 'manual.read' %} active{% endif %}" href="{{ url_for('manual.read') }}">Manual</a></li>
                   </ul>
