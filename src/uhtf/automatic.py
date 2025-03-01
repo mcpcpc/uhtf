@@ -104,7 +104,12 @@ def archive(procedure: Procedure) -> None:
 async def read():
     """Automatic test read callback."""
 
-    return await render_template("automatic.html")
+    query = "SELECT * FROM procedure"
+    procedures = get_db().execute(query).fetchall()
+    return await render_template(
+        "automatic.html",
+        procedures=procedures,
+    )
 
 
 @automatic.websocket("/automatic/ws")
