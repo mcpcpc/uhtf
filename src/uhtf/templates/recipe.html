@@ -1,16 +1,16 @@
 {% extends 'base.htm' %}
-{% block title %}Protocols{% endblock %}
+{% block title %}Recipes{% endblock %}
 {% block container %}
         <div class="toolbar mb-5">
           <div class=" container-fluid d-flex flex-stack flex-wrap flex-sm-nowrap" style="align-items: center; justify-content: space-between">
             <div class="d-flex flex-column align-items-start justify-content-center flex-wrap me-2">
-              <h1 class="mb-1 fw-bold fs-4">Protocol Management</h1>
+              <h1 class="mb-1 fw-bold fs-4">Recipe Management</h1>
               <ul class="breadcrumb fw-semibold fs-base my-1">
                 <li class="breadcrumb-item text-secondary">
                   <a href="{{ url_for('home') }}" class="text-secondary text-hover-primary" style="text-decoration: none">Home</a>
                 </li>
                 <li class="breadcrumb-item text-muted">Manage</li>
-                <li class="breadcrumb-item text-emphasis">Protocols</li>
+                <li class="breadcrumb-item text-emphasis">Recipes</li>
               </ul>
             </div>
           </div>
@@ -76,17 +76,17 @@
                       </tr>
                     </thead>
                     <tbody>
-                      {% for protocol in protocols %}
+                      {% for recipe in recipes %}
                       <tr>
-                        <td scope="row"><input class="form-check-input" type="checkbox" name="protocol_id" value="{{ protocol.id }}" /></td>
-                        <td class="text-nowrap">{{ protocol.procedure }}</td>
-                        <td class="text-nowrap">{{ protocol.part }}</td>
-                        <td class="text-nowrap">{{ protocol.phase }}</td>
-                        <td class="text-nowrap">{{ protocol.instrument }}</td>
-                        <td class="text-nowrap">{{ protocol.command }}</td>
-                        <td class="text-nowrap">{{ protocol.measurement }}</td>
+                        <td scope="row"><input class="form-check-input" type="checkbox" name="recipe_id" value="{{ recipe.id }}" /></td>
+                        <td class="text-nowrap">{{ recipe.procedure }}</td>
+                        <td class="text-nowrap">{{ recipe.part }}</td>
+                        <td class="text-nowrap">{{ recipe.phase }}</td>
+                        <td class="text-nowrap">{{ recipe.instrument }}</td>
+                        <td class="text-nowrap">{{ recipe.command }}</td>
+                        <td class="text-nowrap">{{ recipe.measurement }}</td>
                         <td>
-                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ protocol.id }}', '{{ protocol.procedure_id }}', '{{ protocol.part_id }}', '{{ protocol.phase_id }}', '{{ protocol.instrument_id }}', '{{ protocol.command_id }}', '{{ protocol.measurement_id }}')">
+                          <a class="link-secondary icon-link" data-bs-toggle="modal" href="#" data-bs-target="#updateModal" onclick="populateUpdateModal('{{ recipe.id }}', '{{ recipe.procedure_id }}', '{{ recipe.part_id }}', '{{ recipe.phase_id }}', '{{ recipe.instrument_id }}', '{{ recipe.command_id }}', '{{ recipe.measurement_id }}')">
                             <svg class="bi">
                               <use href="{{ url_for('static', filename='keen-icons.svg') }}#pencxil">
                             </svg>
@@ -105,7 +105,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h1 class="modal-title fs-5" id="createModalLabel">Create Measurement</h1>
+                <h1 class="modal-title fs-5" id="createModalLabel">Create Recipe</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -177,7 +177,7 @@
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header border-0">
-                <h1 class="modal-title fs-5" id="updateModalLabel">Update Measurement</h1>
+                <h1 class="modal-title fs-5" id="updateModalLabel">Update Recipe</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
@@ -250,7 +250,7 @@
         </div>
         <script type="text/javascript">
           function selectAll(source) {
-            checkboxes = document.getElementsByName('protocol_id');
+            checkboxes = document.getElementsByName('recipe_id');
             for(var i=0, n=checkboxes.length;i<n;i++) {
               checkboxes[i].checked = source.checked;
             }

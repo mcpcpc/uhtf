@@ -5,7 +5,7 @@
 SPDX-FileCopyrightText: 2025 Michael Czigler
 SPDX-License-Identifier: BSD-3-Clause
 
-Protocol endpoints.
+Recipe endpoints.
 """
 
 from quart import Blueprint
@@ -18,13 +18,13 @@ from quart import url_for
 from .authorize import login_required
 from .database import get_db
 
-protocol = Blueprint("protocol", __name__)
+recipe = Blueprint("recipe", __name__)
 
 
-@protocol.get("/protocol")
+@recipe.get("/recipe")
 @login_required
 async def read() -> tuple:
-    """Read protocols callback."""
+    """Read recipes callback."""
 
     number = request.args.get("number")
     commands = get_db().execute(
@@ -59,7 +59,7 @@ async def read() -> tuple:
     ).fetchall()
     query = """
         SELECT
-            protocol.id AS id,
+            recipe.id AS id,
             part.id AS part_id,
             part.name AS part,
             instrument.id AS instrument_id,
@@ -73,41 +73,41 @@ async def read() -> tuple:
             procedure.id AS procedure_id,
             procedure.name AS procedure
         FROM
-            protocol
+            recipe
         INNER JOIN
-            command ON command.id = protocol.command_id
+            command ON command.id = recipe.command_id
         INNER JOIN
-            instrument ON instrument.id = protocol.instrument_id
+            instrument ON instrument.id = recipe.instrument_id
         OUTER LEFT JOIN
-            measurement ON measurement.id = protocol.measurement_id
+            measurement ON measurement.id = recipe.measurement_id
         INNER JOIN
-            part ON part.id = protocol.part_id
+            part ON part.id = recipe.part_id
         INNER JOIN
-            phase ON phase.id = protocol.phase_id
+            phase ON phase.id = recipe.phase_id
         INNER JOIN
-            procedure ON procedure.id = protocol.procedure_id 
+            procedure ON procedure.id = recipe.procedure_id 
         """
     name = request.args.get("name")
     if isinstance(name, str):
         query += f" WHERE part.name = '{name}'"
-    protocols = get_db().execute(query).fetchall()
+    recipes = get_db().execute(query).fetchall()
     return await render_template(
-        "protocol.html",
+        "recipe.html",
         commands=commands,
         instruments=instruments,
         measurements=measurements,
         parts=parts,
         phases=phases,
         procedures=procedures,
-        protocols=protocols,
+        recipes=recipes,
         name=name,
     )
 
 
-@protocol.post("/protocol")
+@recipe.post("/recipe")
 @login_required
 async def create() -> tuple:
-    """Create protocol callback."""
+    """Create recipe callback."""
 
     form = (await request.form).copy().to_dict() 
     form["measurement_id"] = form.get("measurement_id")
@@ -116,7 +116,7 @@ async def create() -> tuple:
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
-            INSERT INTO protocol (
+            INSERT INTO recipe (
                 instrument_id,
                 command_id,
                 measurement_id,
@@ -144,27 +144,27 @@ async def create() -> tuple:
     return redirect(url_for(".read"))
 
 
-@protocol.post("/protocol/delete")
+@recipe.post("/recipe/delete")
 @login_required
 async def delete():
-    """Delete protocols callback."""
+    """Delete recipes callback."""
 
     db = get_db()
     form = await request.form
-    protocol_ids = form.getlist("protocol_id")
+    protocol_ids = form.getlist("recipe_id")
     for protocol_id in protocol_ids:
         db.execute(
-            "DELETE FROM protocol WHERE id = ?",
+            "DELETE FROM recipe WHERE id = ?",
             (protocol_id,)
         )
         db.commit()
     return redirect(url_for(".read"))
 
 
-@protocol.post("/protocol/update")
+@recipe.post("/recipe/update")
 @login_required
 async def update():
-    """Update protocol endpoint."""
+    """Update recipe endpoint."""
 
     form = (await request.form).copy().to_dict()
     form["measurement_id"] = form.get("measurement_id")
@@ -173,7 +173,7 @@ async def update():
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
-            UPDATE protocol SET
+            UPDATE recipe SET
                 updated_at = CURRENT_TIMESTAMP,
                 command_id = :command_id,
                 instrument_id = :instrument_id,
