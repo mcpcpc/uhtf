@@ -106,12 +106,12 @@
               var html = "";
               procedure["phases"].forEach((phase) => {
                 html += `<div class="card bg-body shadow-sm border-0 mb-3">`;
-                html += `<div class="card-header bg-body p-3 d-flex justify-content-between align-items-center">`;
+                html += `<div class="card-header bg-body p-3 d-flex justify-content-between align-items-center border-0">`;
                 html += `<button class="btn btn-link text-decoration-none" data-bs-toggle="collapse" data-bs-target="#${phase['slug']}">`;
                 html += `<h5 class="card-title m-0">${phase['name']}</h5>`;
                 html += `</button>`;
                 html += `<span class="badge text-bg-primary">${phase['outcome']}</span>`;
-                html += `</div><div id="${phase['slug']}" class="collapse border-0" data-bs-parent="#testSummary">`;
+                html += `</div><div id="${phase['slug']}" class="collapse" data-bs-parent="#testSummary">`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
                     html += `<div class="d-flex">`;
