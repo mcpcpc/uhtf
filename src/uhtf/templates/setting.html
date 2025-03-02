@@ -40,11 +40,11 @@
             <div class="card-body p-3 mb-3">
               <form id="update" action="{{ url_for('.update') }}" method="post">
 		{% for setting in settings %}
-		{% if setting.key == "regex" %}
+		{% if setting.key == "pattern" %}
                 <div class="mb-3">
-                  <label for="regex" class="col-form-label">Serial Label Pattern</label>
-                  <input type="text" class="form-control" name="regex" value="{{ setting.value }}">
-                  <small id="regexHelp" class="form-text text-muted">A regular expression containing "sn" and "gtin" matching group name <i>names</i>.</small>
+                  <label for="pattern" class="col-form-label">Serial Label Pattern</label>
+                  <input type="text" class="form-control" name="pattern" value="{{ setting.value }}">
+                  <small id="patternHelp" class="form-text text-muted">A regular expression containing "sn" and "gtin" matching group name <i>names</i>.</small>
                 </div>
 		{% endif %}
 		{% if setting.key == "archive_url" %}

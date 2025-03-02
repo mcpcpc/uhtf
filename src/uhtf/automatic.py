@@ -29,9 +29,6 @@ from .models.recipe import builder
 
 automatic = Blueprint("automatic", __name__)
 broker = Broker()
-#gs1_regex = r"(01)(?P<global_trade_item_number>\d{14})" \
-#          + r"(11)(?P<manufacture_date>\d{6})" \
-#          + r"(21)(?P<serial_number>\d{5})"
 recipe_select_query = """
 SELECT
     command.scpi AS command_scpi,
@@ -103,7 +100,7 @@ def get_serial_label(value: str) -> Match:
 
     pattern = get_db().execute(
         """
-        SELECT value FROM setting WHERE key = 'regex'
+        SELECT value FROM setting WHERE key = 'pattern'
         """
     ).fetchone()["value"]
     return search(pattern, value)
