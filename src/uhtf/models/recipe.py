@@ -96,3 +96,5 @@ def builder(recipes: list, procedure: Procedure) -> Procedure:
             yield procedure
         procedure.phases[-1].end_time_millis = get_millis()
         yield procedure
+        if procedure.phases[-1].outcome == PhaseOutcome.ERROR:
+            break  # why continue?
