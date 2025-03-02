@@ -117,6 +117,7 @@
             document.getElementById("revision").textContent = procedure["unit_under_test"]["revision"];
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
+            console.log(procedure);
             if (procedure["phases"].length > 0) {
               var html = "";
               procedure["phases"].forEach((phase) => {
