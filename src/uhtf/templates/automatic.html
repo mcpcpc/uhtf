@@ -121,7 +121,7 @@
               var html = "";
               procedure["phases"].forEach((phase) => {
                 html += `<tr>`;
-                html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}`;
+                html += `<td scope="row" class="w-100 text-nowrap">${phase['name']}`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
                     html += `<br>${measurement['name']} - ${measurement['measured_value']}${measurement['units']}`;
