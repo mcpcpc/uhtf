@@ -113,19 +113,20 @@
                 html += `<span class="badge bg-success">${phase['outcome']}</span>`;
                 html += `</div>`;
                 html += `<div id="${phase['slug']}" class="collapse" data-bs-parent="#testSummary">`;
-                html += `</div class="card-body">`;
+                html += `<div class="card-body">`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
                     html += `<div class="d-flex">`;
                     html += `<span class="w-100 text-nowrap">${measurement['name']}=${measurement['measured_value']}${measurement['units']}</span>`;
-                    html += `<span id="${measurement['name']}">${measurement['outcome']}</span>`;
+                    //html += `<span id="${measurement['name']}">${measurement['outcome']}</span>`;
+                    html += `<span>${measurement['outcome']}</span>`;
                     html += `</div>`;
                   });
                 }
                 html += `</div></div></div>`;
               });
               document.getElementById("testSummary").innerHTML += html;
-              //setBadge(measurement['name'], measurement['outcome']);
+              setBadge(phase['name'], phase['outcome']);
             }
             setBadge("state", state);
           });
