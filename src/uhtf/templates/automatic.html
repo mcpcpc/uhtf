@@ -115,7 +115,7 @@
               procedure["phases"].forEach((phase) => {
                 html += `<li class="list-group-item d-flex justify-content-between align-items-center">`;
                 html += `<span>${phase['name']}</span>`;
-                html += `<span class="badge text-bg-primary rounded-pill">${phase['outcome']}</span>`;
+                html += `<span class="badge text-bg-primary">${phase['outcome']}</span>`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
                     //html += `<div class="d-flex">`;
