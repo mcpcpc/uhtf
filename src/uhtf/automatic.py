@@ -42,19 +42,19 @@ SELECT
     measurement.upper_limit AS measurement_upper_limit,
     phase.name AS phase_name
 FROM
-    protocol
+    recipe
 INNER JOIN
-    command ON command.id = protocol.command_id
+    command ON command.id = recipe.command_id
 INNER JOIN
-    instrument ON instrument.id = protocol.instrument_id
+    instrument ON instrument.id = recipe.instrument_id
 OUTER LEFT JOIN
-    measurement ON measurement.id = protocol.measurement_id
+    measurement ON measurement.id = recipe.measurement_id
 INNER JOIN
-    part ON part.id = protocol.part_id
+    part ON part.id = recipe.part_id
 INNER JOIN
-    phase ON phase.id = protocol.phase_id
+    phase ON phase.id = recipe.phase_id
 INNER JOIN
-    procedure ON procedure.id = protocol.procedure_id
+    procedure ON procedure.id = recipe.procedure_id
 WHERE
     part.id = ? AND
     procedure.id = ?

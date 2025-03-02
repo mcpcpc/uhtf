@@ -69,10 +69,10 @@ async def list_procedures() -> tuple:
     return list(map(dict, rows)), 201
 
 
-@api.get("/protocol")
+@api.get("/recipe")
 @token_required
-async def list_protocols() -> tuple:
-    query = "SELECT * FROM protocol"
+async def list_recipes() -> tuple:
+    query = "SELECT * FROM recipe"
     rows = get_db().execute(query).fetchall()
     return list(map(dict, rows)), 201
 
@@ -137,13 +137,13 @@ async def read_procedure(id: int) -> tuple:
     return dict(row), 201
 
 
-@api.get("/protocol/<int:id>")
+@api.get("/recipe/<int:id>")
 @token_required
-async def read_protocol(id: int) -> tuple:
-    query = "SELECT * FROM protocol WHERE id = ?"
+async def read_recipe(id: int) -> tuple:
+    query = "SELECT * FROM recipe WHERE id = ?"
     row = get_db().execute(query, (id,)).fetchone()
     if not row:
-        return "Protocol does not exist.", 404
+        return "Recipe does not exist.", 404
     return dict(row), 201
 
 
@@ -189,10 +189,10 @@ async def delete_procedure(id: int) -> tuple:
     get_db().execute(query, (id,)).commit()
 
 
-@api.delete("/protocol/<int:id>")
+@api.delete("/recipe/<int:id>")
 @token_required
-async def delete_protocol(id: int) -> tuple:
-    query = "DELETE FROM protocol WHERE id = ?"
+async def delete_recipe(id: int) -> tuple:
+    query = "DELETE FROM recipe WHERE id = ?"
     get_db().execute(query, (id,)).commit()
 
 
@@ -365,9 +365,9 @@ async def create_procedure() -> tuple:
     return "Procedure successfully created.", 201
 
 
-@api.post("/protocol")
+@api.post("/recipe")
 @token_required
-async def create_protocol() -> tuple:
+async def create_recipe() -> tuple:
     form = (await request.form).copy().to_dict()
     form["measurement_id"] = form.get("measurement_id")
     try:
@@ -375,7 +375,7 @@ async def create_protocol() -> tuple:
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
-            INSERT INTO protocol (
+            INSERT INTO recipe (
                 command_id,
                 instrument_id,
                 measurement_id,
@@ -398,4 +398,4 @@ async def create_protocol() -> tuple:
         return "Missing parameter(s).", 400
     except db.IntegrityError:
         return "Invalid parameter(s).", 400
-    return "Phase successfully created.", 201
+    return "Recipe successfully created.", 201

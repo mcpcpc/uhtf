@@ -151,11 +151,11 @@ async def delete():
 
     db = get_db()
     form = await request.form
-    protocol_ids = form.getlist("recipe_id")
-    for protocol_id in protocol_ids:
+    recipe_ids = form.getlist("recipe_id")
+    for recipe_id in recipe_ids:
         db.execute(
             "DELETE FROM recipe WHERE id = ?",
-            (protocol_id,)
+            (recipe_id,)
         )
         db.commit()
     return redirect(url_for(".read"))
