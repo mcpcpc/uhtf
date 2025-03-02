@@ -38,6 +38,7 @@ def create_app(test_config: dict = None) -> Quart:
     app = Quart(__name__, instance_relative_config=True)
     app.config.from_mapping(
         SECRET_KEY="dev",
+        MAX_CONTENT_LENGTH=16000000,
         DATABASE=join(app.instance_path, "uhtf.db"),
     )
     if test_config is None:
