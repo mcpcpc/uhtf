@@ -13,7 +13,6 @@ from quart import request
 
 from ..token import token_required
 from ..database import get_db
-from ..phase import to_slug
 
 api = Blueprint(
     "api",
@@ -320,17 +319,14 @@ async def create_part() -> tuple:
 @token_required
 async def create_phase() -> tuple:
     form = (await request.form).copy().to_dict()
-    form["slug"] = to_slug(form.get("name"))
     try:
         db = get_db()
         db.execute(
             """
             INSERT INTO phase (
-                name,
-                slug
+                name
             ) VALUES (
-                :name,
-                :slug
+                :name
             )
             """,
             form,

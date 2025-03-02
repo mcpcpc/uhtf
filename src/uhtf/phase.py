@@ -8,8 +8,6 @@ SPDX-License-Identifier: BSD-3-Clause
 Phase endpoints.
 """
 
-from re import sub
-
 from quart import Blueprint
 from quart import flash
 from quart import redirect
@@ -21,16 +19,6 @@ from .authorize import login_required
 from .database import get_db
 
 phase = Blueprint("phase", __name__)
-
-
-def to_slug(value: str) -> str:
-    """Convert string into slug."""
-
-    slug = value.lower().strip()
-    slug = sub(r"[^\w\s-]", "", slug)
-    slug = sub(r"[\s_-]+", "_", slug)
-    slug = sub(r"^-+|-+$", "", slug)
-    return slug
  
 
 @phase.get("/phase")
@@ -55,18 +43,15 @@ async def create() -> tuple:
     """Create phase callback."""
 
     form = (await request.form).copy().to_dict()
-    form["slug"] = to_slug(form.get("name"))
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
         db.execute(
             """
             INSERT INTO phase (
-                name,
-                slug
+                name
             ) VALUES (
-                :name,
-                :slug
+                :name
             )
             """,
             form,
@@ -99,7 +84,6 @@ async def update() -> tuple:
     """Update phase callback."""
 
     form = (await request.form).copy().to_dict()
-    form["slug"] = to_slug(form.get("name"))
     try:
         db = get_db()
         db.execute("PRAGMA foreign_keys = ON")
@@ -107,8 +91,7 @@ async def update() -> tuple:
             """
             UPDATE phase SET
                 updated_at = CURRENT_TIMESTAMP,
-                name = :name,
-                slug = :slug
+                name = :name
             WHERE id = :id
             """,
             form,
