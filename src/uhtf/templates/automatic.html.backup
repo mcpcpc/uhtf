@@ -50,6 +50,14 @@
                   </form>
                 </div>
               </div>
+              <div class="card bg-body shadow-sm border-0 mb-3">
+                <div class="card-body p-3">
+                  <div class="d-flex justify-content-between align-items-center mb-1">
+                    <span class="fw-semibold text-secondary"><small>Test Status</small></span>
+                    <span id="state"></span>
+                  </div>
+                </div>
+              </div>
               <div class="card bg-body shadow-sm border-0">
                 <div class="card-body p-3">
                   <div class="d-flex justify-content-between align-items-center mb-1">
@@ -77,20 +85,21 @@
               </div>
             </div>
             <div class="col-xl-8">
-              <div class="card bg-body shadow-sm border-0 mb-3">
-                <div class="card-body p-3">
-                  <div class="d-flex justify-content-between align-items-center mb-1">
-                    <span class="fw-semibold text-secondary"><small>Test Status</small></span>
-                    <span id="state"></span>
-                  </div>
-                </div>
-              </div>
               <div class="card bg-body shadow-sm border-0 mb-3" style="height: 100%">
                 <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center" style="border-bottom: 1px solid var(--bs-tertiary-bg)">
-                  <h5 class="card-title m-0">Results</h5>
+                  <h5 class="card-title m-0">Measurements</h5>
                 </div>
                 <div class="card-body p-3">
-                  <div class="accordion" id="results">
+                  <div class="table-responsive">
+                    <table class="table table-borderless">
+                      <thead>
+                        <th scope="col" class="w-100">Name</th>
+                        <th scope="col">Value</th>
+                        <th scope="col">Units</th>
+                        <th scope="col">Outcome</th>
+                      </thead>
+                      <tbody id="detail"></tbody>
+                    </table>
                   </div>
                 </div>
               </div>
@@ -109,27 +118,23 @@
             document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
             document.getElementById("revision").textContent = procedure["unit_under_test"]["revision"];
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
-            document.getElementById("results").innerHTML = "";
+            document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
-              var html = "";
-              html += `<ul class="list-group">`;
               procedure["phases"].forEach((phase) => {
-                html += `<li class="list-group-item d-flex justify-content-between align-items-center">`;
-                html += `<span>${phase['name']}</span>`;
-                html += `<span class="badge text-bg-primary rounded-pill">${phase['outcome']}</span>`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
-                    //html += `<div class="d-flex">`;
-                    //html += `<span class="w-100 text-nowrap">${measurement['name']}=${measurement['measured_value']}${measurement['units']}</span>`;
-                    //html += `<span id="${measurement['name']}">${measurement['outcome']}</span>`;
-                    //html += `</div>`;
+                    var html = "";
+                    html += `<tr>`;
+                    html += `<td scope="row" class="w-100 text-nowrap">${measurement['name']}</td>`;
+                    html += `<td>${measurement['measured_value']}</td>`;
+                    html += `<td>${measurement['units']}</td>`;
+                    html += `<td><span id="${measurement['name']}">${measurement['outcome']}</span></td>`;
+                    html += `</tr>`;
+                    document.getElementById("detail").innerHTML += html;
+                    setBadge(measurement['name'], measurement['outcome']);
                   });
                 }
-                html += `</li>`;
               });
-              html += `</ul>`;
-              document.getElementById("results").innerHTML += html;
-              //setBadge(measurement['name'], measurement['outcome']);
             }
             setBadge("state", state);
           });
