@@ -91,7 +91,7 @@
                 </div>
                 <div class="card-body p-3">
                   <div id="detail" class="accordion acccordion-flush"></div>	
-		</div>
+                </div>
               </div>
             </div>
           </div>
@@ -112,19 +112,19 @@
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
               procedure["phases"].forEach((phase) => {
-		var slug = slugify(phase['name']);
-		var html = "";
-		html += `<div class="accordion-item">`;
-		html += `  <div class="accordion-header" id="header_${slug}">`;
-		html += `    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${slug}" aria-expanded="false" aria-controls="${slug}">`;
-		html += `      <div class="d-flex w-100 align-items-center justify-content-between">`;
-		html += `        <span class="me-1">${phase['name']}</span>`;
-		html += `        <span class="badge bg-primary me-3">${phase['outcome']}</span>`;
-		html += `      </div>`;
-		html += `    </button>`;
-		html += `  </div>`;
-		html += `  <div id="${slug}" class="accordion-collapse show" aria-labelledby="header_${slug}" data-bs-parent="detail">`;
-		html += `    <div class="accordion-body">`;
+                var slug = slugify(phase['name']);
+                var html = "";
+                html += `<div class="accordion-item">`;
+                html += `<div class="accordion-header" id="header_${slug}">`;
+                html += `<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${slug}" aria-expanded="false" aria-controls="${slug}">`;
+                html += `<div class="d-flex w-100 align-items-center justify-content-between">`;
+                html += `<span class="me-1">${phase['name']}</span>`;
+                html += `<span class="badge bg-primary me-3">${phase['outcome']}</span>`;
+                html += `</div>`;
+                html += `</button>`;
+                html += `</div>`;
+                html += `<div id="${slug}" class="accordion-collapse show" aria-labelledby="header_${slug}" data-bs-parent="detail">`;
+                html += `<div class="accordion-body">`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
                     html += `<div class="d-flex mb-1">`;
@@ -133,11 +133,11 @@
                     html += `</div>`;
                   });
                 } else {
-	            html += `<div class="d-flex mb-1">&#8230</div>`;
-	        }
-		html += `    </div>`;
-		html +=   `</div>`;
-		html += `</div>`;
+                  html += `<div class="d-flex mb-1">&#8230</div>`;
+                }
+                html += `</div>`;
+                html += `</div>`;
+                html += `</div>`;
                 document.getElementById("detail").innerHTML += html;
                 //setBadge(phase['name'], phase['outcome']);
               });
