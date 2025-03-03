@@ -117,7 +117,7 @@
                 html += `<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${slug}" aria-expanded="false" aria-controls="${slug}">`;
                 html += `<div class="d-flex w-100 align-items-center justify-content-between">`;
                 html += `<span class="me-1">${phase['name']}</span>`;
-                html += `<span class="badge bg-primary me-3">${phase['outcome']}</span>`;
+                html += `<span id="outcome_${slug}" class="badge bg-primary me-3">${phase['outcome']}</span>`;
                 html += `</div>`;
                 html += `</button>`;
                 html += `</div>`;
@@ -137,7 +137,7 @@
                 html += `</div>`;
                 html += `</div>`;
                 document.getElementById("detail").innerHTML += html;
-                //setBadge(phase['name'], phase['outcome']);
+                setBadge(`outcome_${slug}`, phase['outcome']);
               });
             }
             setBadge("state", state);
