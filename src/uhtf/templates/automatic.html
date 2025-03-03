@@ -112,7 +112,7 @@
               procedure["phases"].forEach((phase) => {
                 var slug = slugify(phase['name']);
                 var html = "";
-                html += `<div class="accordion-item border-0">`;
+                html += `<div class="accordion-item">`;
                 html += `<div class="accordion-header" id="header_${slug}">`;
                 html += `<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#${slug}" aria-expanded="false" aria-controls="${slug}">`;
                 html += `<div class="d-flex w-100 align-items-center justify-content-between">`;
