@@ -125,7 +125,7 @@
                   phase["measurements"].forEach((measurement, j) => {
                     html += `<div class="d-flex mb-1 align-items-center justify-content-between w-100">`;
                     html += `<span class="text-nowrap">${measurement['name']}</span>`;
-                    html += `<span class="badge" id="${measurement['name']}">${measurement['outcome']}</span>`;
+                    html += `<span class="badge" id="measurement_${i}_${j}">${measurement['outcome']}</span>`;
                     html += `</div>`;
                   });
                 } else {
