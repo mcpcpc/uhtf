@@ -108,21 +108,21 @@
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
-              procedure["phases"].forEach((phase, index) => {
-                var html = "";
+              var html = "";
+              procedure["phases"].forEach((phase, i) => {
                 html += `<div class="accordion-item">`;
-                html += `<div class="accordion-header" id="header_phase_${index}">`;
-                html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#phase_${index}" aria-expanded="false" aria-controls="phase_${index}">`;
+                html += `<div class="accordion-header" id="header_phase_${i}">`;
+                html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#phase_${i}" aria-expanded="false" aria-controls="phase_${i}">`;
                 html += `<div class="d-flex w-100 align-items-center justify-content-between me-3">`;
                 html += `<span class="me-1">${phase['name']}</span>`;
-                html += `<span id="outcome_phase_${index}">${phase['outcome']}</span>`;
+                html += `<span id="outcome_phase_${i}">${phase['outcome']}</span>`;
                 html += `</div>`;
                 html += `</button>`;
                 html += `</div>`;
-                html += `<div id="phase_${index}" class="accordion-collapse show" aria-labelledby="header_phase_${index}" data-bs-parent="detail">`;
+                html += `<div id="phase_${i}" class="accordion-collapse show" aria-labelledby="header_phase_${i}" data-bs-parent="detail">`;
                 html += `<div class="accordion-body">`;
                 if (phase["measurements"].length > 0) {
-                  phase["measurements"].forEach((measurement) => {
+                  phase["measurements"].forEach((measurement, j) => {
                     html += `<div class="d-flex mb-1 align-items-center justify-content-between w-100">`;
                     html += `<span class="text-nowrap">${measurement['name']}</span>`;
                     html += `<span class="badge" id="${measurement['name']}">${measurement['outcome']}</span>`;
@@ -133,7 +133,7 @@
                 }
                 html += `</div></div></div>`;
                 document.getElementById("detail").innerHTML += html;
-                setBadge(`outcome_phase_${index}`, phase['outcome']);
+                setBadge(`outcome_phase_${i}`, phase['outcome']);
               });
             }
             setBadge("state", state);
