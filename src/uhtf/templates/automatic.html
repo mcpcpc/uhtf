@@ -123,9 +123,9 @@
                 html += `<div class="accordion-body">`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
-                    html += `<div class="d-flex mb-1">`;
-                    html += `<span class="w-100 text-nowrap">${measurement['name']}</span>`;
-                    html += `<span id="${measurement['name']}">${measurement['outcome']}</span>`;
+                    html += `<div class="d-flex mb-1 align-items-center justify-content-between w-100">`;
+                    html += `<span class="text-nowrap">${measurement['name']}</span>`;
+                    html += `<span class="badge" id="${measurement['name']}">${measurement['outcome']}</span>`;
                     html += `</div>`;
                   });
                 } else {
