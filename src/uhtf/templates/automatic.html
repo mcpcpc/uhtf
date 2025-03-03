@@ -108,8 +108,8 @@
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
-              var html = "";
               procedure["phases"].forEach((phase, i) => {
+                var html = "";
                 html += `<div class="accordion-item">`;
                 html += `<div class="accordion-header" id="header_phase_${i}">`;
                 html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#phase_${i}" aria-expanded="false" aria-controls="phase_${i}">`;
