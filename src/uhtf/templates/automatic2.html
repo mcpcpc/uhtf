@@ -109,18 +109,19 @@
             document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
             document.getElementById("detail").innerHTML = "";
             if (procedure["phases"].length > 0) {
-              procedure["phases"].forEach((phase, index) => {
+              procedure["phases"].forEach((phase) => {
+                var slug = slugify(phase['name']);
                 var html = "";
                 html += `<div class="accordion-item">`;
-                html += `<div class="accordion-header" id="header_phase_${index}">`;
-                html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#phase_${index}" aria-expanded="false" aria-controls="phase_${index}">`;
+                html += `<div class="accordion-header" id="header_${slug}">`;
+                html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#${slug}" aria-expanded="false" aria-controls="${slug}">`;
                 html += `<div class="d-flex w-100 align-items-center justify-content-between me-3">`;
                 html += `<span class="me-1">${phase['name']}</span>`;
-                html += `<span id="outcome_phase_${index}">${phase['outcome']}</span>`;
+                html += `<span id="outcome_${slug}">${phase['outcome']}</span>`;
                 html += `</div>`;
                 html += `</button>`;
                 html += `</div>`;
-                html += `<div id="phase_${index}" class="accordion-collapse show" aria-labelledby="header_phase_${index}" data-bs-parent="detail">`;
+                html += `<div id="${slug}" class="accordion-collapse show" aria-labelledby="header_${slug}" data-bs-parent="detail">`;
                 html += `<div class="accordion-body">`;
                 if (phase["measurements"].length > 0) {
                   phase["measurements"].forEach((measurement) => {
@@ -136,7 +137,7 @@
                 html += `</div>`;
                 html += `</div>`;
                 document.getElementById("detail").innerHTML += html;
-                setBadge(`outcome_phase_${index}`, phase['outcome']);
+                setBadge(`outcome_${slug}`, phase['outcome']);
               });
             }
             setBadge("state", state);
@@ -161,6 +162,15 @@
                 badge.textContent = value;
                 badge.className = "badge text-bg-light";
             }
+          }
+          
+          function slugify(str) {
+            str = str.replace(/^\s+|\s+$/g, ''); // trim leading/trailing white space
+            str = str.toLowerCase(); // convert string to lowercase
+            str = str.replace(/[^a-z0-9 -]/g, '') // remove any non-alphanumeric characters
+              .replace(/\s+/g, '-') // replace spaces with hyphens
+              .replace(/-+/g, '-'); // remove consecutive hyphens
+            return str;
           }
 
           function send(event) {
