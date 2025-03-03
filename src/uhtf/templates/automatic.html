@@ -131,9 +131,7 @@
                 } else {
                   html += `<span class="fst-italic">No measurement</span>`;
                 }
-                html += `</div>`;
-                html += `</div>`;
-                html += `</div>`;
+                html += `</div></div></div>`;
                 document.getElementById("detail").innerHTML += html;
                 setBadge(`outcome_phase_${index}`, phase['outcome']);
               });
