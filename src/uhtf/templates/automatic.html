@@ -145,18 +145,21 @@
           
           function setBadge(name, value) { 
             var badge = document.getElementById(name);
-            badge.textContent = value;
             switch(value) {
               case "PASS":
+                badge.textContent = "Pass";
                 badge.className = "badge text-bg-success";
                 break;
               case "FAIL":
+                badge.textContent = "Fail";
                 badge.className = "badge text-bg-danger";
                 break;
               case "ERROR":
+                badge.textContent = "Error";
                 badge.className = "badge text-bg-warning";
                 break;
               default:
+                badge.textContent = value;
                 badge.className = "badge text-bg-light";
             }
           }
