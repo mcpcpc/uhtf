@@ -101,63 +101,61 @@
             const message = JSON.parse(event.data);
             const procedure = message[0];
             const state = message[1];
-            document.getElementById("global_trade_item_number").textContent = procedure["unit_under_test"]["global_trade_item_number"];
-            document.getElementById("serial_number").textContent = procedure["unit_under_test"]["serial_number"];
-            document.getElementById("part_number").textContent = procedure["unit_under_test"]["part_number"];
-            document.getElementById("revision").textContent = procedure["unit_under_test"]["revision"];
-            document.getElementById("part_name").textContent = procedure["unit_under_test"]["part_name"];
-            document.getElementById("detail").innerHTML = "";
-            if (procedure["phases"].length > 0) {
-              procedure["phases"].forEach((phase, i) => {
-                var html = "";
-                html += `<div class="accordion-item">`;
-                html += `<div class="accordion-header" id="header_phase_${i}">`;
-                html += `<button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#phase_${i}" aria-expanded="false" aria-controls="phase_${i}">`;
-                html += `<div class="d-flex w-100 align-items-center justify-content-between me-3">`;
-                html += `<span class="me-1">${phase['name']}</span>`;
-                html += `<span id="outcome_phase_${i}">${phase['outcome']}</span>`;
-                html += `</div>`;
-                html += `</button>`;
-                html += `</div>`;
-                html += `<div id="phase_${i}" class="accordion-collapse show" aria-labelledby="header_phase_${i}" data-bs-parent="detail">`;
-                html += `<div class="accordion-body">`;
-                if (phase["measurements"].length > 0) {
-                  phase["measurements"].forEach((measurement, j) => {
-                    html += `<div class="d-flex mb-1 align-items-center justify-content-between w-100">`;
-                    html += `<span class="text-nowrap">${measurement['name']}</span>`;
-                    html += `<span class="badge" id="measurement_${i}_${j}">${measurement['outcome']}</span>`;
-                    html += `</div>`;
-                  });
-                } else {
-                  html += `<span class="fst-italic">No measurement</span>`;
-                }
-                html += `</div></div></div>`;
-                document.getElementById("detail").innerHTML += html;
-                setBadge(`outcome_phase_${i}`, phase['outcome']);
-              });
-            }
-            setBadge("state", state);
+            document.getElementById("global_trade_item_number").textContent = procedure.unit_under_test["global_trade_item_number"];
+            document.getElementById("serial_number").textContent = procedure.unit_under_test["serial_number"];
+            document.getElementById("part_number").textContent = procedure.unit_under_test["part_number"];
+            document.getElementById("revision").textContent = procedure.unit_under_test["revision"];
+            document.getElementById("part_name").textContent = procedure.unit_under_test.part_name;
+            updatePhases(procedure.phases)
+            //setBadge("state", state);
           });
           
-          function setBadge(name, value) { 
-            var badge = document.getElementById(name);
+          function updatePhases(phases) {
+            accordion.innerHTML = "";
+            phases.forEach((phase, index) => {
+              const phaseId = `phase-${index}`;
+              const phaseHTML = `
+                <div class="accordion-item">
+                  <h2 class="accordion-header">
+                    <button class="accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${phaseId}">
+                      <div class="d-flex w-100 align-items-center justify-content-between me-3">
+                        <span>${phase.name}</span>
+                        <span class="badge text-bg-${setBadgeColor(phase.outcome)}">${phase.outcome}</span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div id="collapse-${phaseId}" class="accordion-collapse collapse show">
+                    <div class="accordion-body">
+                    ${phase.measurements.map(measurement => `
+                      <div class="d-flex align-items-center justify-content-between">
+                        <span>${measurement.name}: ${measurement.measured_value}</span>
+                        <span class="badge text-bg-${setBadgeColor(measurement.outcome)}">${measurement.outcome}</span>
+                      </div>
+                    `).join("")}
+                    </div>
+                  </div>
+                </div>
+              `;
+              accordion.insertAdjacentHTML("beforeend", phaseHTML);
+            });
+          }
+          
+          function setBadgeColor(value) {
+            var color = "";
             switch(value) {
               case "PASS":
-                badge.textContent = "Pass";
-                badge.className = "badge text-bg-success";
+                color = "success";
                 break;
               case "FAIL":
-                badge.textContent = "Fail";
-                badge.className = "badge text-bg-danger";
+                color = "danger";
                 break;
               case "ERROR":
-                badge.textContent = "Error";
-                badge.className = "badge text-bg-warning";
+                color = "warning";
                 break;
               default:
-                badge.textContent = value;
-                badge.className = "badge text-bg-light";
+                color = "light";
             }
+            return color;
           }
 
           function send(event) {
