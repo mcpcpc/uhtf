@@ -127,9 +127,8 @@
                 <div class="accordion-item border-0">
                   <h2 class="accordion-header">
                     <button class="accordion-button custom-accordion-button bg-transparent" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-${phaseId}">
-                      <div class="d-flex w-100 justify-content-between align-items-center me-3">
-                        <span>${phase.name}</span>
-                        <span class="badge text-bg-${setBadgeColor(phase.outcome)}">${phase.outcome}</span>
+                      <div class="d-flex w-100 align-items-center me-3">
+                        <span>${phase.name} — ${phase.outcome}</span>
                       </div>
                     </button>
                   </h2>
@@ -138,7 +137,7 @@
                     ${phase.measurements.map(measurement => `
                       <div class="d-flex align-items-center justify-content-between mb-1">
                         <span>${measurement.name}: ${measurement.measured_value}${measurement.units}</span>
-                        <span>${measurement.outcome}</span>
+                        <span class="badge text-bg-${setBadgeColor(measurement.outcome)}">${measurement.outcome}</span>
                       </div>
                     `).join("")}
                     </div>
