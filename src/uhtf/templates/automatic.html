@@ -95,7 +95,7 @@
           </div>
         </div>
         <script type="text/javascript">
-          const accordion = getElementById("accordion");
+          const accordion = document.getElementById("accordion");
           const ws = new WebSocket(`ws://${location.host}/automatic/ws`);
  
           ws.addEventListener('message', function (event) {
