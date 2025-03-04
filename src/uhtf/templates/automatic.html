@@ -96,9 +96,9 @@
         </div>
         <script type="text/javascript">
           const accordion = document.getElementById("accordion");
-          const ws = new WebSocket(`ws://${location.host}/automatic/ws`);
+          const websocket = new WebSocket(`ws://${location.host}/automatic/ws`);
  
-          ws.addEventListener('message', function (event) {
+          websocket.addEventListener('message', function (event) {
             const message = JSON.parse(event.data);
             const procedure = message[0];
             document.getElementById("global_trade_item_number").textContent = procedure.unit_under_test.global_trade_item_number;
@@ -165,7 +165,7 @@
               data[key] = value;
             });
             const jsonString = JSON.stringify(data);
-            ws.send(jsonString);
+            websocket.send(jsonString);
             event.target.reset();
             return false;
           }
