@@ -167,3 +167,5 @@
 .custom-content>.table th,.custom-content>.table td:first-child>code,.custom-content>.table-responsive .table th,.custom-content>.table-responsive .table td:first-child>code {
     white-space: nowrap
 }
+
+.custom-accordion-button:not(.collapsed){box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 rgba(var(--bs-tertiary-bg-rgb),var(--bs-bg-opacity)) !important}
