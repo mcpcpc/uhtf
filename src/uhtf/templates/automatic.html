@@ -89,14 +89,15 @@
                 <div class="card-header bg-body p-3 d-flex justify-content-between align-items-center border-0">
                   <h5 class="card-title m-0">Results</h5>
                 </div>
-                <div id="detail" class="accordion accordion-flush"></div>	
+                <div id="accordion" class="accordion accordion-flush"></div>	
               </div>
             </div>
           </div>
         </div>
         <script type="text/javascript">
+          const accordion = getElementById("accordion");
           const ws = new WebSocket(`ws://${location.host}/automatic/ws`);
-
+ 
           ws.addEventListener('message', function (event) {
             const message = JSON.parse(event.data);
             const procedure = message[0];
