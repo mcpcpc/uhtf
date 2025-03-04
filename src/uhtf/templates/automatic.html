@@ -101,14 +101,13 @@
           ws.addEventListener('message', function (event) {
             const message = JSON.parse(event.data);
             const procedure = message[0];
-            const state = message[1];
             document.getElementById("global_trade_item_number").textContent = procedure.unit_under_test["global_trade_item_number"];
             document.getElementById("serial_number").textContent = procedure.unit_under_test["serial_number"];
             document.getElementById("part_number").textContent = procedure.unit_under_test["part_number"];
             document.getElementById("revision").textContent = procedure.unit_under_test["revision"];
             document.getElementById("part_name").textContent = procedure.unit_under_test.part_name;
+            document.getElementById("state").textContent = message[1];
             updatePhases(procedure.phases);
-            //setBadge("state", state);
           });
           
           function updatePhases(phases) {
