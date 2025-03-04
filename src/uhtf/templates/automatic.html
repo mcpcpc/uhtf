@@ -111,6 +111,14 @@
             updatePhases(procedure.phases);
           });
           
+          websocket.addEventListener("open", function (event) {
+            console.log("Websocket connected.");
+          });
+          
+          websocket.addEventListener("close", function (event) {
+            console.log("Websocket disconnected.");
+          });
+          
           function updatePhases(phases) {
             accordion.innerHTML = "";
             phases.forEach((phase, index) => {
