@@ -132,7 +132,7 @@
                   </h2>
                   <div id="collapse-${phaseId}" class="accordion-collapse collapse show">
                     <div class="accordion-body">
-                    ${phase.measurements.map(measurement => `
+                    ${phase.measurements.length < 1 ? "No measurements" : phase.measurements.map(measurement => `
                       <div class="d-flex align-items-center justify-content-between mb-1">
                         <span>${measurement.name}: ${measurement.measured_value}${measurement.units}</span>
                         <span class="badge text-bg-${setBadgeColor(measurement.outcome)}">${measurement.outcome}</span>
