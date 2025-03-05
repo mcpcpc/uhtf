@@ -168,4 +168,7 @@
     white-space: nowrap
 }
 
+/*
 .custom-accordion-button:not(.collapsed){box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 rgba(var(--bs-tertiary-bg-rgb),var(--bs-bg-opacity)) !important}
+*/
+.custom-accordion-button:not(.collapsed){box-shadow: none !important}
